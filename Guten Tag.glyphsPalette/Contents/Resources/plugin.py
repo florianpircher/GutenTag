@@ -22,7 +22,7 @@ class GutenTag(PalettePlugin):
     multipleSelectionPlaceholder = 'Multiple Selection'  # localized in `settings`
     tagPool = []
 
-    # Glyph Palette Plugin Methods
+    # MARK: - Glyph Palette Plugin Methods
 
     @objc.python_method
     def settings(self):
@@ -129,7 +129,7 @@ class GutenTag(PalettePlugin):
         """Please leave this method unchanged"""
         return __file__
 
-    # Utility Functions
+    # MARK: - Utility Functions
 
     @objc.python_method
     def containsTag(tag, tags):
@@ -157,7 +157,7 @@ class GutenTag(PalettePlugin):
 
         return tags
 
-    # Instance Methods
+    # MARK: - Instance Methods
 
     @objc.python_method
     def currentFont(self):
@@ -207,7 +207,7 @@ class GutenTag(PalettePlugin):
         for glyph in glyphs:
             glyph.setTags_(tags)
 
-    # NSTokenFieldDelegate
+    # MARK: - NSTokenFieldDelegate
 
     def tokenField_displayStringForRepresentedObject_(self, tokenField, tagName):
         # the trailing spaces make space for the menu disclose button

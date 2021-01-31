@@ -41,6 +41,8 @@ class GutenTag(PalettePlugin):
     noTagsPlaceholder = 'no tags'  # localized in `settings`
     multipleSelectionPlaceholder = 'Multiple Selection'  # localized in `settings`
 
+    # Glyph Palette Plugin Methods
+
     @objc.python_method
     def settings(self):
         mainBundle = NSBundle.mainBundle()
@@ -108,55 +110,6 @@ class GutenTag(PalettePlugin):
         Glyphs.addCallback(self.update, UPDATEINTERFACE)
 
     @objc.python_method
-    def __del__(self):
-        Glyphs.removeCallback(self.update)
-
-    @objc.python_method
-    def currentFont(self):
-        """Returns the current font, if any, None otherwise."""
-        windowController = self.windowController()
-        if windowController:
-            font = windowController.document().font
-            if font:
-                return font
-
-    @objc.python_method
-    def glyphTags(glyph):
-        """Returns a frozen set of the tags from the given glyph."""
-        return frozenset(glyph.tags().array())
-
-    @objc.python_method
-    def fontTags(font):
-        """Returns a frozen set of all tags from all glyphs in the given font."""
-        tags = NSMutableOrderedSet.new()
-
-        for glyph in font.glyphs:
-            tags.unionOrderedSet_(glyph.tags())
-
-        return frozenset(tags.array())
-
-    def selectedGlyphs(self):
-        """Returns all selected glyphs, both in edit view and in font view."""
-        font = self.currentFont()
-
-        if not font:
-            return []
-
-        glyphs = []
-
-        if font.currentTab:
-            for layer in font.selectedLayers:
-                glyphs.append(layer.parent)
-        else:
-            try:
-                for glyph in font.selection:
-                    glyphs.append(glyph)
-            except:
-                pass
-
-        return glyphs
-
-    @objc.python_method
     def update(self, sender):
         """
         Updates the value of the token field to reflect the new glyph selection.
@@ -195,6 +148,65 @@ class GutenTag(PalettePlugin):
             self.setTagsValue([])
 
     @objc.python_method
+    def __del__(self):
+        Glyphs.removeCallback(self.update)
+
+    @objc.python_method
+    def __file__(self):
+        """Please leave this method unchanged"""
+        return __file__
+
+    # Utility Functions
+
+    @objc.python_method
+    def glyphTags(glyph):
+        """Returns a frozen set of the tags from the given glyph."""
+        return frozenset(glyph.tags().array())
+
+    @objc.python_method
+    def fontTags(font):
+        """Returns a frozen set of all tags from all glyphs in the given font."""
+        tags = NSMutableOrderedSet.new()
+
+        for glyph in font.glyphs:
+            tags.unionOrderedSet_(glyph.tags())
+
+        return frozenset(tags.array())
+
+    # Instance Methods
+
+    @objc.python_method
+    def currentFont(self):
+        """Returns the current font, if any, None otherwise."""
+        windowController = self.windowController()
+        if windowController:
+            font = windowController.document().font
+            if font:
+                return font
+
+    @objc.python_method
+    def selectedGlyphs(self):
+        """Returns all selected glyphs, both in edit view and in font view."""
+        font = self.currentFont()
+
+        if not font:
+            return []
+
+        glyphs = []
+
+        if font.currentTab:
+            for layer in font.selectedLayers:
+                glyphs.append(layer.parent)
+        else:
+            try:
+                for glyph in font.selection:
+                    glyphs.append(glyph)
+            except:
+                pass
+
+        return glyphs
+
+    @objc.python_method
     def setTagsValue(self, tags):
         """Sets the value of the token filed to the given tags."""
         tags = list(tags)
@@ -213,6 +225,8 @@ class GutenTag(PalettePlugin):
 
         for glyph in glyphs:
             glyph.setTags_(tags)
+
+    # NSTokenFieldDelegate
 
     def tokenField_displayStringForRepresentedObject_(self, tokenField, tagName):
         # the trailing spaces make space for the menu disclose button
@@ -267,8 +281,3 @@ class GutenTag(PalettePlugin):
             return (matches, 0)
         else:
             return ([], -1)
-
-    @objc.python_method
-    def __file__(self):
-        """Please leave this method unchanged"""
-        return __file__

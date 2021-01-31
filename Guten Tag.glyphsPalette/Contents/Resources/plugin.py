@@ -95,9 +95,8 @@ class GutenTag(PalettePlugin):
         """
         Updates the value of the token field to reflect the new glyph selection.
         """
-        glyphs = self.selectedGlyphs()
 
-        if glyphs:
+        if glyphs := self.selectedGlyphs():
             self.tokenField.setPlaceholderString_(self.noTagsPlaceholder)
             self.tokenField.setEnabled_(True)
 
@@ -108,17 +107,18 @@ class GutenTag(PalettePlugin):
                 self.setTagsValue(tags)
             else:
                 # multiple glyphs are selected
-                tagsValues = set()
+                glyphsIter = iter(glyphs)
+                firstTags = next(glyphsIter).tags()
+                sameTagsForAllSelectedGlyphs = True
 
-                for glyph in glyphs:
-                    tagsValues.add(GutenTag.glyphTags(glyph))
+                for glyph in glyphsIter:
+                    if glyph.tags() != firstTags:
+                        sameTagsForAllSelectedGlyphs = False
+                        break
 
-                if len(tagsValues) == 1:
-                    # all tags are the same for all glyphs
-                    tags = next(iter(tagsValues))
-                    self.setTagsValue(tags)
+                if sameTagsForAllSelectedGlyphs:
+                    self.setTagsValue(frozenset(firstTags.array()))
                 else:
-                    # tags differ from glyph to glyph
                     self.tokenField.setPlaceholderString_(
                         self.multipleSelectionPlaceholder)
                     self.setTagsValue([])
@@ -159,33 +159,29 @@ class GutenTag(PalettePlugin):
     @objc.python_method
     def currentFont(self):
         """Returns the current font, if any, None otherwise."""
-        windowController = self.windowController()
-        if windowController:
-            font = windowController.document().font
-            if font:
-                return font
+        if (wc := self.windowController()) and (font := wc.document().font):
+            return font
 
     @objc.python_method
     def selectedGlyphs(self):
         """Returns all selected glyphs, both in edit view and in font view."""
-        font = self.currentFont()
+        if font := self.currentFont():
+            glyphs = []
 
-        if not font:
+            if font.currentTab:
+                for layer in font.selectedLayers:
+                    glyphs.append(layer.parent)
+            else:
+                try:
+                    for glyph in font.selection:
+                        glyphs.append(glyph)
+                except:
+                    pass
+
+            return glyphs
+        else:
             return []
 
-        glyphs = []
-
-        if font.currentTab:
-            for layer in font.selectedLayers:
-                glyphs.append(layer.parent)
-        else:
-            try:
-                for glyph in font.selection:
-                    glyphs.append(glyph)
-            except:
-                pass
-
-        return glyphs
     @objc.python_method
     def invalidateTagPool(self):
         if font := self.currentFont():
@@ -231,9 +227,7 @@ class GutenTag(PalettePlugin):
         # add a menu with each glyph that has `tagName` as a tag
         menu = NSMenu.new()
 
-        font = self.controller.currentFont()
-
-        if font:
+        if font := self.controller.currentFont():
             menuItemFontSize = NSFont.systemFontSize()
             menuItemFont = NSFont.legibileFontOfSize_(menuItemFontSize)
 

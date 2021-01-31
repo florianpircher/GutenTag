@@ -24,48 +24,6 @@ class GutenTagTokenField(NSTokenField):
         self.controller.confirmTagsValue_(self)
 
 
-class GutenTagTokenFieldDelegate(NSObject):
-    controller = None
-
-    def tokenField_displayStringForRepresentedObject_(self, tokenField, representedObject):
-        # the trailing spaces make space for the menu disclose button
-        # \u200C prevents whitespace trimming
-        return '\u2068' + representedObject + '\u2069   \u200C'
-
-    def tokenField_editingStringForRepresentedObject_(self, tokenField, representedObject):
-        return representedObject
-
-    def tokenField_hasMenuForRepresentedObject_(self, tokenField, representedObject):
-        return True
-
-    def tokenField_menuForRepresentedObject_(self, tokenField, representedObject):
-        # add a menu with each glyph that has `representedObject` as a tag
-        menu = NSMenu.new()
-
-        font = self.controller.currentFont()
-
-        if font:
-            for glyph in font.glyphs:
-                tags = GutenTag.glyphTags(glyph)
-
-                if representedObject in tags:
-                    item = NSMenuItem.new()
-                    item.setTitle_(glyph.name)
-                    # set menu item font
-                    fontSize = NSFont.systemFontSize()
-                    font = NSFont.legibileFontOfSize_(fontSize)
-                    item.setFont_(font)
-                    # add item
-                    menu.addItem_(item)
-
-        return menu
-
-    # # crashes Glyphs no matter the return value:
-    # def tokenField_completionsForSubstring_indexOfToken_indexOfSelectedItem_(self, tokenField, substring, tokenIndex, selectedIndex):
-    #   # filter from existing tags
-    #   return []
-
-
 class GutenTag(PalettePlugin):
     dialogName = "net.addpixel.GutenTag"
     dialog = objc.IBOutlet()
@@ -161,7 +119,7 @@ class GutenTag(PalettePlugin):
         self.tokenField.setEnabled_(False)
 
         # set delegate
-        self.tokenFieldDelegate = GutenTagTokenFieldDelegate.new()
+        self.tokenFieldDelegate = self
         self.tokenFieldDelegate.controller = self
         self.tokenField.setDelegate_(self.tokenFieldDelegate)
 
@@ -286,6 +244,44 @@ class GutenTag(PalettePlugin):
 
         for glyph in glyphs:
             glyph.setTags_(tags)
+
+    def tokenField_displayStringForRepresentedObject_(self, tokenField, representedObject):
+        # the trailing spaces make space for the menu disclose button
+        # \u200C prevents whitespace trimming
+        return '\u2068' + representedObject + '\u2069   \u200C'
+
+    def tokenField_editingStringForRepresentedObject_(self, tokenField, representedObject):
+        return representedObject
+
+    def tokenField_hasMenuForRepresentedObject_(self, tokenField, representedObject):
+        return True
+
+    def tokenField_menuForRepresentedObject_(self, tokenField, representedObject):
+        # add a menu with each glyph that has `representedObject` as a tag
+        menu = NSMenu.new()
+
+        font = self.controller.currentFont()
+
+        if font:
+            for glyph in font.glyphs:
+                tags = GutenTag.glyphTags(glyph)
+
+                if representedObject in tags:
+                    item = NSMenuItem.new()
+                    item.setTitle_(glyph.name)
+                    # set menu item font
+                    fontSize = NSFont.systemFontSize()
+                    font = NSFont.legibileFontOfSize_(fontSize)
+                    item.setFont_(font)
+                    # add item
+                    menu.addItem_(item)
+
+        return menu
+
+    # # crashes Glyphs no matter the return value:
+    # def tokenField_completionsForSubstring_indexOfToken_indexOfSelectedItem_(self, tokenField, substring, tokenIndex, selectedIndex):
+    #   # filter from existing tags
+    #   return []
 
     @objc.python_method
     def __file__(self):

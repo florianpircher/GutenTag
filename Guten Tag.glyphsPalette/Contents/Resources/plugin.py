@@ -96,8 +96,7 @@ class GutenTag(PalettePlugin):
             if len(glyphs) == 1:
                 # a single glyph is selected
                 glyph = glyphs[0]
-                tags = GutenTag.glyphTags(glyph)
-                self.setTagsValue(tags)
+                self.setTagsValue(glyph.tags())
             else:
                 # multiple glyphs are selected
                 glyphsIter = iter(glyphs)
@@ -110,7 +109,7 @@ class GutenTag(PalettePlugin):
                         break
 
                 if sameTagsForAllSelectedGlyphs:
-                    self.setTagsValue(frozenset(firstTags.array()))
+                    self.setTagsValue(firstTags)
                 else:
                     self.tokenField.setPlaceholderString_(
                         self.multipleSelectionPlaceholder)
@@ -133,9 +132,20 @@ class GutenTag(PalettePlugin):
     # Utility Functions
 
     @objc.python_method
-    def glyphTags(glyph):
-        """Returns a frozen set of the tags from the given glyph."""
-        return frozenset(glyph.tags().array())
+    def containsTag(tag, tags):
+        """Returns whether a set of tags contains the given tag."""
+        try:
+            return tag in tags
+        except:
+            return tags.containsObject_(tag)
+
+    @objc.python_method
+    def tagsIter(tags):
+        """Returns an iterable over the given tags."""
+        try:
+            return iter(tags)
+        except:
+            return tags.set()  # fast, cheap proxy
 
     @objc.python_method
     def fontTags(font):
@@ -145,7 +155,7 @@ class GutenTag(PalettePlugin):
         for glyph in font.glyphs:
             tags.unionOrderedSet_(glyph.tags())
 
-        return frozenset(tags.array())
+        return tags
 
     # Instance Methods
 
@@ -185,18 +195,13 @@ class GutenTag(PalettePlugin):
     @objc.python_method
     def setTagsValue(self, tags):
         """Sets the value of the token filed to the given tags."""
-        tags = list(tags)
-        tags.sort()
+        tags = sorted(set(GutenTag.tagsIter(tags)))
         self.tokenField.setStringValue_(','.join(tags))
 
     @objc.IBAction
     def confirmTagsValue_(self, sender):
         """Confirms the entered tags and sets them on the selected glyphs."""
-        tags = []
-
-        for token in self.tokenField.objectValue():
-            tags.append(str(token))
-
+        tags = self.tokenField.objectValue()
         glyphs = self.selectedGlyphs()
 
         for glyph in glyphs:
@@ -225,9 +230,7 @@ class GutenTag(PalettePlugin):
             menuItemFont = NSFont.legibileFontOfSize_(menuItemFontSize)
 
             for glyph in font.glyphs:
-                tags = GutenTag.glyphTags(glyph)
-
-                if tagName in tags:
+                if GutenTag.containsTag(tagName, glyph.tags()):
                     item = NSMenuItem.new()
                     item.setTitle_(glyph.name)
                     item.setFont_(menuItemFont)
@@ -240,7 +243,7 @@ class GutenTag(PalettePlugin):
             query = str(substring)
             matches = []
 
-            for tag in self.tagPool:
+            for tag in GutenTag.tagsIter(self.tagPool):
                 if str(tag).startswith(query):
                     matches.append(tag)
 

@@ -237,12 +237,16 @@ class GutenTag(PalettePlugin):
         menu = NSMenu.new()
 
         if font := self.controller.currentFont():
+            master = font.selectedFontMaster
+
+            # setup layout
             upm = font.upm
-            extent = 56
+            extent = 56  # view size
             padding = 6
-            dimention = extent - 2 * padding
+            dimention = extent - 2 * padding  # size of font body within view
             offset = upm / (dimention / padding)
             rect = NSMakeRect(0, 0, extent, extent)
+            size = rect.size
             roundingRadius = 1
             roundedRect = NSBezierPath.bezierPathWithRoundedRect_xRadius_yRadius_(
                 rect, roundingRadius, roundingRadius)
@@ -250,10 +254,11 @@ class GutenTag(PalettePlugin):
             layerClipPath = NSBezierPath.bezierPathWithRect_(layerClipRect)
             glyphClipRect = NSMakeRect(0, 0, extent / 2, extent)
             glyphClipPath = NSBezierPath.bezierPathWithRect_(glyphClipRect)
-            master = font.selectedFontMaster
+
+            # menu item setup
+            action = objc.selector(self.openGlyph_, signature=b'v@:@')
             menuItemFontSize = NSFont.systemFontSize()
             menuItemFont = NSFont.legibileFontOfSize_(menuItemFontSize)
-            action = objc.selector(self.openGlyph_, signature=b'v@:@')
 
             item = NSMenuItem.new()
             item.setTitle_(tagName)
@@ -264,8 +269,6 @@ class GutenTag(PalettePlugin):
                 if GutenTag.containsTag(tagName, glyph.tags()):
                     layer = glyph.layers[master.id]
                     path = layer.completeBezierPath
-
-                    size = NSSize(extent, extent)
                     image = NSImage.alloc().initWithSize_(size)
                     image.lockFocus()
 
@@ -280,15 +283,16 @@ class GutenTag(PalettePlugin):
                         layerClipPath.setClip()
                         roundedRect.fill()
 
-                    roundedRect.setClip()
-                    NSColor.textColor().set()
-
                     transform = NSAffineTransform.transform()
                     transform.scaleBy_(dimention / upm)
                     transform.translateXBy_yBy_(
                         (upm - layer.width) / 2 + offset, -master.descender + offset)
                     path.transformUsingAffineTransform_(transform)
+
+                    NSColor.textColor().set()
+                    roundedRect.setClip()
                     path.fill()
+
                     image.unlockFocus()
 
                     item = NSMenuItem.new()

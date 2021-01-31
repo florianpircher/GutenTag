@@ -75,13 +75,6 @@ class GutenTag(PalettePlugin):
         self.tokenFieldDelegate.controller = self
         self.tokenField.setDelegate_(self.tokenFieldDelegate)
 
-        # tokenizing character set
-        tokenizingCharacterSet = NSMutableCharacterSet.new()
-        tokenizingCharacterSet.formUnionWithCharacterSet_(
-            NSTokenField.defaultTokenizingCharacterSet())
-        tokenizingCharacterSet.addCharactersInString_(" ")  # space
-        self.tokenField.setTokenizingCharacterSet_(tokenizingCharacterSet)
-
         # font
         fontSize = NSFont.smallSystemFontSize()
         font = NSFont.legibileFontOfSize_(fontSize)

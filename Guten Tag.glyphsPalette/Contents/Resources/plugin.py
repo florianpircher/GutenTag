@@ -13,26 +13,6 @@ from GlyphsApp import *
 from GlyphsApp.plugins import *
 
 
-class GutenTagTokenField(NSTokenField):
-    controller = None
-
-    def intrinsicContentSize(self):
-        intrinsicContentSize = super().intrinsicContentSize()
-        width = intrinsicContentSize.width
-        frame = self.frame()
-        frame.size.height = 0xFFFF
-        height = self.cell().cellSizeForBounds_(frame).height
-        return NSMakeSize(width, height)
-
-    def textDidChange_(self, notification):
-        super().textDidChange_(notification)
-        self.invalidateIntrinsicContentSize()
-
-    def textDidEndEditing_(self, notification):
-        super().textDidEndEditing_(notification)
-        self.controller.confirmTagsValue_(self)
-
-
 class GutenTag(PalettePlugin):
     dialogName = "net.addpixel.GutenTag"
     dialog = objc.IBOutlet()
@@ -40,6 +20,7 @@ class GutenTag(PalettePlugin):
     tokenFieldDelegate = None
     noTagsPlaceholder = 'no tags'  # localized in `settings`
     multipleSelectionPlaceholder = 'Multiple Selection'  # localized in `settings`
+    tagPool = []
 
     # Glyph Palette Plugin Methods
 
@@ -205,6 +186,12 @@ class GutenTag(PalettePlugin):
                 pass
 
         return glyphs
+    @objc.python_method
+    def invalidateTagPool(self):
+        if font := self.currentFont():
+            self.tagPool = GutenTag.fontTags(font)
+        else:
+            self.tagPool = []
 
     @objc.python_method
     def setTagsValue(self, tags):
@@ -262,22 +249,39 @@ class GutenTag(PalettePlugin):
         return menu
 
     def tokenField_completionsForSubstring_indexOfToken_indexOfSelectedItem_(self, tokenField, substring, tokenIndex, selectedIndex):
-        # filter from existing tags
-        font = self.currentFont()
+        if font := self.currentFont():
+            query = str(substring)
+            matches = []
 
-        if not font:
-            return
+            for tag in self.tagPool:
+                if str(tag).startswith(query):
+                    matches.append(tag)
 
-        existingTags = GutenTag.fontTags(font)
+            if matches:
+                return (matches, 0)
 
-        query = str(substring)
-        matches = []
+        return ([], -1)
 
-        for tag in existingTags:
-            if str(tag).startswith(query):
-                matches.append(tag)
 
-        if matches:
-            return (matches, 0)
-        else:
-            return ([], -1)
+class GutenTagTokenField(NSTokenField):
+    controller = None
+
+    def intrinsicContentSize(self):
+        intrinsicContentSize = super().intrinsicContentSize()
+        width = intrinsicContentSize.width
+        frame = self.frame()
+        frame.size.height = 0xFFFF
+        height = self.cell().cellSizeForBounds_(frame).height
+        return NSMakeSize(width, height)
+
+    def textDidBeginEditing_(self, notification):
+        super().textDidBeginEditing_(notification)
+        self.controller.invalidateTagPool()
+
+    def textDidChange_(self, notification):
+        super().textDidChange_(notification)
+        self.invalidateIntrinsicContentSize()
+
+    def textDidEndEditing_(self, notification):
+        super().textDidEndEditing_(notification)
+        self.controller.confirmTagsValue_(self)

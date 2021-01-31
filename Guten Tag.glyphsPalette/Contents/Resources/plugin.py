@@ -278,10 +278,26 @@ class GutenTag(PalettePlugin):
 
         return menu
 
-    # # crashes Glyphs no matter the return value:
-    # def tokenField_completionsForSubstring_indexOfToken_indexOfSelectedItem_(self, tokenField, substring, tokenIndex, selectedIndex):
-    #   # filter from existing tags
-    #   return []
+    def tokenField_completionsForSubstring_indexOfToken_indexOfSelectedItem_(self, tokenField, substring, tokenIndex, selectedIndex):
+        # filter from existing tags
+        font = self.currentFont()
+
+        if not font:
+            return
+
+        existingTags = GutenTag.fontTags(font)
+
+        query = str(substring)
+        matches = []
+
+        for tag in existingTags:
+            if str(tag).startswith(query):
+                matches.append(tag)
+
+        if matches:
+            return (matches, 0)
+        else:
+            return ([], -1)
 
     @objc.python_method
     def __file__(self):

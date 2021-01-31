@@ -1,7 +1,16 @@
 import objc
+from AppKit import (
+    NSBundle,
+    NSFont,
+    NSMakeSize,
+    NSMenu,
+    NSMenuItem,
+    NSMutableCharacterSet,
+    NSMutableOrderedSet,
+    NSTokenField
+)
 from GlyphsApp import *
 from GlyphsApp.plugins import *
-from AppKit import NSFont, NSMakeSize, NSMenu, NSMenuItem, NSMutableCharacterSet, NSMutableOrderedSet, NSTokenField
 
 
 class GutenTagTokenField(NSTokenField):
@@ -34,36 +43,10 @@ class GutenTag(PalettePlugin):
 
     @objc.python_method
     def settings(self):
-        self.name = Glyphs.localize({
-            'ar': 'العلامات',
-            'ca': 'Etiquetes',
-            'cs': 'Značky',
-            'da': 'Tags',
-            'de': 'Tags',
-            'el': 'Ετικέτες',
-            'en': 'Tags',
-            'es': 'Etiquetas',
-            'fi': 'Tageja',
-            'fr': 'Badges',
-            'he': 'תגים',
-            'hr': 'Tagova',
-            'hu': 'Címkék',
-            'it': 'Tags',
-            'ja': 'タグ',
-            'ko': '태그',
-            'nl': 'Tags',
-            'no': 'Tags',
-            'pl': 'Znaczniki',
-            'pt': 'Etiquetas',
-            'ro': 'Etichete',
-            'ru': 'Tags',
-            'sk': 'Značky',
-            'sv': 'Taggar',
-            'th': 'แท็ก',
-            'tr': 'Etiketler',
-            'uk': 'Теги',
-            'zh-Hans': '标签',
-        })
+        mainBundle = NSBundle.mainBundle()
+
+        self.name = mainBundle.localizedStringForKey_value_table_(
+            "Tags", "Tags", None)
         self.noTagsPlaceholder = Glyphs.localize({
             'ar': 'بدون علامات',
             'ca': 'sense etiquetes',
@@ -94,22 +77,8 @@ class GutenTag(PalettePlugin):
             'uk': 'відсутні теги',
             'zh-Hans': '没有标签',
         })
-        self.multipleSelectionPlaceholder = Glyphs.localize({
-            'ar': 'تحديد متعدد',
-            'cs': 'Vícenásobný výběr',
-            'de': 'Mehrere Werte',
-            'en': 'Multiple Selection',
-            'es': 'Valores múltiples',
-            'fr': 'Sélections multiples',
-            'it': 'Selezione multipla',
-            'ja': '複数選択',
-            'ko': '다중 선택',
-            'pt': 'Seleção múltipla',
-            'ru': 'Множественное выделение',
-            'tr': 'Çoklu Seçim',
-            'zh-Hans': '多选',
-            'zh-Hant': '多選',
-        })
+        self.multipleSelectionPlaceholder = mainBundle.localizedStringForKey_value_table_(
+            "Multiple Selection", "Multiple Selection", None)
         self.loadNib('IBdialog', __file__)
 
     @objc.python_method

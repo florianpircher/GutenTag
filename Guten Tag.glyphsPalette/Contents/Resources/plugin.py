@@ -5,9 +5,8 @@ from AppKit import (
     NSMakeSize,
     NSMenu,
     NSMenuItem,
-    NSMutableCharacterSet,
     NSMutableOrderedSet,
-    NSTokenField
+    NSTokenField,
 )
 from GlyphsApp import *
 from GlyphsApp.plugins import *

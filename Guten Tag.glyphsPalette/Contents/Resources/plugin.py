@@ -263,17 +263,16 @@ class GutenTag(PalettePlugin):
         font = self.controller.currentFont()
 
         if font:
+            menuItemFontSize = NSFont.systemFontSize()
+            menuItemFont = NSFont.legibileFontOfSize_(menuItemFontSize)
+
             for glyph in font.glyphs:
                 tags = GutenTag.glyphTags(glyph)
 
                 if representedObject in tags:
                     item = NSMenuItem.new()
                     item.setTitle_(glyph.name)
-                    # set menu item font
-                    fontSize = NSFont.systemFontSize()
-                    font = NSFont.legibileFontOfSize_(fontSize)
-                    item.setFont_(font)
-                    # add item
+                    item.setFont_(menuItemFont)
                     menu.addItem_(item)
 
         return menu

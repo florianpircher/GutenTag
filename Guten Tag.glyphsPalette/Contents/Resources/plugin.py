@@ -245,19 +245,20 @@ class GutenTag(PalettePlugin):
         for glyph in glyphs:
             glyph.setTags_(tags)
 
-    def tokenField_displayStringForRepresentedObject_(self, tokenField, representedObject):
+    def tokenField_displayStringForRepresentedObject_(self, tokenField, tagName):
         # the trailing spaces make space for the menu disclose button
         # \u200C prevents whitespace trimming
-        return '\u2068' + representedObject + '\u2069   \u200C'
+        # \u2068 and \u2069 embed the tag name such that the spaces are always to the right of the tag name (needed if the tag name displays as right-to-left text)
+        return '\u2068' + tagName + '\u2069   \u200C'
 
-    def tokenField_editingStringForRepresentedObject_(self, tokenField, representedObject):
-        return representedObject
+    def tokenField_editingStringForRepresentedObject_(self, tokenField, tagName):
+        return tagName
 
-    def tokenField_hasMenuForRepresentedObject_(self, tokenField, representedObject):
+    def tokenField_hasMenuForRepresentedObject_(self, tokenField, tagName):
         return True
 
-    def tokenField_menuForRepresentedObject_(self, tokenField, representedObject):
-        # add a menu with each glyph that has `representedObject` as a tag
+    def tokenField_menuForRepresentedObject_(self, tokenField, tagName):
+        # add a menu with each glyph that has `tagName` as a tag
         menu = NSMenu.new()
 
         font = self.controller.currentFont()
@@ -269,7 +270,7 @@ class GutenTag(PalettePlugin):
             for glyph in font.glyphs:
                 tags = GutenTag.glyphTags(glyph)
 
-                if representedObject in tags:
+                if tagName in tags:
                     item = NSMenuItem.new()
                     item.setTitle_(glyph.name)
                     item.setFont_(menuItemFont)

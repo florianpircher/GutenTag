@@ -243,7 +243,13 @@ class GutenTag(PalettePlugin):
             query = str(substring)
             matches = []
 
-            for tag in GutenTag.tagsIter(self.tagPool):
+            setTags = tokenField.objectValue()
+            tagPool = GutenTag.tagsIter(self.tagPool)
+            # hide tags that are already set (part of `tokenField.objectValue`) except if the tag equals the query (`substring`)
+            availableTags = [
+                tag for tag in tagPool if tag == substring or not GutenTag.containsTag(tag, setTags)]
+
+            for tag in availableTags:
                 if str(tag).startswith(query):
                     matches.append(tag)
 

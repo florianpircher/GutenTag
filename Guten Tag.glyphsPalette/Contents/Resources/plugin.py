@@ -186,7 +186,8 @@ class GutenTag(PalettePlugin):
             return []
 
     @objc.python_method
-    def invalidateTagPool(self):
+    def reloadTagPool(self):
+        """Loads all tags of the font into the tag pool."""
         if font := self.currentFont():
             self.tagPool = GutenTag.fontTags(font)
         else:
@@ -266,7 +267,7 @@ class GutenTagTokenField(NSTokenField):
 
     def textDidBeginEditing_(self, notification):
         super().textDidBeginEditing_(notification)
-        self.controller.invalidateTagPool()
+        self.controller.reloadTagPool()
 
     def textDidChange_(self, notification):
         super().textDidChange_(notification)

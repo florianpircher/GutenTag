@@ -1,12 +1,19 @@
 import objc
 from AppKit import (
+    NSAffineTransform,
     NSBundle,
     NSFont,
+    NSImage,
     NSMakeSize,
     NSMenu,
     NSMenuItem,
     NSMutableOrderedSet,
+    NSSize,
     NSTokenField,
+    NSColor,
+    NSRectFill,
+    NSMakeRect,
+    NSBezierPath,
 )
 from GlyphsApp import *
 from GlyphsApp.plugins import *
@@ -207,6 +214,10 @@ class GutenTag(PalettePlugin):
         for glyph in glyphs:
             glyph.setTags_(tags)
 
+    def openGlyph_(self, sender):
+        if font := self.currentFont():
+            font.newTab('/' + sender.title())
+
     # MARK: - NSTokenFieldDelegate
 
     def tokenField_displayStringForRepresentedObject_(self, tokenField, tagName):
@@ -226,14 +237,66 @@ class GutenTag(PalettePlugin):
         menu = NSMenu.new()
 
         if font := self.controller.currentFont():
+            upm = font.upm
+            extent = 56
+            padding = 6
+            dimention = extent - 2 * padding
+            offset = upm / (dimention / padding)
+            rect = NSMakeRect(0, 0, extent, extent)
+            roundingRadius = 1
+            roundedRect = NSBezierPath.bezierPathWithRoundedRect_xRadius_yRadius_(
+                rect, roundingRadius, roundingRadius)
+            layerClipRect = NSMakeRect(extent / 2, 0, extent / 2, extent)
+            layerClipPath = NSBezierPath.bezierPathWithRect_(layerClipRect)
+            glyphClipRect = NSMakeRect(0, 0, extent / 2, extent)
+            glyphClipPath = NSBezierPath.bezierPathWithRect_(glyphClipRect)
+            master = font.selectedFontMaster
             menuItemFontSize = NSFont.systemFontSize()
             menuItemFont = NSFont.legibileFontOfSize_(menuItemFontSize)
+            action = objc.selector(self.openGlyph_, signature=b'v@:@')
+
+            item = NSMenuItem.new()
+            item.setTitle_(tagName)
+            item.setFont_(menuItemFont)
+            menu.addItem_(item)
 
             for glyph in font.glyphs:
                 if GutenTag.containsTag(tagName, glyph.tags()):
+                    layer = glyph.layers[master.id]
+                    path = layer.completeBezierPath
+
+                    size = NSSize(extent, extent)
+                    image = NSImage.alloc().initWithSize_(size)
+                    image.lockFocus()
+
+                    if color := glyph.colorObject:
+                        color.colorWithAlphaComponent_(0.6).set()
+                        if layer.color:
+                            glyphClipPath.setClip()
+                        roundedRect.fill()
+
+                    if color := layer.colorObject:
+                        color.colorWithAlphaComponent_(0.6).set()
+                        layerClipPath.setClip()
+                        roundedRect.fill()
+
+                    roundedRect.setClip()
+                    NSColor.textColor().set()
+
+                    transform = NSAffineTransform.transform()
+                    transform.scaleBy_(dimention / upm)
+                    transform.translateXBy_yBy_(
+                        (upm - layer.width) / 2 + offset, -master.descender + offset)
+                    path.transformUsingAffineTransform_(transform)
+                    path.fill()
+                    image.unlockFocus()
+
                     item = NSMenuItem.new()
                     item.setTitle_(glyph.name)
+                    item.setImage_(image)
                     item.setFont_(menuItemFont)
+                    item.setTarget_(self)
+                    item.setAction_(action)
                     menu.addItem_(item)
 
         return menu

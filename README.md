@@ -1,4 +1,4 @@
-# Guten Tag
+# 🔖 Guten Tag
 
 This is a plugin for the [Glyphs font editor](https://glyphsapp.com).
 It allows you to edit glyph tags from the font view *and* edit view.

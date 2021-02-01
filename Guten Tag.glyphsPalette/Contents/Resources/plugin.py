@@ -261,10 +261,20 @@ class GutenTag(PalettePlugin):
             roundingRadius = 3  # pt
             roundedRect = NSBezierPath.bezierPathWithRoundedRect_xRadius_yRadius_(
                 rect, roundingRadius, roundingRadius)
-            # layer clip is used to fill layer color if separate layer color
+            # clip for layer color if glyph has a color
             layerClipRect = NSMakeRect(viewSize / 2, 0, viewSize / 2, viewSize)
             layerClipPath = NSBezierPath.bezierPathWithRect_(layerClipRect)
-            # glyph clip is used to fill glyph color if separate layer color
+            # clip for layer color if glyph has no color
+            cornerSize = viewSize / 5
+            layerOnlyClipPath = NSBezierPath.bezierPath()
+            layerOnlyClipPath.moveToPoint_(NSMakePoint(cornerSize, viewSize))
+            layerOnlyClipPath.lineToPoint_(NSMakePoint(viewSize, viewSize))
+            layerOnlyClipPath.lineToPoint_(NSMakePoint(viewSize, 0))
+            layerOnlyClipPath.lineToPoint_(NSMakePoint(0, 0))
+            layerOnlyClipPath.lineToPoint_(
+                NSMakePoint(0, viewSize - cornerSize))
+            layerOnlyClipPath.closePath()
+            # clip for glyph color if layer has a color
             glyphClipRect = NSMakeRect(0, 0, viewSize / 2, viewSize)
             glyphClipPath = NSBezierPath.bezierPathWithRect_(glyphClipRect)
 
@@ -296,8 +306,12 @@ class GutenTag(PalettePlugin):
                         roundedRect.fill()
 
                     if color := layer.colorObject:
+                        if glyph.color:
+                            layerClipPath.setClip()
+                        else:
+                            layerOnlyClipPath.setClip()
+
                         color.colorWithAlphaComponent_(0.6).set()
-                        layerClipPath.setClip()
                         roundedRect.fill()
 
                     transform = NSAffineTransform.transform()

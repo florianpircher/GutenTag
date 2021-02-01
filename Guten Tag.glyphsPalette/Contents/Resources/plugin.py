@@ -4,15 +4,41 @@ from GlyphsApp import *
 from GlyphsApp.plugins import *
 
 
+class UserDefaults:
+    prefix = ""
+
+    def __init__(self, prefix):
+        self.prefix = prefix
+
+    def id(x):
+        return x
+
+    def key(self, key):
+        return self.prefix + key
+
+    def read(self, key, default, transform=None):
+        if not transform:
+            transform = UserDefaults
+
+        if value := Glyphs.defaults[self.key(key)]:
+            return transform(value)
+        else:
+            return default
+
+
 class GutenTag(PalettePlugin):
     dialogName = "net.addpixel.GutenTag"
     dialog = objc.IBOutlet()
     tokenField = objc.IBOutlet()
     tokenFieldDelegate = None
-    noTagsPlaceholder = 'no tags'  # localized in `settings`
-    showGlyphsWithTagLabel = 'Show Glyphs With Tag'  # localized in `settings`
-    multipleSelectionPlaceholder = 'Multiple Selection'  # localized in `settings`
+
+    userDefaults = UserDefaults(prefix="net.addpixel.GutenTag.")
     tagPool = []
+
+    # strings localized in `settings`
+    noTagsPlaceholder = 'no tags'
+    showGlyphsWithTagLabel = 'Show Glyphs With Tag'
+    multipleSelectionPlaceholder = 'Multiple Selection'
 
     # MARK: - Glyph Palette Plugin Methods
 
@@ -251,8 +277,10 @@ class GutenTag(PalettePlugin):
 
             # menu item layout setup
             upm = font.upm
-            viewSize = 56  # pt
-            margin = 6  # pt
+            viewSize = self.userDefaults.read(
+                'GlyphPreviewSize', 56, transform=int)  # pt
+            margin = self.userDefaults.read(
+                'GlyphPreviewMargin', 6, transform=int)  # pt
             fontSize = viewSize - 2 * margin
             offset = upm / (fontSize / margin)
             # view bounds

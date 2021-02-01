@@ -245,23 +245,26 @@ class GutenTag(PalettePlugin):
         if font := self.controller.currentFont():
             master = font.selectedFontMaster
 
-            # setup layout
+            # menu item layout setup
             upm = font.upm
-            extent = 56  # view size
-            padding = 6
-            dimention = extent - 2 * padding  # size of font body within view
-            offset = upm / (dimention / padding)
-            rect = NSMakeRect(0, 0, extent, extent)
+            viewSize = 56  # pt
+            margin = 6  # pt
+            fontSize = viewSize - 2 * margin
+            offset = upm / (fontSize / margin)
+            # view bounds
+            rect = NSMakeRect(0, 0, viewSize, viewSize)
             size = rect.size
-            roundingRadius = 1
+            roundingRadius = 1  # pt
             roundedRect = NSBezierPath.bezierPathWithRoundedRect_xRadius_yRadius_(
                 rect, roundingRadius, roundingRadius)
-            layerClipRect = NSMakeRect(extent / 2, 0, extent / 2, extent)
+            # layer clip is used to fill layer color if separate layer color
+            layerClipRect = NSMakeRect(viewSize / 2, 0, viewSize / 2, viewSize)
             layerClipPath = NSBezierPath.bezierPathWithRect_(layerClipRect)
-            glyphClipRect = NSMakeRect(0, 0, extent / 2, extent)
+            # glyph clip is used to fill glyph color if separate layer color
+            glyphClipRect = NSMakeRect(0, 0, viewSize / 2, viewSize)
             glyphClipPath = NSBezierPath.bezierPathWithRect_(glyphClipRect)
 
-            # menu item setup
+            # menu item font setup
             menuItemFontSize = NSFont.systemFontSize()
             menuItemFont = NSFont.legibileFontOfSize_(menuItemFontSize)
 
@@ -289,7 +292,7 @@ class GutenTag(PalettePlugin):
                         roundedRect.fill()
 
                     transform = NSAffineTransform.transform()
-                    transform.scaleBy_(dimention / upm)
+                    transform.scaleBy_(fontSize / upm)
                     transform.translateXBy_yBy_(
                         (upm - layer.width) / 2 + offset, -master.descender + offset)
                     path.transformUsingAffineTransform_(transform)

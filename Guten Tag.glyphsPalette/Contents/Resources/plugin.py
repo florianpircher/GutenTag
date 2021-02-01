@@ -353,6 +353,7 @@ class GutenTagTokenField(NSTokenField):
         super().textDidChange_(notification)
         self.invalidateIntrinsicContentSize()
 
-    def textDidEndEditing_(self, notification):
-        super().textDidEndEditing_(notification)
+    def textShouldEndEditing_(self, notification):
+        result = super().textShouldEndEditing_(notification)
         self.controller.confirmTagsValue_(self)
+        return result

@@ -1,17 +1,17 @@
 import objc
 from AppKit import (
     NSAffineTransform,
+    NSBezierPath,
     NSBundle,
+    NSColor,
     NSFont,
     NSImage,
+    NSMakeRect,
     NSMakeSize,
     NSMenu,
     NSMenuItem,
     NSMutableOrderedSet,
     NSTokenField,
-    NSColor,
-    NSMakeRect,
-    NSBezierPath,
 )
 from GlyphsApp import *
 from GlyphsApp.plugins import *
@@ -286,12 +286,12 @@ class GutenTag(PalettePlugin):
             menuItemFont = NSFont.legibileFontOfSize_(menuItemFontSize)
 
             # show all glyphs menu item
-            item = NSMenuItem.new()
-            item.setTitle_(self.showGlyphsWithTagLabel)
-            item.setRepresentedObject_(tagName)
-            item.setTarget_(self)
-            item.setAction_(self.showGlyphsForTag_)
-            menu.addItem_(item)
+            showGlyphsItem = NSMenuItem.new()
+            showGlyphsItem.setTitle_(self.showGlyphsWithTagLabel)
+            showGlyphsItem.setRepresentedObject_(tagName)
+            showGlyphsItem.setTarget_(self)
+            showGlyphsItem.setAction_(self.showGlyphsForTag_)
+            menu.addItem_(showGlyphsItem)
 
             menu.addItem_(NSMenuItem.separatorItem())
 

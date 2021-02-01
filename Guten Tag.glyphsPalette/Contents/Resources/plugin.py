@@ -23,6 +23,7 @@ class GutenTag(PalettePlugin):
     tokenField = objc.IBOutlet()
     tokenFieldDelegate = None
     noTagsPlaceholder = 'no tags'  # localized in `settings`
+    showGlyphsWithTagLabel = 'Show Glyphs With Tag'  # localized in `settings`
     multipleSelectionPlaceholder = 'Multiple Selection'  # localized in `settings`
     tagPool = []
 
@@ -36,36 +37,38 @@ class GutenTag(PalettePlugin):
             "Tags", "Tags", None)
         self.noTagsPlaceholder = Glyphs.localize({
             'ar': 'بدون علامات',
-            'ca': 'sense etiquetes',
             'cs': 'žádné značky',
-            'da': 'ingen tags',
             'de': 'keine Tags',
-            'el': 'δεν ετικέτες',
             'en': 'no tags',
             'es': 'sin etiquetas',
-            'fi': 'ei tunnisteita',
             'fr': 'pas de balises',
-            'he': 'אין תגים',
-            'hr': 'nema tagova',
-            'hu': 'nincsenek címkék',
             'it': 'nessun tag',
             'ja': 'タグなし',
             'ko': '태그 없음',
-            'nl': 'geen tags',
-            'no': 'ingen tags',
-            'pl': 'bez znaczników',
             'pt': 'sem etiquetas',
-            'ro': 'fără etichete',
             'ru': 'без тегов',
-            'sk': 'bez značiek',
-            'sv': 'inga taggar',
-            'th': 'ไม่มีแท็ก',
             'tr': 'etiket yok',
-            'uk': 'відсутні теги',
             'zh-Hans': '没有标签',
+            'zh-Hant': '没有標籤',
         })
         self.multipleSelectionPlaceholder = mainBundle.localizedStringForKey_value_table_(
             "Multiple Selection", "Multiple Selection", None)
+        self.showGlyphsWithTagLabel = Glyphs.localize({  # match Glyphs KerningPanel.strings "aGI-5I-k6x.title" key
+            'ar': 'عرض كل المحارف',
+            'cs': 'Zobrazit všechny glyfy',
+            'de': 'Alle Glyphen anzeigen',
+            'en': 'Show all Glyphs',
+            'es': 'Mostrar todos los glifos',
+            'fr': 'Afficher tous les glyphes',
+            'it': 'Mostra tutti i glifi',
+            'ja': 'すべてのグリフを表示',
+            'ko': '모든 글리프 보기',
+            'pt': 'Exibir Todos os Glifos',
+            'ru': 'Показать все глифы',
+            'tr': 'Tüm Glifleri Göster',
+            'zh-Hans': '显示全部字符形',
+            'zh-Hant': '顯示所有字符',
+        })
         self.loadNib('IBdialog', __file__)
 
     @objc.python_method
@@ -215,7 +218,6 @@ class GutenTag(PalettePlugin):
     @objc.IBAction
     def openGlyph_(self, sender):
         """Opens the glyphs named by the title of the sender."""
-        print('openGlyph_')
         if font := self.currentFont():
             if font.currentTab:
                 glyph = font.glyphs[sender.title()]
@@ -223,6 +225,21 @@ class GutenTag(PalettePlugin):
                 view.replaceActiveLayersWithGlyphs_([glyph])
             else:
                 font.newTab('/' + sender.title())
+
+    @objc.IBAction
+    def showGlyphsForTag_(self, sender):
+        """
+        Opens a new tag with all glyphs that have a specific tag.
+
+        The tag name is specified by the `representedObject` of the sender.
+        """
+        if font := self.currentFont():
+            tag = sender.representedObject()
+            newTabText = ""
+            for glyph in font.glyphs:
+                if GutenTag.containsTag(tag, glyph.tags()):
+                    newTabText += "/" + glyph.name
+            font.newTab(newTabText)
 
     # MARK: - NSTokenFieldDelegate
 
@@ -268,10 +285,15 @@ class GutenTag(PalettePlugin):
             menuItemFontSize = NSFont.systemFontSize()
             menuItemFont = NSFont.legibileFontOfSize_(menuItemFontSize)
 
+            # show all glyphs menu item
             item = NSMenuItem.new()
-            item.setTitle_(tagName)
-            item.setFont_(menuItemFont)
+            item.setTitle_(self.showGlyphsWithTagLabel)
+            item.setRepresentedObject_(tagName)
+            item.setTarget_(self)
+            item.setAction_(self.showGlyphsForTag_)
             menu.addItem_(item)
+
+            menu.addItem_(NSMenuItem.separatorItem())
 
             for glyph in font.glyphs:
                 if GutenTag.containsTag(tagName, glyph.tags()):

@@ -8,10 +8,8 @@ from AppKit import (
     NSMenu,
     NSMenuItem,
     NSMutableOrderedSet,
-    NSSize,
     NSTokenField,
     NSColor,
-    NSRectFill,
     NSMakeRect,
     NSBezierPath,
 )
@@ -214,9 +212,17 @@ class GutenTag(PalettePlugin):
         for glyph in glyphs:
             glyph.setTags_(tags)
 
+    @objc.IBAction
     def openGlyph_(self, sender):
+        """Opens the glyphs named by the title of the sender."""
+        print('openGlyph_')
         if font := self.currentFont():
-            font.newTab('/' + sender.title())
+            if font.currentTab:
+                glyph = font.glyphs[sender.title()]
+                view = self.windowController().graphicView()
+                view.replaceActiveLayersWithGlyphs_([glyph])
+            else:
+                font.newTab('/' + sender.title())
 
     # MARK: - NSTokenFieldDelegate
 
@@ -256,7 +262,6 @@ class GutenTag(PalettePlugin):
             glyphClipPath = NSBezierPath.bezierPathWithRect_(glyphClipRect)
 
             # menu item setup
-            action = objc.selector(self.openGlyph_, signature=b'v@:@')
             menuItemFontSize = NSFont.systemFontSize()
             menuItemFont = NSFont.legibileFontOfSize_(menuItemFontSize)
 
@@ -300,7 +305,7 @@ class GutenTag(PalettePlugin):
                     item.setImage_(image)
                     item.setFont_(menuItemFont)
                     item.setTarget_(self)
-                    item.setAction_(action)
+                    item.setAction_(self.openGlyph_)
                     menu.addItem_(item)
 
         return menu

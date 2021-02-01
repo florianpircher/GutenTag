@@ -1,18 +1,5 @@
 import objc
-from AppKit import (
-    NSAffineTransform,
-    NSBezierPath,
-    NSBundle,
-    NSColor,
-    NSFont,
-    NSImage,
-    NSMakeRect,
-    NSMakeSize,
-    NSMenu,
-    NSMenuItem,
-    NSMutableOrderedSet,
-    NSTokenField,
-)
+from AppKit import *
 from GlyphsApp import *
 from GlyphsApp.plugins import *
 
@@ -217,14 +204,14 @@ class GutenTag(PalettePlugin):
 
     @objc.IBAction
     def openGlyph_(self, sender):
-        """Opens the glyphs named by the title of the sender."""
+        """Opens the glyphs named by the `representedObject` of the sender."""
         if font := self.currentFont():
             if font.currentTab:
-                glyph = font.glyphs[sender.title()]
+                glyph = font.glyphs[sender.representedObject()]
                 view = self.windowController().graphicView()
                 view.replaceActiveLayersWithGlyphs_([glyph])
             else:
-                font.newTab('/' + sender.title())
+                font.newTab('/' + sender.representedObject())
 
     @objc.IBAction
     def showGlyphsForTag_(self, sender):
@@ -271,7 +258,7 @@ class GutenTag(PalettePlugin):
             # view bounds
             rect = NSMakeRect(0, 0, viewSize, viewSize)
             size = rect.size
-            roundingRadius = 1  # pt
+            roundingRadius = 3  # pt
             roundedRect = NSBezierPath.bezierPathWithRoundedRect_xRadius_yRadius_(
                 rect, roundingRadius, roundingRadius)
             # layer clip is used to fill layer color if separate layer color
@@ -325,12 +312,26 @@ class GutenTag(PalettePlugin):
 
                     image.unlockFocus()
 
+                    attributedTitle = NSMutableAttributedString.alloc().initWithString_attributes_(glyph.name, {
+                        NSFontAttributeName: menuItemFont
+                    })
+                    unicodesString = ', '.join(
+                        glyph.unicodes) if glyph.unicodes else '—'
+                    unicodesAttrString = NSMutableAttributedString.alloc().initWithString_attributes_('\n' + unicodesString, {
+                        NSFontAttributeName: menuItemFont.fontWithSize_(
+                            NSFont.smallSystemFontSize()),
+                        NSForegroundColorAttributeName: NSColor.secondaryLabelColor()
+                    })
+                    attributedTitle.appendAttributedString_(unicodesAttrString)
+
                     item = NSMenuItem.new()
                     item.setTitle_(glyph.name)
+                    item.setAttributedTitle_(attributedTitle)
                     item.setImage_(image)
                     item.setFont_(menuItemFont)
                     item.setTarget_(self)
                     item.setAction_(self.openGlyph_)
+                    item.setRepresentedObject_(glyph.name)
                     menu.addItem_(item)
 
         return menu

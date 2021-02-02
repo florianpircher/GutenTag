@@ -30,8 +30,6 @@ class GutenTag(PalettePlugin):
     dialogName = "net.addpixel.GutenTag"
     dialog = objc.IBOutlet()
     tokenField = objc.IBOutlet()
-    searchView = None
-    searchField = None
 
     userDefaults = UserDefaults(prefix="net.addpixel.GutenTag.")
     tagPool = []
@@ -96,29 +94,6 @@ class GutenTag(PalettePlugin):
         fontSize = NSFont.smallSystemFontSize()
         font = NSFont.legibileFontOfSize_(fontSize)
         self.tokenField.setFont_(font)
-
-        # search view
-        self.searchView = NSView.alloc().initWithFrame_(NSMakeRect(0, 0, 0, 28))
-        self.searchView.setAutoresizingMask_(NSViewWidthSizable)
-
-        self.searchField = NSSearchField.new()
-        self.searchField.setDelegate_(self)
-        self.searchField.setTarget_(self)
-        self.searchField.setAction_(self.searchMenu_)
-        self.searchField.setTranslatesAutoresizingMaskIntoConstraints_(False)
-
-        self.searchView.addSubview_(self.searchField)
-
-        self.searchField.topAnchor().constraintEqualToAnchor_constant_(
-            self.searchView.topAnchor(), 0).setActive_(True)
-        self.searchField.rightAnchor().constraintEqualToAnchor_constant_(
-            self.searchView.rightAnchor(), -5).setActive_(True)
-        self.searchField.bottomAnchor().constraintEqualToAnchor_constant_(
-            self.searchView.bottomAnchor(), -5).setActive_(True)
-        self.searchField.leftAnchor().constraintEqualToAnchor_constant_(
-            self.searchView.leftAnchor(), 5).setActive_(True)
-
-        self.searchView.addSubview_(self.searchField)
 
         # Adding a callback for the 'GSUpdateInterface' event
         Glyphs.addCallback(self.update, UPDATEINTERFACE)
@@ -258,26 +233,6 @@ class GutenTag(PalettePlugin):
                     newTabText += "/" + glyph.name
             font.newTab(newTabText)
 
-    # menu = None
-
-    def controlTextDidChange_(self, notification):
-        if notification.object() == self.searchField:
-            self.searchMenu_(self.searchField)
-
-    def searchMenu_(self, sender):
-        query = sender.stringValue()
-        anyMatch = False
-
-        for index in range(0, self.menu.numberOfItems()):
-            item = self.menu.itemAtIndex_(index)
-
-            if item.tag() == 1:
-                isMatch = item.title().startswith(query)
-                anyMatch |= isMatch
-                item.setHidden_(not isMatch)
-
-        self.menu.itemAtIndex_(2).setHidden_(not anyMatch)
-
     # MARK: - NSTokenFieldDelegate
 
     def tokenField_displayStringForRepresentedObject_(self, tokenField, tag):
@@ -336,12 +291,6 @@ class GutenTag(PalettePlugin):
             # menu item font setup
             menuItemFontSize = NSFont.systemFontSize()
             menuItemFont = NSFont.legibileFontOfSize_(menuItemFontSize)
-
-            # search menu item
-            self.searchField.setStringValue_('')
-            searchItem = NSMenuItem.new()
-            searchItem.setView_(self.searchView)
-            self.menu.addItem_(searchItem)
 
             # show all glyphs menu item
             showGlyphsItem = NSMenuItem.new()

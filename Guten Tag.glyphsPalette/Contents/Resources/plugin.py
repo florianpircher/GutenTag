@@ -230,14 +230,14 @@ class GutenTag(PalettePlugin):
 
     @objc.IBAction
     def openGlyph_(self, sender):
-        """Opens the glyphs named by the `representedObject` of the sender."""
+        """Opens the glyph (`representedObject`) of the sender."""
         if font := self.currentFont():
             if font.currentTab:
-                glyph = font.glyphs[sender.representedObject()]
+                glyph = sender.representedObject()
                 view = self.windowController().graphicView()
                 view.replaceActiveLayersWithGlyphs_([glyph])
             else:
-                font.newTab('/' + sender.representedObject())
+                font.newTab('/' + sender.representedObject().name)
 
     @objc.IBAction
     def showGlyphsForTag_(self, sender):
@@ -269,6 +269,9 @@ class GutenTag(PalettePlugin):
         return True
 
     def tokenField_menuForRepresentedObject_(self, tokenField, tagName):
+        # apply tags to selection
+        self.confirmTagsValue_(None)
+
         # add a menu with each glyph that has `tagName` as a tag
         menu = NSMenu.new()
 
@@ -373,7 +376,7 @@ class GutenTag(PalettePlugin):
                     item.setFont_(menuItemFont)
                     item.setTarget_(self)
                     item.setAction_(self.openGlyph_)
-                    item.setRepresentedObject_(glyph.name)
+                    item.setRepresentedObject_(glyph)
                     menu.addItem_(item)
 
         return menu

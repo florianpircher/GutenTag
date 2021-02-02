@@ -13,9 +13,9 @@
 	<key>CFBundleName</key>
 	<string>Guten Tag</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.2.0</string>
+	<string>0.3.0</string>
 	<key>CFBundleVersion</key>
-	<string>2</string>
+	<string>3</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright 2021 Florian Pircher</string>
 	<key>NSPrincipalClass</key>
@@ -29,6 +29,6 @@
 	<key>productPageURL</key>
 	<string>https://github.com/florianpircher/GutenTag</string>
 	<key>productReleaseNotes</key>
-	<string>Added autocomplete; added glyph thumbnail images; performance improvements and bug fixes.</string>
+	<string>Adds support for Glyphs 3.0.3 (3061). Adds glyph and layer colors to glyph previews. Adds a button to open all glyphs with a tag in new tab. Allow for custom preview images sizes. Fixes setting tags for glyphs in font view when switching from edit view to font view.</string>
 </dict>
 </plist>

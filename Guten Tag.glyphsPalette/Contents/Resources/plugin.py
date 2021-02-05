@@ -86,7 +86,7 @@ class GutenTag(PalettePlugin):
             'ar': 'عرض كل المحارف',
             'cs': 'Zobrazit všechny glyfy',
             'de': 'Alle Glyphen anzeigen',
-            'en': 'Show all Glyphs',
+            'en': 'Show All Glyphs',
             'es': 'Mostrar todos los glifos',
             'fr': 'Afficher tous les glyphes',
             'it': 'Mostra tutti i glifi',

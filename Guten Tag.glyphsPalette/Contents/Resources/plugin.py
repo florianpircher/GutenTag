@@ -107,6 +107,13 @@ class GutenTag(PalettePlugin):
         self.tokenField.setEnabled_(False)
         self.tokenField.setDelegate_(self)
 
+        # tokenizing character set
+        charSet = NSMutableCharacterSet.new()
+        defaultCharSet = NSTokenField.defaultTokenizingCharacterSet()
+        charSet.formUnionWithCharacterSet_(defaultCharSet)
+        charSet.addCharactersInString_("\n")
+        self.tokenField.setTokenizingCharacterSet_(charSet)
+
         # font
         fontSize = NSFont.smallSystemFontSize()
         font = NSFont.legibileFontOfSize_(fontSize)

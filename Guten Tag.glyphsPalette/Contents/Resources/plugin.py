@@ -423,6 +423,20 @@ class GutenTag(PalettePlugin):
         pboard.writeObjects_(objects)
         return True
 
+    # MARK: - NSControlTextEditingDelegate
+
+    def control_textView_doCommandBySelector_(self, control, textView, commandSelector):
+        if control == self.tokenField:
+            if commandSelector == 'insertNewline:':
+                self.confirmTagsValue_(control)
+
+                # resign first responder for token field
+                if wc := self.windowController():
+                    wc.window().makeFirstResponder_(None)
+
+                return True
+        return False
+
 
 class GutenTagTokenField(NSTokenField):
     controller = None

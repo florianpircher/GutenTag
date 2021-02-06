@@ -232,6 +232,14 @@ class GutenTag(PalettePlugin):
         for glyph in glyphs:
             glyph.setTags_(tags)
 
+    def commit(self):
+        """Confirm current value and resign as first responder."""
+        self.confirmTagsValue_(None)
+
+        # resign as first responder
+        if wc := self.windowController():
+            wc.window().makeFirstResponder_(None)
+
     @objc.IBAction
     def openGlyph_(self, sender):
         """Opens the glyph (`representedObject`) of the sender."""
@@ -428,12 +436,10 @@ class GutenTag(PalettePlugin):
     def control_textView_doCommandBySelector_(self, control, textView, commandSelector):
         if control == self.tokenField:
             if commandSelector == 'insertNewline:':
-                self.confirmTagsValue_(control)
-
-                # resign first responder for token field
-                if wc := self.windowController():
-                    wc.window().makeFirstResponder_(None)
-
+                self.commit()
+                return True
+            elif commandSelector == 'cancel:':
+                self.commit()
                 return True
         return False
 

@@ -50,6 +50,7 @@ class GutenTag(PalettePlugin):
 
     userDefaults = UserDefaults(prefix="net.addpixel.GutenTag.")
     tagPool = []
+    menu = None
 
     # strings localized in `settings`
     noTagsPlaceholder = 'no tags'
@@ -280,6 +281,7 @@ class GutenTag(PalettePlugin):
 
         if font := self.currentFont():
             master = font.selectedFontMaster
+            selectedGlyphs = set(self.selectedGlyphs())
 
             # menu item layout setup
             upm = font.upm
@@ -328,6 +330,7 @@ class GutenTag(PalettePlugin):
 
             for glyph in font.glyphs:
                 if tag in glyph.tags:
+                    isSelected = glyph in selectedGlyphs
                     layer = glyph.layers[master.id]
                     path = layer.completeBezierPath
                     image = NSImage.alloc().initWithSize_(size)
@@ -381,6 +384,13 @@ class GutenTag(PalettePlugin):
                     item.setAction_(self.openGlyph_)
                     item.setRepresentedObject_(glyph)
                     item.setTag_(1)
+
+                    if isSelected:
+                        if len(selectedGlyphs) == 1:
+                            item.setState_(NSControlStateValueOn)
+                        else:
+                            item.setState_(NSControlStateValueMixed)
+
                     self.menu.addItem_(item)
 
         return self.menu

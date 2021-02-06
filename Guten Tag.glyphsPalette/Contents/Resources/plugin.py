@@ -414,6 +414,15 @@ class GutenTag(PalettePlugin):
 
         return ([], -1)
 
+    def tokenField_readFromPasteboard_(self, tokenField, pboard):
+        # pasted text will be inserted varbatim and tokenized by the usual methods
+        return []
+
+    def tokenField_writeRepresentedObjects_toPasteboard_(self, tokenField, objects, pboard):
+        pboard.clearContents()
+        pboard.writeObjects_(objects)
+        return True
+
 
 class GutenTagTokenField(NSTokenField):
     controller = None

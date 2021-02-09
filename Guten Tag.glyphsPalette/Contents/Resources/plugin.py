@@ -336,70 +336,76 @@ class GutenTag(PalettePlugin):
 
             self.menu.addItem_(NSMenuItem.separatorItem())
 
-            for glyph in font.glyphs:
-                if tag in glyph.tags:
-                    isSelected = glyph in selectedGlyphs
-                    layer = glyph.layers[master.id]
-                    path = layer.completeBezierPath
-                    image = NSImage.alloc().initWithSize_(size)
-                    image.lockFocus()
+            matchingGlyphs = [x for x in font.glyphs if tag in x.tags]
 
-                    if color := glyph.colorObject:
-                        color.colorWithAlphaComponent_(0.6).set()
-                        if layer.color:
-                            glyphClipPath.setClip()
-                        roundedRect.fill()
+            def makeManuItem(glyph):
+                isSelected = glyph in selectedGlyphs
+                layer = glyph.layers[master.id]
+                path = layer.completeBezierPath
+                image = NSImage.alloc().initWithSize_(size)
+                image.lockFocus()
 
-                    if color := layer.colorObject:
-                        if glyph.color:
-                            layerClipPath.setClip()
-                        else:
-                            layerOnlyClipPath.setClip()
+                if color := glyph.colorObject:
+                    color.colorWithAlphaComponent_(0.6).set()
+                    if layer.color:
+                        glyphClipPath.setClip()
+                    roundedRect.fill()
 
-                        color.colorWithAlphaComponent_(0.6).set()
-                        roundedRect.fill()
+                if color := layer.colorObject:
+                    if glyph.color:
+                        layerClipPath.setClip()
+                    else:
+                        layerOnlyClipPath.setClip()
 
-                    transform = NSAffineTransform.transform()
-                    transform.scaleBy_(fontSize / upm)
-                    transform.translateXBy_yBy_(
-                        (upm - layer.width) / 2 + offset, -master.descender + offset)
-                    path.transformUsingAffineTransform_(transform)
+                    color.colorWithAlphaComponent_(0.6).set()
+                    roundedRect.fill()
 
-                    NSColor.textColor().set()
-                    roundedRect.setClip()
-                    path.fill()
+                transform = NSAffineTransform.transform()
+                transform.scaleBy_(fontSize / upm)
+                transform.translateXBy_yBy_(
+                    (upm - layer.width) / 2 + offset, -master.descender + offset)
+                path.transformUsingAffineTransform_(transform)
 
-                    image.unlockFocus()
+                NSColor.textColor().set()
+                roundedRect.setClip()
+                path.fill()
 
-                    attributedTitle = NSMutableAttributedString.alloc().initWithString_attributes_(glyph.name, {
-                        NSFontAttributeName: menuItemFont
-                    })
-                    unicodesString = ', '.join(
-                        glyph.unicodes) if glyph.unicodes else '—'
-                    unicodesAttrString = NSMutableAttributedString.alloc().initWithString_attributes_('\n' + unicodesString, {
-                        NSFontAttributeName: menuItemFont.fontWithSize_(
-                            NSFont.smallSystemFontSize()),
-                        NSForegroundColorAttributeName: NSColor.secondaryLabelColor()
-                    })
-                    attributedTitle.appendAttributedString_(unicodesAttrString)
+                image.unlockFocus()
 
-                    item = NSMenuItem.new()
-                    item.setTitle_(glyph.name)
-                    item.setAttributedTitle_(attributedTitle)
-                    item.setImage_(image)
-                    item.setFont_(menuItemFont)
-                    item.setTarget_(self)
-                    item.setAction_(self.openGlyph_)
-                    item.setRepresentedObject_(glyph)
-                    item.setTag_(1)
+                attributedTitle = NSMutableAttributedString.alloc().initWithString_attributes_(glyph.name, {
+                    NSFontAttributeName: menuItemFont
+                })
+                unicodesString = ', '.join(
+                    glyph.unicodes) if glyph.unicodes else '—'
+                unicodesAttrString = NSMutableAttributedString.alloc().initWithString_attributes_('\n' + unicodesString, {
+                    NSFontAttributeName: menuItemFont.fontWithSize_(
+                        NSFont.smallSystemFontSize()),
+                    NSForegroundColorAttributeName: NSColor.secondaryLabelColor()
+                })
+                attributedTitle.appendAttributedString_(unicodesAttrString)
 
-                    if isSelected:
-                        if len(selectedGlyphs) == 1:
-                            item.setState_(NSControlStateValueOn)
-                        else:
-                            item.setState_(NSControlStateValueMixed)
+                item = NSMenuItem.new()
+                item.setTitle_(glyph.name)
+                item.setAttributedTitle_(attributedTitle)
+                item.setImage_(image)
+                item.setFont_(menuItemFont)
+                item.setTarget_(self)
+                item.setAction_(self.openGlyph_)
+                item.setRepresentedObject_(glyph)
+                item.setTag_(1)
 
-                    self.menu.addItem_(item)
+                if isSelected:
+                    if len(selectedGlyphs) == 1:
+                        item.setState_(NSControlStateValueOn)
+                    else:
+                        item.setState_(NSControlStateValueMixed)
+
+                return item
+
+            menuItems = [makeManuItem(x) for x in matchingGlyphs]
+
+            for item in menuItems:
+                self.menu.addItem_(item)
 
         return self.menu
 

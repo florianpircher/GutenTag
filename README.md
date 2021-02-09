@@ -21,4 +21,6 @@ It allows you to edit glyph tags from both the font view *and* edit view.
 
 ## License
 
-Licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
+Plugin source licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
+
+Plugin runner (`MacOS/Guten Tag`) copyright Georg Seifert (@schriftgestalt), Jan Gerner (@yanone) and Rainer Erich Scheichelbauer (@mekkablue); licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).

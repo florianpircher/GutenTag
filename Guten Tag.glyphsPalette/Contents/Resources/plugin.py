@@ -338,6 +338,14 @@ class GutenTag(PalettePlugin):
 
             matchingGlyphs = [x for x in font.glyphs if tag in x.tags]
 
+            maximumPreviewGlyphCount = self.userDefaults.read(
+                'MaximumPreviewGlyphCount', 1536, transform=int)
+
+            if maximumPreviewGlyphCount != -1:
+                previewGlyphs = matchingGlyphs[0:maximumPreviewGlyphCount]
+            else:
+                previewGlyphs = matchingGlyphs
+
             def makeManuItem(glyph):
                 isSelected = glyph in selectedGlyphs
                 layer = glyph.layers[master.id]
@@ -402,7 +410,7 @@ class GutenTag(PalettePlugin):
 
                 return item
 
-            menuItems = [makeManuItem(x) for x in matchingGlyphs]
+            menuItems = [makeManuItem(x) for x in previewGlyphs]
 
             for item in menuItems:
                 self.menu.addItem_(item)

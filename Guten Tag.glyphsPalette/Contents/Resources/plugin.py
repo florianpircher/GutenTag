@@ -348,6 +348,8 @@ class GutenTag(PalettePlugin):
 
             def makeManuItem(glyph):
                 isSelected = glyph in selectedGlyphs
+
+                # draw thumbnail image
                 layer = glyph.layers[master.id]
                 path = layer.completeBezierPath
                 image = NSImage.alloc().initWithSize_(size)
@@ -380,6 +382,7 @@ class GutenTag(PalettePlugin):
 
                 image.unlockFocus()
 
+                # menu item label
                 attributedTitle = NSMutableAttributedString.alloc().initWithString_attributes_(glyph.name, {
                     NSFontAttributeName: menuItemFont
                 })
@@ -392,6 +395,7 @@ class GutenTag(PalettePlugin):
                 })
                 attributedTitle.appendAttributedString_(unicodesAttrString)
 
+                # create menu item
                 item = NSMenuItem.new()
                 item.setTitle_(glyph.name)
                 item.setAttributedTitle_(attributedTitle)

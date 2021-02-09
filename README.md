@@ -11,6 +11,12 @@ It allows you to edit glyph tags from both the font view *and* edit view.
 - Use autocompletion to prevent typos in your tag names.
 - Preview all glyphs for a tag by clicking on the little disclosure button to the right of a tag.
 
+## Why Use Tags?
+
+- Tags allow you to easily navigate between related glyphs ([movie demonstration](https://xgc.io/b/glyphs/guten-tag/1.mp4)).
+- Tags can be used in OpenType feature code as [tokens](https://glyphsapp.com/learn/tokens#g-glyph-class-predicates): `$[tags contains "narrow"]`.
+- Glyph names no longer need a cryptic naming scheme to represent all relevant attributes of a glyph.
+
 ## Installation
 
 ### Manual Installation

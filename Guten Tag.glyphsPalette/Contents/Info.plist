@@ -33,9 +33,9 @@
     <string>plugin.py</string>
   </array>
   <key>UpdateFeedURL</key>
-  <string>https://raw.githubusercontent.com/florianpircher/GutenTag/main/Guten%20Tag.glyphsPalette/Contents/Info.plist</string>
+  <string>https://addpixel.net/glyphs/plugins/GutenTag/update</string>
   <key>productPageURL</key>
-  <string>https://github.com/florianpircher/GutenTag</string>
+  <string>https://addpixel.net/glyphs/plugins/GutenTag/</string>
   <key>productReleaseNotes</key>
   <string>Adds support for keyboard commands (the cancel and new-line commands commit the entered tags and set keyboard focus back to the main window). Adds support for copy and pasting tags. Matches Glyphs’s tokenizing character set (tags can no longer contain line breaks). Improves documentation.</string>
 </dict>

@@ -232,6 +232,7 @@ class GutenTag(PalettePlugin):
         for glyph in glyphs:
             glyph.setTags_(tags)
 
+    @objc.python_method
     def commit(self):
         """Confirm current value and resign as first responder."""
         self.confirmTagsValue_(None)

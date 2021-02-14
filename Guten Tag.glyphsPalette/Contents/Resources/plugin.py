@@ -16,7 +16,26 @@
 # limitations under the License.
 
 import objc
-from AppKit import *
+from AppKit import (
+    NSAffineTransform,
+    NSBezierPath,
+    NSBundle,
+    NSColor,
+    NSControlStateValueMixed,
+    NSControlStateValueOn,
+    NSFont,
+    NSFontAttributeName,
+    NSForegroundColorAttributeName,
+    NSImage,
+    NSMakePoint,
+    NSMakeRect,
+    NSMakeSize,
+    NSMenu,
+    NSMenuItem,
+    NSMutableAttributedString,
+    NSMutableCharacterSet,
+    NSTokenField,
+)
 from GlyphsApp import *
 from GlyphsApp.plugins import *
 
@@ -63,8 +82,7 @@ class GutenTag(PalettePlugin):
     def settings(self):
         mainBundle = NSBundle.mainBundle()
 
-        self.name = mainBundle.localizedStringForKey_value_table_(
-            "Tags", "Tags", None)
+        self.name = mainBundle.localizedStringForKey_value_table_("Tags", "Tags", None)
         self.noTagsPlaceholder = Glyphs.localize({
             'ar': 'بدون علامات',
             'cs': 'žádné značky',
@@ -294,18 +312,15 @@ class GutenTag(PalettePlugin):
 
             # menu item layout setup
             upm = font.upm
-            viewSize = self.userDefaults.read(
-                'GlyphPreviewSize', 56, transform=int)  # pt
-            margin = self.userDefaults.read(
-                'GlyphPreviewInset', 6, transform=int)  # pt
+            viewSize = self.userDefaults.read('GlyphPreviewSize', 56, transform=int)  # pt
+            margin = self.userDefaults.read('GlyphPreviewInset', 6, transform=int)  # pt
             fontSize = viewSize - 2 * margin
             offset = upm / (fontSize / margin)
             # view bounds
             rect = NSMakeRect(0, 0, viewSize, viewSize)
             size = rect.size
             roundingRadius = 3  # pt
-            roundedRect = NSBezierPath.bezierPathWithRoundedRect_xRadius_yRadius_(
-                rect, roundingRadius, roundingRadius)
+            roundedRect = NSBezierPath.bezierPathWithRoundedRect_xRadius_yRadius_(rect, roundingRadius, roundingRadius)
             # clip for layer color if glyph has a color
             layerClipRect = NSMakeRect(viewSize / 2, 0, viewSize / 2, viewSize)
             layerClipPath = NSBezierPath.bezierPathWithRect_(layerClipRect)
@@ -316,8 +331,7 @@ class GutenTag(PalettePlugin):
             layerOnlyClipPath.lineToPoint_(NSMakePoint(viewSize, viewSize))
             layerOnlyClipPath.lineToPoint_(NSMakePoint(viewSize, 0))
             layerOnlyClipPath.lineToPoint_(NSMakePoint(0, 0))
-            layerOnlyClipPath.lineToPoint_(
-                NSMakePoint(0, viewSize - cornerSize))
+            layerOnlyClipPath.lineToPoint_(NSMakePoint(0, viewSize - cornerSize))
             layerOnlyClipPath.closePath()
             # clip for glyph color if layer has a color
             glyphClipRect = NSMakeRect(0, 0, viewSize / 2, viewSize)
@@ -339,8 +353,7 @@ class GutenTag(PalettePlugin):
 
             matchingGlyphs = [x for x in font.glyphs if tag in x.tags]
 
-            maximumPreviewGlyphCount = self.userDefaults.read(
-                'MaximumGlyphPreviewCount', 1536, transform=int)
+            maximumPreviewGlyphCount = self.userDefaults.read('MaximumGlyphPreviewCount', 1536, transform=int)
 
             if maximumPreviewGlyphCount != -1:
                 previewGlyphs = matchingGlyphs[0:maximumPreviewGlyphCount]
@@ -387,13 +400,14 @@ class GutenTag(PalettePlugin):
                 attributedTitle = NSMutableAttributedString.alloc().initWithString_attributes_(glyph.name, {
                     NSFontAttributeName: menuItemFont
                 })
-                unicodesString = ', '.join(
-                    glyph.unicodes) if glyph.unicodes else '—'
-                unicodesAttrString = NSMutableAttributedString.alloc().initWithString_attributes_('\n' + unicodesString, {
-                    NSFontAttributeName: menuItemFont.fontWithSize_(
-                        NSFont.smallSystemFontSize()),
-                    NSForegroundColorAttributeName: NSColor.secondaryLabelColor()
-                })
+                unicodesString = ', '.join(glyph.unicodes) if glyph.unicodes else '—'
+                unicodesAttrString = NSMutableAttributedString.alloc().initWithString_attributes_(
+                    '\n' + unicodesString,
+                    {
+                        NSFontAttributeName: menuItemFont.fontWithSize_(NSFont.smallSystemFontSize()),
+                        NSForegroundColorAttributeName: NSColor.secondaryLabelColor()
+                    }
+                )
                 attributedTitle.appendAttributedString_(unicodesAttrString)
 
                 # create menu item
@@ -422,24 +436,21 @@ class GutenTag(PalettePlugin):
 
         return self.menu
 
-    def tokenField_completionsForSubstring_indexOfToken_indexOfSelectedItem_(self, tokenField, substring, tokenIndex, selectedIndex):
-        if font := self.currentFont():
-            query = str(substring)
-            matches = []
+    def tokenField_completionsForSubstring_indexOfToken_indexOfSelectedItem_(
+            self, tokenField, substring, tokenIndex, selectedIndex):
+        query = str(substring)
+        matches = []
 
-            setTags = tokenField.objectValue()
-            # hide tags that are already set (part of `tokenField.objectValue`) except if the tag equals the query (`substring`)
-            availableTags = [
-                tag for tag in self.tagPool if tag == substring or not tag in setTags]
+        setTags = tokenField.objectValue()
+        # hide tags that are already set (part of `tokenField.objectValue`) except if the tag equals the query (`substring`)
+        availableTags = [tag for tag in self.tagPool if tag == substring or not tag in setTags]
 
-            for tag in availableTags:
-                if str(tag).startswith(query):
-                    matches.append(tag)
+        for tag in availableTags:
+            if str(tag).startswith(query):
+                matches.append(tag)
 
-            if matches:
-                return (matches, 0)
-
-        return ([], -1)
+        if matches:
+            return (matches, 0)
 
     def tokenField_readFromPasteboard_(self, tokenField, pboard):
         # pasted text will be inserted varbatim and tokenized by the usual methods
@@ -454,10 +465,7 @@ class GutenTag(PalettePlugin):
 
     def control_textView_doCommandBySelector_(self, control, textView, commandSelector):
         if control == self.tokenField:
-            if commandSelector == 'insertNewline:':
-                self.commit()
-                return True
-            elif commandSelector == 'cancel:':
+            if commandSelector == 'cancel:':
                 self.commit()
                 return True
         return False

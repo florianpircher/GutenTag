@@ -15,6 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections import defaultdict
 import objc
 from AppKit import (
     NSAffineTransform,
@@ -460,6 +461,19 @@ class GutenTag(PalettePlugin):
         pboard.clearContents()
         pboard.writeObjects_(objects)
         return True
+
+    def tokenField_shouldAddObjects_atIndex_(self, tokenField, objects, index):
+        # prevent adding duplicates values
+        table = defaultdict(int)
+        # the tags of `objects` are included in `valueTags`
+        valueTags = tokenField.objectValue()
+
+        # count the number of occurences for each value tag
+        for tag in valueTags:
+            table[tag] += 1
+
+        # filter to-add tags such that no multiple-occurences tags are returned
+        return [x for x in objects if table[x] <= 1]
 
     # MARK: - NSControlTextEditingDelegate
 

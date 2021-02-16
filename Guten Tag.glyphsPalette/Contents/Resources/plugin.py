@@ -63,10 +63,29 @@ class UserDefaults:
             return default
 
 
+class UserInterfaceContext:
+    accessFont = None
+
+    def __init__(self, accessFont):
+        self.accessFont = accessFont
+
+    def __enter__(self):
+        if font := self.accessFont():
+            font.disableUpdateInterface()
+            return font
+        else:
+            return None
+
+    def __exit__(self, type, value, traceback):
+        if font := self.accessFont():
+            font.enableUpdateInterface()
+
+
 class GutenTag(PalettePlugin):
     dialogName = "net.addpixel.GutenTag"
     dialog = objc.IBOutlet()
     tokenField = objc.IBOutlet()
+    uiContext = None
 
     userDefaults = UserDefaults(prefix="net.addpixel.GutenTag.")
     tagPool = []
@@ -81,6 +100,9 @@ class GutenTag(PalettePlugin):
 
     @objc.python_method
     def settings(self):
+        self.uiContext = UserInterfaceContext(self.currentFont)
+
+        # localization
         mainBundle = NSBundle.mainBundle()
 
         self.name = mainBundle.localizedStringForKey_value_table_("Tags", "Tags", None)
@@ -248,8 +270,9 @@ class GutenTag(PalettePlugin):
         tags = self.tokenField.objectValue()
         glyphs = self.selectedGlyphs()
 
-        for glyph in glyphs:
-            glyph.setTags_(tags)
+        with self.uiContext:
+            for glyph in glyphs:
+                glyph.setTags_(tags)
 
     @objc.python_method
     def commit(self):

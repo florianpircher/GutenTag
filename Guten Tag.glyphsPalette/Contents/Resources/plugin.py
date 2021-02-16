@@ -37,8 +37,8 @@ from AppKit import (
     NSMutableCharacterSet,
     NSTokenField,
 )
-from GlyphsApp import *
-from GlyphsApp.plugins import *
+from GlyphsApp import (Glyphs, UPDATEINTERFACE)
+from GlyphsApp.plugins import PalettePlugin
 
 
 class UserDefaults:

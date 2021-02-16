@@ -452,6 +452,8 @@ class GutenTag(PalettePlugin):
 
         if matches:
             return (matches, 0)
+        else:
+            return ([], -1)
 
     def tokenField_readFromPasteboard_(self, tokenField, pboard):
         # pasted text will be inserted varbatim and tokenized by the usual methods

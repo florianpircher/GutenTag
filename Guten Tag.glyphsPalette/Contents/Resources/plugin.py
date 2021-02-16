@@ -336,7 +336,7 @@ class GutenTag(PalettePlugin):
 
             # menu item layout setup
             upm = font.upm
-            viewSize = self.userDefaults.read('GlyphPreviewSize', 56, transform=int)  # pt
+            viewSize = self.userDefaults.read('GlyphPreviewSize', 56, transform=lambda x: max(1, int(x)))  # pt
             margin = self.userDefaults.read('GlyphPreviewInset', 6, transform=int)  # pt
             fontSize = viewSize - 2 * margin
             offset = upm / (fontSize / margin)
@@ -377,7 +377,8 @@ class GutenTag(PalettePlugin):
 
             matchingGlyphs = [x for x in font.glyphs if tag in x.tags]
 
-            maximumPreviewGlyphCount = self.userDefaults.read('MaximumGlyphPreviewCount', 1536, transform=int)
+            maximumPreviewGlyphCount = self.userDefaults.read(
+                'MaximumGlyphPreviewCount', 1536, transform=lambda x: max(-1, int(x)))
 
             if maximumPreviewGlyphCount != -1:
                 previewGlyphs = matchingGlyphs[0:maximumPreviewGlyphCount]

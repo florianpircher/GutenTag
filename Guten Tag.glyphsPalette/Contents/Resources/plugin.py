@@ -177,7 +177,7 @@ class GutenTag(PalettePlugin):
             if len(glyphs) == 1:
                 # a single glyph is selected
                 glyph = glyphs[0]
-                self.setTagsValue(glyph.tags)
+                self.setFieldTags(glyph.tags)
             else:
                 # multiple glyphs are selected
                 glyphsIter = iter(glyphs)
@@ -190,16 +190,16 @@ class GutenTag(PalettePlugin):
                         break
 
                 if sameTagsForAllSelectedGlyphs:
-                    self.setTagsValue(firstTags)
+                    self.setFieldTags(firstTags)
                 else:
                     self.tokenField.setPlaceholderString_(
                         self.multipleSelectionPlaceholder)
-                    self.setTagsValue([])
+                    self.setFieldTags([])
         else:
             # no glyphs are selected
             self.tokenField.setPlaceholderString_('')
             self.tokenField.setEnabled_(False)
-            self.setTagsValue([])
+            self.setFieldTags([])
 
     @objc.python_method
     def __del__(self):
@@ -259,13 +259,13 @@ class GutenTag(PalettePlugin):
             self.tagPool = []
 
     @objc.python_method
-    def setTagsValue(self, tags):
+    def setFieldTags(self, tags):
         """Sets the value of the token filed to the given tags."""
         tags = sorted(set(tags))
         self.tokenField.setStringValue_(','.join(tags))
 
     @objc.IBAction
-    def confirmTagsValue_(self, sender):
+    def updateTagsForSelectedGlyphs_(self, sender):
         """Confirms the entered tags and sets them on the selected glyphs."""
         tags = self.tokenField.objectValue()
         glyphs = self.selectedGlyphs()
@@ -277,7 +277,7 @@ class GutenTag(PalettePlugin):
     @objc.python_method
     def commit(self):
         """Confirm current value and resign as first responder."""
-        self.confirmTagsValue_(None)
+        self.updateTagsForSelectedGlyphs_(None)
 
         # resign as first responder
         if wc := self.windowController():
@@ -325,7 +325,7 @@ class GutenTag(PalettePlugin):
 
     def tokenField_menuForRepresentedObject_(self, tokenField, tag):
         # apply tags to selection
-        self.confirmTagsValue_(None)
+        self.updateTagsForSelectedGlyphs_(None)
 
         # add a menu with each glyph that has `tag` as a tag
         self.menu = NSMenu.new()
@@ -530,5 +530,5 @@ class GutenTagTokenField(NSTokenField):
 
     def textShouldEndEditing_(self, notification):
         result = super().textShouldEndEditing_(notification)
-        self.controller.confirmTagsValue_(self)
+        self.controller.updateTagsForSelectedGlyphs_(self)
         return result

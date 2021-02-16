@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 Copyright 2021 Florian Pircher
 
@@ -13,7 +14,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17156" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment version="1080" identifier="macosx"/>
@@ -43,7 +43,7 @@ limitations under the License.
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </tokenFieldCell>
                     <connections>
-                        <action selector="confirmTagsValue:" target="-2" id="hMk-Ir-phH"/>
+                        <action selector="updateTagsForSelectedGlyphs:" target="-2" id="hMk-Ir-phH"/>
                     </connections>
                 </tokenField>
             </subviews>

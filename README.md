@@ -22,7 +22,7 @@ It allows you to edit glyph tags from both the font view *and* edit view.
 ### Manual Installation
 
 1. Download the [lastest release](https://github.com/florianpircher/GutenTag/releases/latest) from GitHub.
-2. Double-click the <img src="Icons/Icon-MacOS-16x16%402x.png.png" width="16" height="16" alt> **Guten Tag.glyphsPalette** file. Glyphs will launch and prompt you to confirm the installation.
+2. Double-click the <img src="Icons/Icon-16x16%402x.png" width="16" height="16" alt> **Guten Tag.glyphsPalette** file. Glyphs will launch and prompt you to confirm the installation.
 3. Quit and relaunch Glyphs. Now you can access Guten Tag in the top right corner of your Glyphs window.
 
 ## Preferences

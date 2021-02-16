@@ -420,7 +420,6 @@ class GutenTag(PalettePlugin):
                 item.setTarget_(self)
                 item.setAction_(self.openGlyph_)
                 item.setRepresentedObject_(glyph)
-                item.setTag_(1)
 
                 if isSelected:
                     if len(selectedGlyphs) == 1:

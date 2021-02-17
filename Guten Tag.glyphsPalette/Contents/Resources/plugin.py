@@ -33,6 +33,8 @@ from AppKit import (
     NSMakeSize,
     NSMenu,
     NSMenuItem,
+    NSModalResponseOK,
+    NSModalResponseCancel,
     NSMutableAttributedString,
     NSMutableCharacterSet,
     NSTokenField,
@@ -85,6 +87,11 @@ class GutenTag(PalettePlugin):
     dialogName = "net.addpixel.GutenTag"
     dialog = objc.IBOutlet()
     tokenField = objc.IBOutlet()
+    promptWindow = objc.IBOutlet()
+    promptTitleLabel = objc.IBOutlet()
+    promptTokenField = objc.IBOutlet()
+    promptConfirmButton = objc.IBOutlet()
+    promptCancelButton = objc.IBOutlet()
     uiContext = None
 
     userDefaults = UserDefaults(prefix="net.addpixel.GutenTag.")
@@ -140,7 +147,8 @@ class GutenTag(PalettePlugin):
             'zh-Hans': '显示全部字符形',
             'zh-Hant': '顯示所有字符',
         })
-        self.loadNib('IBdialog', __file__)
+        self.loadNib('View', __file__)
+        self.loadNib('TagsPrompt', __file__)
 
     @objc.python_method
     def start(self):
@@ -308,6 +316,44 @@ class GutenTag(PalettePlugin):
                 if tag in glyph.tags:
                     newTabText += "/" + glyph.name
             font.newTab(newTabText)
+
+    def confirmPrompt(self):
+        self.windowController().window().endSheet_returnCode_(self.promptWindow, NSModalResponseOK)
+
+    def cancelPrompt(self):
+        self.windowController().window().endSheet_returnCode_(self.promptWindow, NSModalResponseCancel)
+
+    @objc.IBAction
+    def promptAddTags_(self, sender):
+        self.promptTitleLabel.setStringValue_("Add tags to the selected glyphs")
+        self.promptConfirmButton.setTitle_("Add Tags")
+        self.promptCancelButton.setAction_(self.cancelPrompt)
+        self.promptCancelButton.setTarget_(self)
+        self.promptConfirmButton.setAction_(self.confirmPrompt)
+        self.promptConfirmButton.setTarget_(self)
+        self.windowController().window().beginSheet_completionHandler_(self.promptWindow, self.handleAddTags_)
+
+    def handleAddTags_(self, returnCode):
+        print("confirm add tags with return code", returnCode, returnCode ==
+              NSModalResponseOK, returnCode == NSModalResponseCancel)
+
+    @objc.IBAction
+    def promptRemoveTags_(self, sender):
+        self.promptTitleLabel.setStringValue_("Remove tags from the selected glyphs")
+        self.promptConfirmButton.setTitle_("Remove Tags")
+        self.promptCancelButton.setAction_(self.cancelPrompt)
+        self.promptCancelButton.setTarget_(self)
+        self.promptConfirmButton.setAction_(self.confirmPrompt)
+        self.promptConfirmButton.setTarget_(self)
+        self.windowController().window().beginSheet_completionHandler_(self.promptWindow, self.handleRemoveTags_)
+
+    def handleRemoveTags_(self, returnCode):
+        print("confirm add tags with return code", returnCode, returnCode ==
+              NSModalResponseOK, returnCode == NSModalResponseCancel)
+
+    @objc.IBAction
+    def promptRenameTags_(self, sender):
+        print("rename tags")
 
     # MARK: - NSTokenFieldDelegate
 
@@ -532,4 +578,25 @@ class GutenTagTokenField(NSTokenField):
     def textShouldEndEditing_(self, notification):
         result = super().textShouldEndEditing_(notification)
         self.controller.updateTagsForSelectedGlyphs_(self)
+        return result
+
+
+class TagPromptTokenField(NSTokenField):
+    controller = None
+
+    def intrinsicContentSize(self):
+        intrinsicContentSize = super().intrinsicContentSize()
+        width = intrinsicContentSize.width
+        frame = self.frame()
+        frame.size.height = 0xFFFF
+        height = self.cell().cellSizeForBounds_(frame).height
+        return NSMakeSize(width, height)
+
+    def textDidChange_(self, notification):
+        super().textDidChange_(notification)
+        self.invalidateIntrinsicContentSize()
+
+    def textShouldEndEditing_(self, notification):
+        result = super().textShouldEndEditing_(notification)
+        # self.controller.updateTagsForSelectedGlyphs_(self)
         return result

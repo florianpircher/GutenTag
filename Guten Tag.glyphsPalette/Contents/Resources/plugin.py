@@ -533,8 +533,7 @@ class GutenTag(PalettePlugin):
 
                 transform = NSAffineTransform.transform()
                 transform.scaleBy_(fontSize / upm)
-                transform.translateXBy_yBy_(
-                    (upm - layer.width) / 2 + offset, -master.descender + offset)
+                transform.translateXBy_yBy_((upm - layer.width) / 2 + offset, -master.descender + offset)
                 path.transformUsingAffineTransform_(transform)
 
                 NSColor.textColor().set()

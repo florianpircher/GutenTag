@@ -34,6 +34,9 @@
                 <subviews>
                     <tokenField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="efn-IH-VEj">
                         <rect key="frame" x="20" y="60" width="356" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="112" id="ZvP-wj-aaD"/>
+                        </constraints>
                         <tokenFieldCell key="cell" selectable="YES" editable="YES" borderStyle="bezel" alignment="left" drawsBackground="YES" allowsEditingTextAttributes="YES" id="9zL-Fh-XCn">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -71,6 +74,7 @@ Gw
                 </subviews>
                 <constraints>
                     <constraint firstItem="efn-IH-VEj" firstAttribute="leading" secondItem="Ot2-vy-6O3" secondAttribute="leading" constant="20" symbolic="YES" id="9Y5-RD-hxD"/>
+                    <constraint firstItem="o8q-Fo-jNv" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Ot2-vy-6O3" secondAttribute="leading" constant="20" symbolic="YES" id="9fQ-dE-RfT"/>
                     <constraint firstAttribute="trailing" secondItem="xby-yK-qw3" secondAttribute="trailing" constant="20" symbolic="YES" id="Cof-RJ-rRg"/>
                     <constraint firstItem="wMG-fj-ppY" firstAttribute="top" secondItem="efn-IH-VEj" secondAttribute="bottom" constant="20" symbolic="YES" id="Dg7-xd-SMn"/>
                     <constraint firstAttribute="trailing" secondItem="wMG-fj-ppY" secondAttribute="trailing" constant="20" symbolic="YES" id="FXb-7H-Vmh"/>
@@ -125,7 +129,10 @@ Gw
                     </textField>
                     <comboBox verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="eNs-Mz-Bl5">
                         <rect key="frame" x="123" y="73" width="256" height="25"/>
-                        <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" numberOfVisibleItems="5" id="9md-yl-1zn">
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="72" id="7SL-7c-g6e"/>
+                        </constraints>
+                        <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" usesSingleLineMode="YES" numberOfVisibleItems="7" id="9md-yl-1zn">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -133,7 +140,7 @@ Gw
                     </comboBox>
                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Cc2-Fs-hy6">
                         <rect key="frame" x="123" y="48" width="253" height="21"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="MnW-DG-Bwy">
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" usesSingleLineMode="YES" id="MnW-DG-Bwy">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -171,6 +178,7 @@ Gw
                     <constraint firstItem="art-BU-yy3" firstAttribute="width" secondItem="4vA-AJ-Whp" secondAttribute="width" multiplier="0.898551" id="hRT-Ew-7uC"/>
                     <constraint firstItem="qh1-tJ-68L" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="yUg-Dh-a92" secondAttribute="leading" constant="20" symbolic="YES" id="hTV-cF-SYt"/>
                     <constraint firstAttribute="trailing" secondItem="YvC-r7-Kbt" secondAttribute="trailing" constant="20" symbolic="YES" id="ha7-YI-Ve2"/>
+                    <constraint firstItem="art-BU-yy3" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="yUg-Dh-a92" secondAttribute="leading" constant="20" symbolic="YES" id="hk4-Wh-929"/>
                     <constraint firstAttribute="trailing" secondItem="Cc2-Fs-hy6" secondAttribute="trailing" constant="20" symbolic="YES" id="k1M-m7-wwe"/>
                     <constraint firstItem="Cc2-Fs-hy6" firstAttribute="leading" secondItem="u6x-T0-1tX" secondAttribute="trailing" constant="8" symbolic="YES" id="pdZ-7F-Bco"/>
                     <constraint firstItem="Cc2-Fs-hy6" firstAttribute="width" secondItem="eNs-Mz-Bl5" secondAttribute="width" id="s69-p4-PFm"/>

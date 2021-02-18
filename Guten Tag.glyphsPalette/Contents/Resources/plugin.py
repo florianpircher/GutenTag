@@ -37,6 +37,7 @@ from AppKit import (
     NSModalResponseCancel,
     NSMutableAttributedString,
     NSMutableCharacterSet,
+    NSTimer,
     NSTokenField,
 )
 from GlyphsApp import (Glyphs, UPDATEINTERFACE)
@@ -174,6 +175,9 @@ class GutenTag(PalettePlugin):
         fontSize = NSFont.smallSystemFontSize()
         font = NSFont.legibileFontOfSize_(fontSize)
         self.tokenField.setFont_(font)
+
+        # rename prompt
+        self.renameSearchField.setDelegate_(self)
 
         # Adding a callback for the 'GSUpdateInterface' event
         Glyphs.addCallback(self.update, UPDATEINTERFACE)
@@ -371,13 +375,50 @@ class GutenTag(PalettePlugin):
         self.renameCancelButton.setTarget_(self)
         self.renameConfirmButton.setAction_(self.confirmRenameForm)
         self.renameConfirmButton.setTarget_(self)
+
+        tagsSet = set()
+
+        for glyph in self.selectedGlyphs():
+            tagsSet.update(glyph.tags)
+
+        tags = sorted(tagsSet)
+
+        if len(tags) == 1:
+            self.renameSearchField.setEditable_(False)
+            self.renameSearchField.setStringValue_(tags[0])
+            self.renameWindow.makeFirstResponder_(self.renameReplaceField)
+        else:
+            self.renameSearchField.setEditable_(True)
+            self.renameSearchField.setStringValue_("")
+            self.renameWindow.makeFirstResponder_(self.renameSearchField)
+
+        self.renameSearchField.removeAllItems()
+        self.renameSearchField.addItemsWithObjectValues_(tags)
+        self.renameReplaceField.setStringValue_("")
+
         self.windowController().window().beginSheet_completionHandler_(self.renameWindow, self.handleRenameTag_)
 
     def handleRenameTag_(self, returnCode):
         print("handle rename form with return code", returnCode, returnCode ==
               NSModalResponseOK, returnCode == NSModalResponseCancel)
 
-    # MARK: - NSTokenFieldDelegate
+    # MARK: - NSComboBoxDelegate
+
+    def comboBoxWillPopUp_(self, notification):
+        # disable buttons while pop-up is open
+        self.renameCancelButton.setEnabled_(False)
+        self.renameConfirmButton.setEnabled_(False)
+
+    def comboBoxWillDismiss_(self, notification):
+        # there is no `comboBoxDidDismiss_` delegate method, so this timer simulates that
+        NSTimer.scheduledTimerWithTimeInterval_target_selector_userInfo_repeats_(
+            0.1, self, self.comboBoxDidDismiss_, None, False)
+
+    def comboBoxDidDismiss_(self, userInfo):
+        self.renameCancelButton.setEnabled_(True)
+        self.renameConfirmButton.setEnabled_(True)
+
+        # MARK: - NSTokenFieldDelegate
 
     def tokenField_displayStringForRepresentedObject_(self, tokenField, tag):
         # the trailing spaces make space for the menu disclose button

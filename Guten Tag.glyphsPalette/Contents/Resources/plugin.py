@@ -399,13 +399,26 @@ class GutenTag(PalettePlugin):
         self.windowController().window().beginSheet_completionHandler_(self.renameWindow, self.handleRenameTag_)
 
     def handleRenameTag_(self, returnCode):
-        print("handle rename form with return code", returnCode, returnCode ==
-              NSModalResponseOK, returnCode == NSModalResponseCancel)
+        if returnCode != NSModalResponseOK:
+            return
+
+        tagName = self.renameSearchField.stringValue()
+        newTagName = self.renameReplaceField.stringValue()
+
+        with self.uiContext:
+            for glyph in self.selectedGlyphs():
+                if tagName in glyph.tags:
+                    tags = set(glyph.tags)
+                    tags.remove(tagName)
+                    tags.add(newTagName)
+                    # `setTags_` does not accept sets
+                    glyph.setTags_(list(tags))
 
     # MARK: - NSComboBoxDelegate
 
     def comboBoxWillPopUp_(self, notification):
-        # disable buttons while pop-up is open
+        # disable buttons while pop-up is open, otherwise (1) the Return would both accept the selected entry in the pop-up and confirm the promt and (2) the Escape key would both close the pop-up and the promp
+        # note that (2) has not been observed in practice but it is still defended against since that requires only a few lines of code
         self.renameCancelButton.setEnabled_(False)
         self.renameConfirmButton.setEnabled_(False)
 

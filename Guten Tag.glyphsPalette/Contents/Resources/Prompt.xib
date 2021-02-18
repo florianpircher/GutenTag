@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment version="101200" identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="GutenTag">
+            <connections>
+                <outlet property="promptCancelButton" destination="o8q-Fo-jNv" id="sZk-1l-KNy"/>
+                <outlet property="promptConfirmButton" destination="wMG-fj-ppY" id="0Op-YS-duY"/>
+                <outlet property="promptTitleLabel" destination="xby-yK-qw3" id="How-HB-gWX"/>
+                <outlet property="promptTokenField" destination="efn-IH-VEj" id="d4Q-3g-Ugo"/>
+                <outlet property="promptWindow" destination="d4E-z4-M23" id="GMp-1t-8ng"/>
+                <outlet property="renameCancelButton" destination="art-BU-yy3" id="sgU-O0-XnT"/>
+                <outlet property="renameConfirmButton" destination="4vA-AJ-Whp" id="iqp-P0-4IC"/>
+                <outlet property="renameReplaceField" destination="Cc2-Fs-hy6" id="N1b-IW-cJC"/>
+                <outlet property="renameSearchField" destination="eNs-Mz-Bl5" id="Pk4-Gz-lFV"/>
+                <outlet property="renameTitleLabel" destination="YvC-r7-Kbt" id="jlg-nc-Kcg"/>
+                <outlet property="renameWindow" destination="oZE-Kp-Ljm" id="gor-qC-i3y"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <window allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="d4E-z4-M23">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="283" y="311" width="396" height="125"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1440"/>
+            <view key="contentView" id="Ot2-vy-6O3">
+                <rect key="frame" x="0.0" y="0.0" width="396" height="125"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <tokenField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="efn-IH-VEj">
+                        <rect key="frame" x="20" y="60" width="356" height="21"/>
+                        <tokenFieldCell key="cell" selectable="YES" editable="YES" borderStyle="bezel" alignment="left" drawsBackground="YES" allowsEditingTextAttributes="YES" id="9zL-Fh-XCn">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </tokenFieldCell>
+                    </tokenField>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wMG-fj-ppY">
+                        <rect key="frame" x="300" y="13" width="83" height="32"/>
+                        <buttonCell key="cell" type="push" title="Confirm" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="yv3-dr-Lqd">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
+                        </buttonCell>
+                    </button>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="o8q-Fo-jNv">
+                        <rect key="frame" x="226" y="13" width="76" height="32"/>
+                        <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Aeb-6a-j6R">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
+                        </buttonCell>
+                    </button>
+                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="xby-yK-qw3">
+                        <rect key="frame" x="18" y="89" width="360" height="16"/>
+                        <textFieldCell key="cell" selectable="YES" title="Title" id="9ff-cS-Bug">
+                            <font key="font" textStyle="headline" name=".SFNS-Bold"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="efn-IH-VEj" firstAttribute="leading" secondItem="Ot2-vy-6O3" secondAttribute="leading" constant="20" symbolic="YES" id="9Y5-RD-hxD"/>
+                    <constraint firstAttribute="trailing" secondItem="xby-yK-qw3" secondAttribute="trailing" constant="20" symbolic="YES" id="Cof-RJ-rRg"/>
+                    <constraint firstItem="wMG-fj-ppY" firstAttribute="top" secondItem="efn-IH-VEj" secondAttribute="bottom" constant="20" symbolic="YES" id="Dg7-xd-SMn"/>
+                    <constraint firstAttribute="trailing" secondItem="wMG-fj-ppY" secondAttribute="trailing" constant="20" symbolic="YES" id="FXb-7H-Vmh"/>
+                    <constraint firstItem="efn-IH-VEj" firstAttribute="top" secondItem="xby-yK-qw3" secondAttribute="bottom" constant="8" symbolic="YES" id="MKO-4j-ebE"/>
+                    <constraint firstItem="xby-yK-qw3" firstAttribute="top" secondItem="Ot2-vy-6O3" secondAttribute="top" constant="20" symbolic="YES" id="PH9-Fe-TL8"/>
+                    <constraint firstItem="wMG-fj-ppY" firstAttribute="leading" secondItem="o8q-Fo-jNv" secondAttribute="trailing" constant="12" symbolic="YES" id="Rr6-ui-bDY"/>
+                    <constraint firstItem="xby-yK-qw3" firstAttribute="leading" secondItem="Ot2-vy-6O3" secondAttribute="leading" constant="20" symbolic="YES" id="TZ3-i7-ZMj"/>
+                    <constraint firstAttribute="bottom" secondItem="wMG-fj-ppY" secondAttribute="bottom" constant="20" symbolic="YES" id="U96-mf-gn1"/>
+                    <constraint firstAttribute="trailing" secondItem="efn-IH-VEj" secondAttribute="trailing" constant="20" symbolic="YES" id="Wok-tF-eQp"/>
+                    <constraint firstItem="o8q-Fo-jNv" firstAttribute="centerY" secondItem="wMG-fj-ppY" secondAttribute="centerY" id="b78-kI-WSh"/>
+                    <constraint firstItem="o8q-Fo-jNv" firstAttribute="width" secondItem="wMG-fj-ppY" secondAttribute="width" multiplier="0.898551" id="mFH-c6-mSO"/>
+                </constraints>
+            </view>
+            <point key="canvasLocation" x="-277" y="281"/>
+        </window>
+        <window allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="oZE-Kp-Ljm">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="283" y="311" width="396" height="254"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1440"/>
+            <view key="contentView" id="yUg-Dh-a92">
+                <rect key="frame" x="0.0" y="0.0" width="396" height="140"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4vA-AJ-Whp">
+                        <rect key="frame" x="300" y="13" width="83" height="32"/>
+                        <buttonCell key="cell" type="push" title="Rename" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="mIr-EN-Apc">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
+                        </buttonCell>
+                    </button>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="art-BU-yy3">
+                        <rect key="frame" x="226" y="13" width="76" height="32"/>
+                        <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="C2S-43-tMl">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
+                        </buttonCell>
+                    </button>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="qh1-tJ-68L">
+                        <rect key="frame" x="48" y="79" width="69" height="16"/>
+                        <textFieldCell key="cell" lineBreakMode="clipping" title="Tag Name:" id="aYx-oh-HE5">
+                            <font key="font" usesAppearanceFont="YES"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <comboBox verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="eNs-Mz-Bl5">
+                        <rect key="frame" x="123" y="73" width="256" height="25"/>
+                        <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" numberOfVisibleItems="5" id="9md-yl-1zn">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </comboBoxCell>
+                    </comboBox>
+                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Cc2-Fs-hy6">
+                        <rect key="frame" x="123" y="48" width="253" height="21"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="MnW-DG-Bwy">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="YvC-r7-Kbt">
+                        <rect key="frame" x="18" y="104" width="360" height="16"/>
+                        <textFieldCell key="cell" selectable="YES" title="Rename a tag for the selected glyphs" id="EN8-gw-0iL">
+                            <font key="font" textStyle="headline" name=".SFNS-Bold"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="u6x-T0-1tX">
+                        <rect key="frame" x="18" y="51" width="99" height="16"/>
+                        <textFieldCell key="cell" lineBreakMode="clipping" title="New Tag Name:" id="wBR-Ta-D3u">
+                            <font key="font" usesAppearanceFont="YES"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="eNs-Mz-Bl5" secondAttribute="trailing" constant="20" symbolic="YES" id="1Zo-ft-Rny"/>
+                    <constraint firstItem="u6x-T0-1tX" firstAttribute="leading" secondItem="yUg-Dh-a92" secondAttribute="leading" constant="20" symbolic="YES" id="6l8-v0-bAq"/>
+                    <constraint firstItem="art-BU-yy3" firstAttribute="centerY" secondItem="4vA-AJ-Whp" secondAttribute="centerY" id="BTk-CR-elN"/>
+                    <constraint firstItem="qh1-tJ-68L" firstAttribute="firstBaseline" secondItem="eNs-Mz-Bl5" secondAttribute="firstBaseline" id="BVG-Pm-rZK"/>
+                    <constraint firstItem="4vA-AJ-Whp" firstAttribute="leading" secondItem="art-BU-yy3" secondAttribute="trailing" constant="12" symbolic="YES" id="Hkj-Kw-tQI"/>
+                    <constraint firstItem="YvC-r7-Kbt" firstAttribute="leading" secondItem="yUg-Dh-a92" secondAttribute="leading" constant="20" symbolic="YES" id="Kb3-Mj-m4y"/>
+                    <constraint firstItem="u6x-T0-1tX" firstAttribute="firstBaseline" secondItem="Cc2-Fs-hy6" secondAttribute="firstBaseline" id="Nh6-jV-dvQ"/>
+                    <constraint firstItem="Cc2-Fs-hy6" firstAttribute="top" secondItem="eNs-Mz-Bl5" secondAttribute="bottom" constant="8" symbolic="YES" id="Plf-4t-mXx"/>
+                    <constraint firstAttribute="trailing" secondItem="4vA-AJ-Whp" secondAttribute="trailing" constant="20" symbolic="YES" id="Txc-p6-XtI"/>
+                    <constraint firstAttribute="bottom" secondItem="4vA-AJ-Whp" secondAttribute="bottom" constant="20" symbolic="YES" id="bsl-LZ-FSY"/>
+                    <constraint firstItem="eNs-Mz-Bl5" firstAttribute="top" secondItem="YvC-r7-Kbt" secondAttribute="bottom" constant="8" symbolic="YES" id="gLa-gf-7LH"/>
+                    <constraint firstItem="art-BU-yy3" firstAttribute="width" secondItem="4vA-AJ-Whp" secondAttribute="width" multiplier="0.898551" id="hRT-Ew-7uC"/>
+                    <constraint firstItem="qh1-tJ-68L" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="yUg-Dh-a92" secondAttribute="leading" constant="20" symbolic="YES" id="hTV-cF-SYt"/>
+                    <constraint firstAttribute="trailing" secondItem="YvC-r7-Kbt" secondAttribute="trailing" constant="20" symbolic="YES" id="ha7-YI-Ve2"/>
+                    <constraint firstAttribute="trailing" secondItem="Cc2-Fs-hy6" secondAttribute="trailing" constant="20" symbolic="YES" id="k1M-m7-wwe"/>
+                    <constraint firstItem="Cc2-Fs-hy6" firstAttribute="leading" secondItem="u6x-T0-1tX" secondAttribute="trailing" constant="8" symbolic="YES" id="pdZ-7F-Bco"/>
+                    <constraint firstItem="Cc2-Fs-hy6" firstAttribute="width" secondItem="eNs-Mz-Bl5" secondAttribute="width" id="s69-p4-PFm"/>
+                    <constraint firstItem="eNs-Mz-Bl5" firstAttribute="leading" secondItem="qh1-tJ-68L" secondAttribute="trailing" constant="8" symbolic="YES" id="vlf-Tt-bls"/>
+                    <constraint firstItem="YvC-r7-Kbt" firstAttribute="top" secondItem="yUg-Dh-a92" secondAttribute="top" constant="20" symbolic="YES" id="wEl-EB-YdD"/>
+                    <constraint firstItem="4vA-AJ-Whp" firstAttribute="top" secondItem="Cc2-Fs-hy6" secondAttribute="bottom" constant="8" symbolic="YES" id="yOG-Jc-cTT"/>
+                </constraints>
+            </view>
+            <point key="canvasLocation" x="228" y="279.5"/>
+        </window>
+    </objects>
+</document>

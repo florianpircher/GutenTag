@@ -92,6 +92,12 @@ class GutenTag(PalettePlugin):
     promptTokenField = objc.IBOutlet()
     promptConfirmButton = objc.IBOutlet()
     promptCancelButton = objc.IBOutlet()
+    renameWindow = objc.IBOutlet()
+    renameTitleLabel = objc.IBOutlet()
+    renameSearchField = objc.IBOutlet()
+    renameReplaceField = objc.IBOutlet()
+    renameConfirmButton = objc.IBOutlet()
+    renameCancelButton = objc.IBOutlet()
     uiContext = None
 
     userDefaults = UserDefaults(prefix="net.addpixel.GutenTag.")
@@ -148,7 +154,7 @@ class GutenTag(PalettePlugin):
             'zh-Hant': '顯示所有字符',
         })
         self.loadNib('View', __file__)
-        self.loadNib('TagsPrompt', __file__)
+        self.loadNib('Prompt', __file__)
 
     @objc.python_method
     def start(self):
@@ -351,9 +357,25 @@ class GutenTag(PalettePlugin):
         print("confirm add tags with return code", returnCode, returnCode ==
               NSModalResponseOK, returnCode == NSModalResponseCancel)
 
+    def confirmRenameForm(self):
+        self.windowController().window().endSheet_returnCode_(self.renameWindow, NSModalResponseOK)
+
+    def cancelRenameForm(self):
+        self.windowController().window().endSheet_returnCode_(self.renameWindow, NSModalResponseCancel)
+
     @objc.IBAction
     def promptRenameTags_(self, sender):
-        print("rename tags")
+        self.renameTitleLabel.setStringValue_("Rename a tag for the selected glyphs")
+        self.renameConfirmButton.setTitle_("Rename")
+        self.renameCancelButton.setAction_(self.cancelRenameForm)
+        self.renameCancelButton.setTarget_(self)
+        self.renameConfirmButton.setAction_(self.confirmRenameForm)
+        self.renameConfirmButton.setTarget_(self)
+        self.windowController().window().beginSheet_completionHandler_(self.renameWindow, self.handleRenameTag_)
+
+    def handleRenameTag_(self, returnCode):
+        print("handle rename form with return code", returnCode, returnCode ==
+              NSModalResponseOK, returnCode == NSModalResponseCancel)
 
     # MARK: - NSTokenFieldDelegate
 

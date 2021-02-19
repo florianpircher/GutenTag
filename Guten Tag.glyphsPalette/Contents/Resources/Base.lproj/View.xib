@@ -8,8 +8,10 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="GutenTag">
             <connections>
+                <outlet property="addButton" destination="CiW-jX-dyc" id="d2z-H5-kmB"/>
                 <outlet property="batchEditToolbar" destination="dqB-h7-5Xv" id="MBk-I2-b8E"/>
                 <outlet property="dialog" destination="1" id="Tkv-lP-HY5"/>
+                <outlet property="removeButton" destination="sOj-NE-4vq" id="lHU-D2-qIi"/>
                 <outlet property="tokenField" destination="GB7-Mw-kD4" id="mpt-n7-s9B"/>
             </connections>
         </customObject>
@@ -73,6 +75,9 @@
                                 </stackView>
                                 <button toolTip="Rename tag of selected glyphs" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="iIg-EL-R2e">
                                     <rect key="frame" x="156" y="1" width="60" height="19"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="24" id="IB5-OW-5hx"/>
+                                    </constraints>
                                     <buttonCell key="cell" type="roundRect" title="Rename" bezelStyle="roundedRect" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="8v5-mh-Y5w">
                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                         <font key="font" metaFont="cellTitle"/>

@@ -28,6 +28,7 @@ from AppKit import (
     NSFontAttributeName,
     NSForegroundColorAttributeName,
     NSImage,
+    NSImageOnly,
     NSMakePoint,
     NSMakeRect,
     NSMakeSize,
@@ -89,6 +90,8 @@ class GutenTag(PalettePlugin):
     dialog = objc.IBOutlet()
     tokenField = objc.IBOutlet()
     batchEditToolbar = objc.IBOutlet()
+    addButton = objc.IBOutlet()
+    removeButton = objc.IBOutlet()
     promptWindow = objc.IBOutlet()
     promptTitleLabel = objc.IBOutlet()
     promptTokenField = objc.IBOutlet()
@@ -107,11 +110,6 @@ class GutenTag(PalettePlugin):
     suggestionTagPool = []
     menu = None
 
-    # strings localized in `settings`
-    noTagsPlaceholder = 'no tags'
-    showGlyphsWithTagLabel = 'Show Glyphs With Tag'
-    multipleSelectionPlaceholder = 'Multiple Selection'
-
     # MARK: - Glyph Palette Plugin Methods
 
     @objc.python_method
@@ -122,40 +120,8 @@ class GutenTag(PalettePlugin):
         mainBundle = NSBundle.mainBundle()
 
         self.name = mainBundle.localizedStringForKey_value_table_("Tags", "Tags", None)
-        self.noTagsPlaceholder = Glyphs.localize({
-            'ar': 'بدون علامات',
-            'cs': 'žádné značky',
-            'de': 'keine Tags',
-            'en': 'no tags',
-            'es': 'sin etiquetas',
-            'fr': 'pas de balises',
-            'it': 'nessun tag',
-            'ja': 'タグなし',
-            'ko': '태그 없음',
-            'pt': 'sem etiquetas',
-            'ru': 'без тегов',
-            'tr': 'etiket yok',
-            'zh-Hans': '没有标签',
-            'zh-Hant': '没有標籤',
-        })
         self.multipleSelectionPlaceholder = mainBundle.localizedStringForKey_value_table_(
             "Multiple Selection", "Multiple Selection", None)
-        self.showGlyphsWithTagLabel = Glyphs.localize({  # match Glyphs KerningPanel.strings "aGI-5I-k6x.title" key
-            'ar': 'عرض كل المحارف',
-            'cs': 'Zobrazit všechny glyfy',
-            'de': 'Alle Glyphen anzeigen',
-            'en': 'Show All Glyphs',
-            'es': 'Mostrar todos los glifos',
-            'fr': 'Afficher tous les glyphes',
-            'it': 'Mostra tutti i glifi',
-            'ja': 'すべてのグリフを表示',
-            'ko': '모든 글리프 보기',
-            'pt': 'Exibir Todos os Glifos',
-            'ru': 'Показать все глифы',
-            'tr': 'Tüm Glifleri Göster',
-            'zh-Hans': '显示全部字符形',
-            'zh-Hant': '顯示所有字符',
-        })
         self.loadNib('View', __file__)
         self.loadNib('Prompt', __file__)
 
@@ -181,6 +147,11 @@ class GutenTag(PalettePlugin):
         self.tokenField.setFont_(smallFont)
         self.tokenField.setEnabled_(False)
 
+        # batch edit toolbar
+        # note: setting `imagePosition` in the XIB does not suffice since when the localized string is applied as a title the `imagePosition` value is reset
+        self.addButton.setImagePosition_(NSImageOnly)
+        self.removeButton.setImagePosition_(NSImageOnly)
+
         # prompt token field
         self.promptTokenField.setTokenizingCharacterSet_(charSet)
         self.promptTokenField.setDelegate_(self)
@@ -200,7 +171,22 @@ class GutenTag(PalettePlugin):
         isMultipleSelection = False
 
         if glyphs := self.selectedGlyphs():
-            self.tokenField.setPlaceholderString_(self.noTagsPlaceholder)
+            self.tokenField.setPlaceholderString_(Glyphs.localize({
+                'ar': 'بدون علامات',
+                'cs': 'žádné značky',
+                'de': 'keine Tags',
+                'en': 'no tags',
+                'es': 'sin etiquetas',
+                'fr': 'pas de balises',
+                'it': 'nessun tag',
+                'ja': 'タグなし',
+                'ko': '태그 없음',
+                'pt': 'sem etiquetas',
+                'ru': 'без тегов',
+                'tr': 'etiket yok',
+                'zh-Hans': '没有标签',
+                'zh-Hant': '没有標籤',
+            }))
             self.tokenField.setEnabled_(True)
 
             if len(glyphs) == 1:
@@ -355,8 +341,14 @@ class GutenTag(PalettePlugin):
 
     @objc.IBAction
     def promptAddTags_(self, sender):
-        self.promptTitleLabel.setStringValue_("Add tags to the selected glyphs")
-        self.promptConfirmButton.setTitle_("Add Tags")
+        self.promptTitleLabel.setStringValue_(Glyphs.localize({
+            "en": "Add tags to the selected glyphs",
+            "de": "Tags zu ausgewählten Glyphen hinzufügen",
+        }))
+        self.promptConfirmButton.setTitle_(Glyphs.localize({
+            "en": "Add Tags",
+            "de": "Tag hinzufügen",
+        }))
         self.promptCancelButton.setAction_(self.cancelPrompt)
         self.promptCancelButton.setTarget_(self)
         self.promptConfirmButton.setAction_(self.confirmPrompt)
@@ -395,8 +387,14 @@ class GutenTag(PalettePlugin):
 
     @objc.IBAction
     def promptRemoveTags_(self, sender):
-        self.promptTitleLabel.setStringValue_("Remove tags from the selected glyphs")
-        self.promptConfirmButton.setTitle_("Remove Tags")
+        self.promptTitleLabel.setStringValue_(Glyphs.localize({
+            "en": "Remove tags from the selected glyphs",
+            "de": "Tags von ausgewählten Glyphen entfernen",
+        }))
+        self.promptConfirmButton.setTitle_(Glyphs.localize({
+            "en": "Remove Tags",
+            "de": "Tags entfernen",
+        }))
         self.promptCancelButton.setAction_(self.cancelPrompt)
         self.promptCancelButton.setTarget_(self)
         self.promptConfirmButton.setAction_(self.confirmPrompt)
@@ -440,8 +438,6 @@ class GutenTag(PalettePlugin):
 
     @objc.IBAction
     def promptRenameTags_(self, sender):
-        self.renameTitleLabel.setStringValue_("Rename a tag for the selected glyphs")
-        self.renameConfirmButton.setTitle_("Rename")
         self.renameCancelButton.setAction_(self.cancelRenameForm)
         self.renameCancelButton.setTarget_(self)
         self.renameConfirmButton.setAction_(self.confirmRenameForm)
@@ -518,7 +514,7 @@ class GutenTag(PalettePlugin):
         return tokenField == self.tokenField
 
     def tokenField_menuForRepresentedObject_(self, tokenField, tag):
-        # apply tags to selection
+        # apply tags to selected glyphs so that they show up in the menu
         self.updateTagsForSelectedGlyphs_(None)
 
         # add a menu with each glyph that has `tag` as a tag
@@ -561,7 +557,22 @@ class GutenTag(PalettePlugin):
 
             # show all glyphs menu item
             showGlyphsItem = NSMenuItem.new()
-            showGlyphsItem.setTitle_(self.showGlyphsWithTagLabel)
+            showGlyphsItem.setTitle_(Glyphs.localize({  # match Glyphs KerningPanel.strings "aGI-5I-k6x.title" key
+                'ar': 'عرض كل المحارف',
+                'cs': 'Zobrazit všechny glyfy',
+                'de': 'Alle Glyphen anzeigen',
+                'en': 'Show All Glyphs',
+                'es': 'Mostrar todos los glifos',
+                'fr': 'Afficher tous les glyphes',
+                'it': 'Mostra tutti i glifi',
+                'ja': 'すべてのグリフを表示',
+                'ko': '모든 글리프 보기',
+                'pt': 'Exibir Todos os Glifos',
+                'ru': 'Показать все глифы',
+                'tr': 'Tüm Glifleri Göster',
+                'zh-Hans': '显示全部字符形',
+                'zh-Hant': '顯示所有字符',
+            }))
             showGlyphsItem.setRepresentedObject_(tag)
             showGlyphsItem.setTarget_(self)
             showGlyphsItem.setAction_(self.showGlyphsForTag_)
@@ -724,7 +735,7 @@ class GutenTagTokenField(MultilineTokenField):
     def textDidBeginEditing_(self, notification):
         super().textDidBeginEditing_(notification)
         self.controller.reloadTagPool()
-        self.controller.scopedTagPool = self.controller.tagPool
+        self.controller.suggestionTagPool = self.controller.tagPool
 
     def textShouldEndEditing_(self, notification):
         result = super().textShouldEndEditing_(notification)

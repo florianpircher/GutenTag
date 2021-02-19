@@ -88,6 +88,7 @@ class GutenTag(PalettePlugin):
     dialogName = "net.addpixel.GutenTag"
     dialog = objc.IBOutlet()
     tokenField = objc.IBOutlet()
+    batchEditToolbar = objc.IBOutlet()
     promptWindow = objc.IBOutlet()
     promptTitleLabel = objc.IBOutlet()
     promptTokenField = objc.IBOutlet()
@@ -103,6 +104,7 @@ class GutenTag(PalettePlugin):
 
     userDefaults = UserDefaults(prefix="net.addpixel.GutenTag.")
     tagPool = []
+    suggestionTagPool = []
     menu = None
 
     # strings localized in `settings`
@@ -159,34 +161,43 @@ class GutenTag(PalettePlugin):
 
     @objc.python_method
     def start(self):
-        # setup token field
-        self.tokenField.controller = self
-        self.tokenField.setEnabled_(False)
-        self.tokenField.setDelegate_(self)
-
         # tokenizing character set
         charSet = NSMutableCharacterSet.new()
         defaultCharSet = NSTokenField.defaultTokenizingCharacterSet()
         charSet.formUnionWithCharacterSet_(defaultCharSet)
         charSet.addCharactersInString_("\n")
-        self.tokenField.setTokenizingCharacterSet_(charSet)
 
         # font
-        fontSize = NSFont.smallSystemFontSize()
+        fontSize = NSFont.systemFontSize()
         font = NSFont.legibileFontOfSize_(fontSize)
-        self.tokenField.setFont_(font)
+
+        smallFontSize = NSFont.smallSystemFontSize()
+        smallFont = NSFont.legibileFontOfSize_(smallFontSize)
+
+        # token field
+        self.tokenField.controller = self
+        self.tokenField.setTokenizingCharacterSet_(charSet)
+        self.tokenField.setDelegate_(self)
+        self.tokenField.setFont_(smallFont)
+        self.tokenField.setEnabled_(False)
+
+        # prompt token field
+        self.promptTokenField.setTokenizingCharacterSet_(charSet)
+        self.promptTokenField.setDelegate_(self)
+        self.promptTokenField.setFont_(font)
 
         # rename prompt
+        self.renameSearchField.setFont_(font)
         self.renameSearchField.setDelegate_(self)
 
-        # Adding a callback for the 'GSUpdateInterface' event
+        self.renameReplaceField.setFont_(font)
+
+        # listen for 'GSUpdateInterface' event
         Glyphs.addCallback(self.update, UPDATEINTERFACE)
 
     @objc.python_method
     def update(self, sender):
-        """
-        Updates the value of the token field to reflect the new glyph selection.
-        """
+        isMultipleSelection = False
 
         if glyphs := self.selectedGlyphs():
             self.tokenField.setPlaceholderString_(self.noTagsPlaceholder)
@@ -210,14 +221,16 @@ class GutenTag(PalettePlugin):
                 if sameTagsForAllSelectedGlyphs:
                     self.setFieldTags(firstTags)
                 else:
-                    self.tokenField.setPlaceholderString_(
-                        self.multipleSelectionPlaceholder)
+                    isMultipleSelection = True
+                    self.tokenField.setPlaceholderString_(self.multipleSelectionPlaceholder)
                     self.setFieldTags([])
         else:
             # no glyphs are selected
             self.tokenField.setPlaceholderString_('')
             self.tokenField.setEnabled_(False)
             self.setFieldTags([])
+
+        self.batchEditToolbar.setHidden_(not isMultipleSelection)
 
     @objc.python_method
     def __del__(self):
@@ -232,10 +245,20 @@ class GutenTag(PalettePlugin):
 
     @objc.python_method
     def fontTags(font):
-        """Returns a frozen set of all tags from all glyphs in the given font."""
+        """Returns the tags of all glyphs in the given font."""
         tags = set()
 
         for glyph in font.glyphs:
+            tags.update(glyph.tags)
+
+        return tags
+
+    @objc.python_method
+    def selectedTags(self):
+        """Returns the tags of all selected glyphs."""
+        tags = set()
+
+        for glyph in self.selectedGlyphs():
             tags.update(glyph.tags)
 
         return tags
@@ -252,21 +275,14 @@ class GutenTag(PalettePlugin):
     def selectedGlyphs(self):
         """Returns all selected glyphs, both in edit view and in font view."""
         if font := self.currentFont():
-            glyphs = []
-
             if font.currentTab:
-                for layer in font.selectedLayers:
-                    glyphs.append(layer.parent)
+                return [layer.parent for layer in font.selectedLayers]
             else:
                 try:
-                    for glyph in font.selection:
-                        glyphs.append(glyph)
+                    return font.selection
                 except:
                     pass
-
-            return glyphs
-        else:
-            return []
+        return []
 
     @objc.python_method
     def reloadTagPool(self):
@@ -327,11 +343,15 @@ class GutenTag(PalettePlugin):
                     newTabText += "/" + glyph.name
             font.newTab(newTabText)
 
+    # MARK: - Prompts
+
     def confirmPrompt(self):
         self.windowController().window().endSheet_returnCode_(self.promptWindow, NSModalResponseOK)
 
     def cancelPrompt(self):
         self.windowController().window().endSheet_returnCode_(self.promptWindow, NSModalResponseCancel)
+
+    # MARK: Add Prompt
 
     @objc.IBAction
     def promptAddTags_(self, sender):
@@ -341,11 +361,37 @@ class GutenTag(PalettePlugin):
         self.promptCancelButton.setTarget_(self)
         self.promptConfirmButton.setAction_(self.confirmPrompt)
         self.promptConfirmButton.setTarget_(self)
+
+        self.promptTokenField.setStringValue_("")
+
+        self.reloadTagPool()
+        self.suggestionTagPool = self.tagPool
+
         self.windowController().window().beginSheet_completionHandler_(self.promptWindow, self.handleAddTags_)
 
     def handleAddTags_(self, returnCode):
-        print("confirm add tags with return code", returnCode, returnCode ==
-              NSModalResponseOK, returnCode == NSModalResponseCancel)
+        if returnCode != NSModalResponseOK:
+            return
+
+        addTags = set(self.promptTokenField.objectValue())
+
+        with self.uiContext:
+            for glyph in self.selectedGlyphs():
+                tags = set(glyph.tags)
+                didExtend = False
+
+                for tag in addTags:
+                    if tag not in tags:
+                        tags.add(tag)
+                        didExtend = True
+
+                if didExtend:
+                    # `setTags_` does not accept sets
+                    glyph.setTags_(list(tags))
+
+        self.update(None)
+
+    # MARK: Remove Prompt
 
     @objc.IBAction
     def promptRemoveTags_(self, sender):
@@ -355,11 +401,36 @@ class GutenTag(PalettePlugin):
         self.promptCancelButton.setTarget_(self)
         self.promptConfirmButton.setAction_(self.confirmPrompt)
         self.promptConfirmButton.setTarget_(self)
+
+        self.promptTokenField.setStringValue_("")
+
+        self.suggestionTagPool = self.selectedTags()
+
         self.windowController().window().beginSheet_completionHandler_(self.promptWindow, self.handleRemoveTags_)
 
     def handleRemoveTags_(self, returnCode):
-        print("confirm add tags with return code", returnCode, returnCode ==
-              NSModalResponseOK, returnCode == NSModalResponseCancel)
+        if returnCode != NSModalResponseOK:
+            return
+
+        removeTags = set(self.promptTokenField.objectValue())
+
+        with self.uiContext:
+            for glyph in self.selectedGlyphs():
+                tags = set(glyph.tags)
+                didReduce = False
+
+                for tag in removeTags:
+                    if tag in tags:
+                        tags.remove(tag)
+                        didReduce = True
+
+                if didReduce:
+                    # `setTags_` does not accept sets
+                    glyph.setTags_(list(tags))
+
+        self.update(None)
+
+    # MARK: Rename Prompt
 
     def confirmRenameForm(self):
         self.windowController().window().endSheet_returnCode_(self.renameWindow, NSModalResponseOK)
@@ -376,12 +447,8 @@ class GutenTag(PalettePlugin):
         self.renameConfirmButton.setAction_(self.confirmRenameForm)
         self.renameConfirmButton.setTarget_(self)
 
-        tagsSet = set()
-
-        for glyph in self.selectedGlyphs():
-            tagsSet.update(glyph.tags)
-
-        tags = sorted(tagsSet)
+        self.suggestionTagPool = self.selectedTags()
+        tags = sorted(self.suggestionTagPool)
 
         if len(tags) == 1:
             self.renameSearchField.setEditable_(False)
@@ -414,6 +481,8 @@ class GutenTag(PalettePlugin):
                     # `setTags_` does not accept sets
                     glyph.setTags_(list(tags))
 
+        self.update(None)
+
     # MARK: - NSComboBoxDelegate
 
     def comboBoxWillPopUp_(self, notification):
@@ -434,16 +503,19 @@ class GutenTag(PalettePlugin):
         # MARK: - NSTokenFieldDelegate
 
     def tokenField_displayStringForRepresentedObject_(self, tokenField, tag):
-        # the trailing spaces make space for the menu disclose button
-        # \u200C prevents whitespace trimming
-        # \u2068 and \u2069 embed the tag name such that the spaces are always to the right of the tag name (needed if the tag name displays as right-to-left text)
-        return '\u2068' + tag + '\u2069   \u200C'
+        if self.tokenField_hasMenuForRepresentedObject_(tokenField, tag):
+            # the trailing spaces make space for the menu disclose button
+            # \u200C prevents whitespace trimming
+            # \u2068 and \u2069 embed the tag name such that the spaces are always to the right of the tag name (needed if the tag name displays as right-to-left text)
+            return '\u2068' + tag + '\u2069   \u200C'
+        else:
+            return tag
 
     def tokenField_editingStringForRepresentedObject_(self, tokenField, tag):
         return tag
 
     def tokenField_hasMenuForRepresentedObject_(self, tokenField, tag):
-        return True
+        return tokenField == self.tokenField
 
     def tokenField_menuForRepresentedObject_(self, tokenField, tag):
         # apply tags to selection
@@ -587,8 +659,9 @@ class GutenTag(PalettePlugin):
         matches = []
 
         setTags = tokenField.objectValue()
+
         # hide tags that are already set (part of `tokenField.objectValue`) except if the tag equals the query (`substring`)
-        availableTags = [tag for tag in self.tagPool if tag == substring or not tag in setTags]
+        availableTags = [tag for tag in self.suggestionTagPool if tag == substring or not tag in setTags]
 
         for tag in availableTags:
             if str(tag).startswith(query):
@@ -631,9 +704,7 @@ class GutenTag(PalettePlugin):
         return False
 
 
-class GutenTagTokenField(NSTokenField):
-    controller = None
-
+class MultilineTokenField(NSTokenField):
     def intrinsicContentSize(self):
         intrinsicContentSize = super().intrinsicContentSize()
         width = intrinsicContentSize.width
@@ -641,37 +712,21 @@ class GutenTagTokenField(NSTokenField):
         frame.size.height = 0xFFFF
         height = self.cell().cellSizeForBounds_(frame).height
         return NSMakeSize(width, height)
+
+    def textDidChange_(self, notification):
+        super().textDidChange_(notification)
+        self.invalidateIntrinsicContentSize()
+
+
+class GutenTagTokenField(MultilineTokenField):
+    controller = None
 
     def textDidBeginEditing_(self, notification):
         super().textDidBeginEditing_(notification)
         self.controller.reloadTagPool()
-
-    def textDidChange_(self, notification):
-        super().textDidChange_(notification)
-        self.invalidateIntrinsicContentSize()
+        self.controller.scopedTagPool = self.controller.tagPool
 
     def textShouldEndEditing_(self, notification):
         result = super().textShouldEndEditing_(notification)
         self.controller.updateTagsForSelectedGlyphs_(self)
-        return result
-
-
-class TagPromptTokenField(NSTokenField):
-    controller = None
-
-    def intrinsicContentSize(self):
-        intrinsicContentSize = super().intrinsicContentSize()
-        width = intrinsicContentSize.width
-        frame = self.frame()
-        frame.size.height = 0xFFFF
-        height = self.cell().cellSizeForBounds_(frame).height
-        return NSMakeSize(width, height)
-
-    def textDidChange_(self, notification):
-        super().textDidChange_(notification)
-        self.invalidateIntrinsicContentSize()
-
-    def textShouldEndEditing_(self, notification):
-        result = super().textShouldEndEditing_(notification)
-        # self.controller.updateTagsForSelectedGlyphs_(self)
         return result

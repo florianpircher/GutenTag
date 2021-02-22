@@ -652,7 +652,7 @@ class GutenTag(PalettePlugin):
             matchingGlyphs = [x for x in font.glyphs if tag in x.tags]
 
             maximumPreviewGlyphCount = self.userDefaults.read(
-                'MaximumGlyphPreviewCount', 1536, transform=lambda x: max(-1, int(x)))
+                'MaximumGlyphPreviewCount', 1000, transform=lambda x: max(-1, int(x)))
 
             if maximumPreviewGlyphCount != -1:
                 previewGlyphs = matchingGlyphs[0:maximumPreviewGlyphCount]

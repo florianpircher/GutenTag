@@ -33,7 +33,7 @@ Guten Tag offers the following configurable preferences:
 | --- | ---- | ------- | ----------- |
 | `GlyphPreviewSize` | `int` | `56` | The width and height of a glyph preview image in display points. Must be a positive value. |
 | `GlyphPreviewInset` | `int` | `6` | The inset on all four edges of the glyph preview image in display points. The font size of the glyph preview is `GlyphPreviewSize - (2 * GlyphPreviewInset)`, i.e. the image height without the top and bottom insets. Negatives values crop into the image. |
-| `MaximumGlyphPreviewCount` | `int` | `1536` | Limits the number of glyph previews shown in the tag menu. This is useful since creating glyph previews can be impossibly slow if there are many glyphs for a tag. This limit can be lifted by setting the value to `-1`. |
+| `MaximumGlyphPreviewCount` | `int` | `1000` | Limits the number of glyph previews shown in the tag menu. This is useful since creating glyph previews can be impossibly slow if there are many glyphs for a tag. The limit can be lifted by setting the value to `-1`. |
 
 Each key is prefixed by `net.addpixel.GutenTag.` (for example `GlyphPreviewSize` is addressed as `net.addpixel.GutenTag.GlyphPreviewSize`).
 

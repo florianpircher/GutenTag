@@ -40,6 +40,7 @@ from AppKit import (
     NSMutableCharacterSet,
     NSTimer,
     NSTokenField,
+    NSTokenStyleSquared,
 )
 from GlyphsApp import (Glyphs, UPDATEINTERFACE)
 from GlyphsApp.plugins import PalettePlugin
@@ -257,6 +258,7 @@ class GutenTag(PalettePlugin):
         # token field
         self.tokenField.controller = self
         self.tokenField.setTokenizingCharacterSet_(charSet)
+        self.tokenField.setTokenStyle_(NSTokenStyleSquared)
         self.tokenField.setDelegate_(self)
         self.tokenField.setFont_(smallFont)
         self.tokenField.setEnabled_(False)
@@ -268,6 +270,7 @@ class GutenTag(PalettePlugin):
 
         # prompt token field
         self.promptTokenField.setTokenizingCharacterSet_(charSet)
+        self.promptTokenField.setTokenStyle_(NSTokenStyleSquared)
         self.promptTokenField.setDelegate_(self)
         self.promptTokenField.setFont_(font)
 
@@ -586,13 +589,7 @@ class GutenTag(PalettePlugin):
         # MARK: - NSTokenFieldDelegate
 
     def tokenField_displayStringForRepresentedObject_(self, tokenField, tag):
-        if self.tokenField_hasMenuForRepresentedObject_(tokenField, tag):
-            # the trailing spaces make space for the menu disclose button
-            # \u200C prevents whitespace trimming
-            # \u2068 and \u2069 embed the tag name such that the spaces are always to the right of the tag name (needed if the tag name displays as right-to-left text)
-            return '\u2068' + tag + '\u2069   \u200C'
-        else:
-            return tag
+        return tag
 
     def tokenField_editingStringForRepresentedObject_(self, tokenField, tag):
         return tag

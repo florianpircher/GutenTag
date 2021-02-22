@@ -65,7 +65,7 @@ Gw
                     </button>
                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="xby-yK-qw3">
                         <rect key="frame" x="18" y="89" width="360" height="16"/>
-                        <textFieldCell key="cell" selectable="YES" title="Title" id="9ff-cS-Bug">
+                        <textFieldCell key="cell" title="Title" id="9ff-cS-Bug">
                             <font key="font" textStyle="headline" name=".SFNS-Bold"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -148,7 +148,7 @@ Gw
                     </textField>
                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="YvC-r7-Kbt">
                         <rect key="frame" x="18" y="104" width="360" height="16"/>
-                        <textFieldCell key="cell" selectable="YES" title="Rename a tag for the selected glyphs" id="EN8-gw-0iL">
+                        <textFieldCell key="cell" title="Rename a tag for the selected glyphs" id="EN8-gw-0iL">
                             <font key="font" textStyle="headline" name=".SFNS-Bold"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>

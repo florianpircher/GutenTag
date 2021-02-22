@@ -45,6 +45,125 @@ from GlyphsApp import (Glyphs, UPDATEINTERFACE)
 from GlyphsApp.plugins import PalettePlugin
 
 
+# localization
+mainBundle = NSBundle.mainBundle()
+
+TAGS_STRING = Glyphs.localize({
+    "ar": "العلامات",
+    "cs": "Značky",
+    "de": "Tags",
+    "en": "Tags",
+    "es": "Etiquetas",
+    "fr": "Badges",
+    "it": "Tags",
+    "ja": "タグ",
+    "ko": "태그",
+    "pt": "Etiquetas",
+    "ru": "Меток",
+    "tr": "Etiketler",
+    "zh-Hans": "标签",
+    "zh-Hant": "標籤",
+})
+MULTIPLE_SELECTION_STRING = mainBundle.localizedStringForKey_value_table_(
+    "Multiple Selection", "Multiple Selection", None)
+NO_TAGS_STRING = Glyphs.localize({
+    'ar': 'بدون علامات',
+    'cs': 'žádné značky',
+    'de': 'keine Tags',
+    'en': 'no tags',
+    'es': 'sin etiquetas',
+    'fr': 'pas de balises',
+    'it': 'nessun tag',
+    'ja': 'タグなし',
+    'ko': '태그 없음',
+    'pt': 'sem etiquetas',
+    'ru': 'без меток',
+    'tr': 'etiket yok',
+    'zh-Hans': '没有标签',
+    'zh-Hant': '没有標籤',
+})
+ADD_TAGS_TITLE_STRING = Glyphs.localize({
+    "ar": "إضافة علامات إلى الصور الرمزية المحددة",
+    "cs": "Přidat značky k vybraným glyfům",
+    "en": "Add tags to the selected glyphs",
+    "es": "Añadir etiquetas a los glifos seleccionados",
+    "de": "Tags zu ausgewählten Glyphen hinzufügen",
+    "it": "Aggiungi tag ai glifi selezionati",
+    "fr": "Ajouter des badges aux glyphes sélectionnés",
+    "ja": "選択したグリフにタグを追加します",
+    "ko": "선택한 글리프에 태그 추가",
+    "pt": "Adicionar etiquetas aos glifos selecionados",
+    "ru": "Добавление меток для выбранных глифы",
+    "tr": "Seçili glif’lere etiketler ekle",
+    "zh-Hans": "为所选字形添加标签",
+    "zh-Hant": "將標籤新增至所選字形",
+})
+ADD_TAGS_BUTTON_STRING = Glyphs.localize({
+    "ar": "إضافة علامات",
+    "cs": "Přidat značky",
+    "en": "Add Tags",
+    "es": "Añadir etiquetas",
+    "de": "Tags hinzufügen",
+    "it": "Aggiungi Tag",
+    "fr": "Ajouter des badges",
+    "ja": "タグを追加",
+    "ko": "태그 추가",
+    "pt": "Adicionar etiquetas",
+    "ru": "Добавить",
+    "tr": "Etiket ekle",
+    "zh-Hans": "添加标签",
+    "zh-Hant": "新增標籤",
+})
+REMOVE_TAGS_TITLE_STRING = Glyphs.localize({
+    "ar": "إزالة العلامات من الصور الرمزية المحددة",
+    "cs": "Odstranit značky z vybraných glyfů",
+    "en": "Remove tags from the selected glyphs",
+    "es": "Suprimir etiquetas de los glifos seleccionados",
+    "de": "Tags von ausgewählten Glyphen entfernen",
+    "it": "Rimuovi i tag dai glifi selezionati",
+    "fr": "Supprimer les badges des glyphes sélectionnés",
+    "ja": "選択したグリフからタグを削除します",
+    "ko": "선택한 글리프에서 태그 제거",
+    "pt": "Remover etiquetas dos glifos selecionados",
+    "ru": "Удаление меток для выбранных глифы",
+    "tr": "Seçili glif’lerin etiketlerini kaldır",
+    "zh-Hans": "从所选字形删除标签",
+    "zh-Hant": "移除所選字形的標籤",
+})
+REMOVE_TAGS_BUTTON_STRING = Glyphs.localize({
+    "ar": "إزالة العلامات",
+    "cs": "Odstranit značky",
+    "en": "Remove Tags",
+    "es": "Suprimir etiquetas",
+    "de": "Tags entfernen",
+    "it": "Rimuovi Tag",
+    "fr": "Supprimer les badges",
+    "ja": "タグを削除",
+    "ko": "태그 제거",
+    "pt": "Remover etiquetas",
+    "ru": "Удалить",
+    "tr": "Etiketleri kaldır",
+    "zh-Hans": "移除标签",
+    "zh-Hant": "移除標籤",
+})
+SHOW_ALL_GLYPHS_BUTTON_STRING = Glyphs.localize({  # match Glyphs KerningPanel.strings "aGI-5I-k6x.title" key
+    'ar': 'عرض كل المحارف',
+    'cs': 'Zobrazit všechny glyfy',
+    'de': 'Alle Glyphen anzeigen',
+    'en': 'Show All Glyphs',
+    'es': 'Mostrar todos los glifos',
+    'fr': 'Afficher tous les glyphes',
+    'it': 'Mostra tutti i glifi',
+    'ja': 'すべてのグリフを表示',
+    'ko': '모든 글리프 보기',
+    'pt': 'Exibir Todos os Glifos',
+    'ru': 'Показать все глифы',
+    'tr': 'Tüm Glifleri Göster',
+    'zh-Hans': '显示全部字符形',
+    'zh-Hant': '顯示所有字符',
+})
+
+
 class UserDefaults:
     prefix = ""
 
@@ -116,12 +235,7 @@ class GutenTag(PalettePlugin):
     def settings(self):
         self.uiContext = UserInterfaceContext(self.currentFont)
 
-        # localization
-        mainBundle = NSBundle.mainBundle()
-
-        self.name = mainBundle.localizedStringForKey_value_table_("Tags", "Tags", None)
-        self.multipleSelectionPlaceholder = mainBundle.localizedStringForKey_value_table_(
-            "Multiple Selection", "Multiple Selection", None)
+        self.name = TAGS_STRING
         self.loadNib('View', __file__)
         self.loadNib('Prompt', __file__)
 
@@ -171,22 +285,7 @@ class GutenTag(PalettePlugin):
         isMultipleSelection = False
 
         if glyphs := self.selectedGlyphs():
-            self.tokenField.setPlaceholderString_(Glyphs.localize({
-                'ar': 'بدون علامات',
-                'cs': 'žádné značky',
-                'de': 'keine Tags',
-                'en': 'no tags',
-                'es': 'sin etiquetas',
-                'fr': 'pas de balises',
-                'it': 'nessun tag',
-                'ja': 'タグなし',
-                'ko': '태그 없음',
-                'pt': 'sem etiquetas',
-                'ru': 'без тегов',
-                'tr': 'etiket yok',
-                'zh-Hans': '没有标签',
-                'zh-Hant': '没有標籤',
-            }))
+            self.tokenField.setPlaceholderString_(NO_TAGS_STRING)
             self.tokenField.setEnabled_(True)
 
             if len(glyphs) == 1:
@@ -208,7 +307,7 @@ class GutenTag(PalettePlugin):
                     self.setFieldTags(firstTags)
                 else:
                     isMultipleSelection = True
-                    self.tokenField.setPlaceholderString_(self.multipleSelectionPlaceholder)
+                    self.tokenField.setPlaceholderString_(MULTIPLE_SELECTION_STRING)
                     self.setFieldTags([])
         else:
             # no glyphs are selected
@@ -341,14 +440,8 @@ class GutenTag(PalettePlugin):
 
     @objc.IBAction
     def promptAddTags_(self, sender):
-        self.promptTitleLabel.setStringValue_(Glyphs.localize({
-            "en": "Add tags to the selected glyphs",
-            "de": "Tags zu ausgewählten Glyphen hinzufügen",
-        }))
-        self.promptConfirmButton.setTitle_(Glyphs.localize({
-            "en": "Add Tags",
-            "de": "Tag hinzufügen",
-        }))
+        self.promptTitleLabel.setStringValue_(ADD_TAGS_TITLE_STRING)
+        self.promptConfirmButton.setTitle_(ADD_TAGS_BUTTON_STRING)
         self.promptCancelButton.setAction_(self.cancelPrompt)
         self.promptCancelButton.setTarget_(self)
         self.promptConfirmButton.setAction_(self.confirmPrompt)
@@ -387,14 +480,8 @@ class GutenTag(PalettePlugin):
 
     @objc.IBAction
     def promptRemoveTags_(self, sender):
-        self.promptTitleLabel.setStringValue_(Glyphs.localize({
-            "en": "Remove tags from the selected glyphs",
-            "de": "Tags von ausgewählten Glyphen entfernen",
-        }))
-        self.promptConfirmButton.setTitle_(Glyphs.localize({
-            "en": "Remove Tags",
-            "de": "Tags entfernen",
-        }))
+        self.promptTitleLabel.setStringValue_(REMOVE_TAGS_TITLE_STRING)
+        self.promptConfirmButton.setTitle_(REMOVE_TAGS_BUTTON_STRING)
         self.promptCancelButton.setAction_(self.cancelPrompt)
         self.promptCancelButton.setTarget_(self)
         self.promptConfirmButton.setAction_(self.confirmPrompt)
@@ -557,22 +644,7 @@ class GutenTag(PalettePlugin):
 
             # show all glyphs menu item
             showGlyphsItem = NSMenuItem.new()
-            showGlyphsItem.setTitle_(Glyphs.localize({  # match Glyphs KerningPanel.strings "aGI-5I-k6x.title" key
-                'ar': 'عرض كل المحارف',
-                'cs': 'Zobrazit všechny glyfy',
-                'de': 'Alle Glyphen anzeigen',
-                'en': 'Show All Glyphs',
-                'es': 'Mostrar todos los glifos',
-                'fr': 'Afficher tous les glyphes',
-                'it': 'Mostra tutti i glifi',
-                'ja': 'すべてのグリフを表示',
-                'ko': '모든 글리프 보기',
-                'pt': 'Exibir Todos os Glifos',
-                'ru': 'Показать все глифы',
-                'tr': 'Tüm Glifleri Göster',
-                'zh-Hans': '显示全部字符形',
-                'zh-Hant': '顯示所有字符',
-            }))
+            showGlyphsItem.setTitle_(SHOW_ALL_GLYPHS_BUTTON_STRING)
             showGlyphsItem.setRepresentedObject_(tag)
             showGlyphsItem.setTarget_(self)
             showGlyphsItem.setAction_(self.showGlyphsForTag_)

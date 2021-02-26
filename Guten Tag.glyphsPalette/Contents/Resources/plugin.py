@@ -206,7 +206,7 @@ class UserInterfaceContext:
 
 
 class GutenTag(PalettePlugin):
-    dialogName = "net.addpixel.GutenTag"
+    dialogName = "com.FlorianPircher.GutenTag"
     dialog = objc.IBOutlet()
     tokenField = objc.IBOutlet()
     batchEditToolbar = objc.IBOutlet()
@@ -225,7 +225,7 @@ class GutenTag(PalettePlugin):
     renameCancelButton = objc.IBOutlet()
     uiContext = None
 
-    userDefaults = UserDefaults(prefix="net.addpixel.GutenTag.")
+    userDefaults = UserDefaults(prefix="com.FlorianPircher.GutenTag.")
     tagPool = []
     suggestionTagPool = []
     menu = None

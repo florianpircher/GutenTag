@@ -35,7 +35,7 @@ Guten Tag offers the following configurable preferences:
 | `GlyphPreviewInset` | `int` | `6` | The inset on all four edges of the glyph preview image in display points. The font size of the glyph preview is `GlyphPreviewSize - (2 * GlyphPreviewInset)`, i.e. the image height without the top and bottom insets. Negatives values crop into the image. |
 | `MaximumGlyphPreviewCount` | `int` | `1000` | Limits the number of glyph previews shown in the tag menu. This is useful since creating glyph previews can be impossibly slow if there are many glyphs for a tag. The limit can be lifted by setting the value to `-1`. |
 
-Each key is prefixed by `net.addpixel.GutenTag.` (for example `GlyphPreviewSize` is addressed as `net.addpixel.GutenTag.GlyphPreviewSize`).
+Each key is prefixed by `com.FlorianPircher.GutenTag.` (for example `GlyphPreviewSize` is addressed as `com.FlorianPircher.GutenTag.GlyphPreviewSize`).
 
 <details>
 <summary>Set Preferences from the Command Line</summary>
@@ -43,36 +43,36 @@ Each key is prefixed by `net.addpixel.GutenTag.` (for example `GlyphPreviewSize`
 Run the following line with `$KEY`, `$TYPE`, and `$VALUE` substituted.
 
 ```
-defaults write com.GeorgSeifert.Glyphs3 net.addpixel.GutenTag.$KEY -$TYPE $VALUE
+defaults write com.GeorgSeifert.Glyphs3 com.FlorianPircher.GutenTag.$KEY -$TYPE $VALUE
 ```
 
 For example, to set the `GlyphPreviewSize` to `100`:
 
 ```
-defaults write com.GeorgSeifert.Glyphs3 net.addpixel.GutenTag.GlyphPreviewSize -int 100
+defaults write com.GeorgSeifert.Glyphs3 com.FlorianPircher.GutenTag.GlyphPreviewSize -int 100
 ```
 </details>
 
 <details>
-<summary>Set Preferences from Glyphs’s Macro Window</summary>
+<summary>Set Preferences from Glyphs’s Macro Panel</summary>
 
 Run the following line with `$KEY` and `$VALUE` substituted.
 
 ```
-Glyphs.defaults['net.addpixel.GutenTag.$KEY'] = $VALUE
+Glyphs.defaults['com.FlorianPircher.GutenTag.$KEY'] = $VALUE
 ```
 
 For example, to set the `GlyphPreviewSize` to `100`:
 
 ```
-Glyphs.defaults['net.addpixel.GutenTag.GlyphPreviewSize'] = 100
+Glyphs.defaults['com.FlorianPircher.GutenTag.GlyphPreviewSize'] = 100
 ```
 </details>
 
 <details>
 <summary>Set Preferences using mekkablue’s scripts</summary>
 
-Select *Script* → *mekkablue* → *App* → *Set Hidden App Preferences*. Enter the preference key (prefixed by `net.addpixel.GutenTag.`) and the value and confirm with *Apply*.
+Select *Script* → *mekkablue* → *App* → *Set Hidden App Preferences*. Enter the preference key (prefixed by `com.FlorianPircher.GutenTag.`) and the value and confirm with *Apply*.
 </details>
 
 ## Licenses

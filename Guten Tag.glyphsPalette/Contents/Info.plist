@@ -2,41 +2,41 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-  <key>CFBundleDevelopmentRegion</key>
-  <string>en</string>
-  <key>CFBundleDisplayName</key>
-  <string>Guten Tag</string>
-  <key>CFBundleIconFile</key>
-  <string>Guten Tag</string>
-  <key>CFBundleExecutable</key>
-  <string>Guten Tag</string>
-  <key>CFBundleIdentifier</key>
-  <string>net.addpixel.GutenTag</string>
-  <key>CFBundleInfoDictionaryVersion</key>
-  <string>6.0</string>
-  <key>CFBundleName</key>
-  <string>Guten Tag</string>
-  <key>CFBundlePackageType</key>
-  <string>BNDL</string>
-  <key>CFBundleShortVersionString</key>
-  <string>0.4.0</string>
-  <key>CFBundleVersion</key>
-  <string>4</string>
-  <key>NSHumanReadableCopyright</key>
-  <string>Copyright 2021 Florian Pircher</string>
-  <key>MinGlyphsVersion</key>
-  <string>3.0.3</string>
-  <key>NSPrincipalClass</key>
-  <string>GutenTag</string>
-  <key>PyMainFileNames</key>
-  <array>
-    <string>plugin.py</string>
-  </array>
-  <key>UpdateFeedURL</key>
-  <string>https://addpixel.net/glyphs/plugins/GutenTag/update</string>
-  <key>productPageURL</key>
-  <string>https://addpixel.net/glyphs/plugins/GutenTag/</string>
-  <key>productReleaseNotes</key>
-  <string>Adds support for keyboard commands (the cancel and new-line commands commit the entered tags and set keyboard focus back to the main window). Adds support for copy and pasting tags. Matches Glyphs’s tokenizing character set (tags can no longer contain line breaks). Improves documentation.</string>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleDisplayName</key>
+	<string>Guten Tag</string>
+	<key>CFBundleIconFile</key>
+	<string>Guten Tag</string>
+	<key>CFBundleExecutable</key>
+	<string>Guten Tag</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.FlorianPircher.GutenTag</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>Guten Tag</string>
+	<key>CFBundlePackageType</key>
+	<string>BNDL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>0.4.0</string>
+	<key>CFBundleVersion</key>
+	<string>4</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>Copyright 2021 Florian Pircher</string>
+	<key>MinGlyphsVersion</key>
+	<string>3.0.3</string>
+	<key>NSPrincipalClass</key>
+	<string>GutenTag</string>
+	<key>PyMainFileNames</key>
+	<array>
+		<string>plugin.py</string>
+	</array>
+	<key>UpdateFeedURL</key>
+	<string>https://florianpircher.com/glyphs/plugins/guten-tag/update</string>
+	<key>productPageURL</key>
+	<string>https://florianpircher.com/glyphs/plugins/guten-tag</string>
+	<key>productReleaseNotes</key>
+	<string>Adds support for keyboard commands (the cancel and new-line commands commit the entered tags and set keyboard focus back to the main window). Adds support for copy and pasting tags. Matches Glyphs’s tokenizing character set (tags can no longer contain line breaks). Improves documentation.</string>
 </dict>
 </plist>

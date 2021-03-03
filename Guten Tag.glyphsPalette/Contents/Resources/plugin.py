@@ -68,20 +68,20 @@ TAGS_STRING = Glyphs.localize({
 MULTIPLE_SELECTION_STRING = mainBundle.localizedStringForKey_value_table_(
     "Multiple Selection", "Multiple Selection", None)
 NO_TAGS_STRING = Glyphs.localize({
-    'ar': 'بدون علامات',
-    'cs': 'žádné značky',
-    'de': 'keine Tags',
-    'en': 'no tags',
-    'es': 'sin etiquetas',
-    'fr': 'pas de balises',
-    'it': 'nessun tag',
-    'ja': 'タグなし',
-    'ko': '태그 없음',
-    'pt': 'sem etiquetas',
-    'ru': 'без меток',
-    'tr': 'etiket yok',
-    'zh-Hans': '没有标签',
-    'zh-Hant': '没有標籤',
+    "ar": "بدون علامات",
+    "cs": "žádné značky",
+    "de": "keine Tags",
+    "en": "no tags",
+    "es": "sin etiquetas",
+    "fr": "pas de balises",
+    "it": "nessun tag",
+    "ja": "タグなし",
+    "ko": "태그 없음",
+    "pt": "sem etiquetas",
+    "ru": "без меток",
+    "tr": "etiket yok",
+    "zh-Hans": "没有标签",
+    "zh-Hant": "没有標籤",
 })
 ADD_TAGS_TITLE_STRING = Glyphs.localize({
     "ar": "إضافة علامات إلى الصور الرمزية المحددة",
@@ -89,8 +89,8 @@ ADD_TAGS_TITLE_STRING = Glyphs.localize({
     "en": "Add tags to the selected glyphs",
     "es": "Añadir etiquetas a los glifos seleccionados",
     "de": "Tags zu ausgewählten Glyphen hinzufügen",
-    "it": "Aggiungi tag ai glifi selezionati",
     "fr": "Ajouter des badges aux glyphes sélectionnés",
+    "it": "Aggiungi tag ai glifi selezionati",
     "ja": "選択したグリフにタグを追加します",
     "ko": "선택한 글리프에 태그 추가",
     "pt": "Adicionar etiquetas aos glifos selecionados",
@@ -105,8 +105,8 @@ ADD_TAGS_BUTTON_STRING = Glyphs.localize({
     "en": "Add Tags",
     "es": "Añadir etiquetas",
     "de": "Tags hinzufügen",
-    "it": "Aggiungi Tag",
     "fr": "Ajouter des badges",
+    "it": "Aggiungi Tag",
     "ja": "タグを追加",
     "ko": "태그 추가",
     "pt": "Adicionar etiquetas",
@@ -121,8 +121,8 @@ REMOVE_TAGS_TITLE_STRING = Glyphs.localize({
     "en": "Remove tags from the selected glyphs",
     "es": "Suprimir etiquetas de los glifos seleccionados",
     "de": "Tags von ausgewählten Glyphen entfernen",
-    "it": "Rimuovi i tag dai glifi selezionati",
     "fr": "Supprimer les badges des glyphes sélectionnés",
+    "it": "Rimuovi i tag dai glifi selezionati",
     "ja": "選択したグリフからタグを削除します",
     "ko": "선택한 글리프에서 태그 제거",
     "pt": "Remover etiquetas dos glifos selecionados",
@@ -137,8 +137,8 @@ REMOVE_TAGS_BUTTON_STRING = Glyphs.localize({
     "en": "Remove Tags",
     "es": "Suprimir etiquetas",
     "de": "Tags entfernen",
-    "it": "Rimuovi Tag",
     "fr": "Supprimer les badges",
+    "it": "Rimuovi Tag",
     "ja": "タグを削除",
     "ko": "태그 제거",
     "pt": "Remover etiquetas",
@@ -147,21 +147,21 @@ REMOVE_TAGS_BUTTON_STRING = Glyphs.localize({
     "zh-Hans": "移除标签",
     "zh-Hant": "移除標籤",
 })
-SHOW_ALL_GLYPHS_BUTTON_STRING = Glyphs.localize({  # match Glyphs KerningPanel.strings "aGI-5I-k6x.title" key
-    'ar': 'عرض كل المحارف',
-    'cs': 'Zobrazit všechny glyfy',
-    'de': 'Alle Glyphen anzeigen',
-    'en': 'Show All Glyphs',
-    'es': 'Mostrar todos los glifos',
-    'fr': 'Afficher tous les glyphes',
-    'it': 'Mostra tutti i glifi',
-    'ja': 'すべてのグリフを表示',
-    'ko': '모든 글리프 보기',
-    'pt': 'Exibir Todos os Glifos',
-    'ru': 'Показать все глифы',
-    'tr': 'Tüm Glifleri Göster',
-    'zh-Hans': '显示全部字符形',
-    'zh-Hant': '顯示所有字符',
+SHOW_ALL_GLYPHS_BUTTON_STRING = Glyphs.localize({
+    "ar": "عرض كل المحارف",
+    "cs": "Zobrazit všechny glyfy",
+    "de": "Alle Glyphen anzeigen",
+    "en": "Show All Glyphs",
+    "es": "Mostrar todos los glifos",
+    "it": "Mostra tutti i glifi",
+    "fr": "Afficher tous les glyphes",
+    "ja": "すべてのグリフを表示",
+    "ko": "모든 글리프 보기",
+    "pt": "Exibir Todos os Glifos",
+    "ru": "Показать все глифы",
+    "tr": "Tüm Glifleri Göster",
+    "zh-Hans": "显示全部字符形",
+    "zh-Hant": "顯示所有字符",
 })
 
 
@@ -207,6 +207,7 @@ class UserInterfaceContext:
 
 class GutenTag(PalettePlugin):
     dialogName = "com.FlorianPircher.GutenTag"
+    # Interface Builder Outlets
     dialog = objc.IBOutlet()
     tokenField = objc.IBOutlet()
     batchEditToolbar = objc.IBOutlet()
@@ -223,12 +224,16 @@ class GutenTag(PalettePlugin):
     renameReplaceField = objc.IBOutlet()
     renameConfirmButton = objc.IBOutlet()
     renameCancelButton = objc.IBOutlet()
+    # Used to wrap code in `disableUpdateInterface` ... `enableUpdateInterface` calls.
     uiContext = None
-
+    # Offers access to the systems user defaults API for values related to the plugin.
     userDefaults = UserDefaults(prefix="com.FlorianPircher.GutenTag.")
+    # Tag names of the current font.
+    # Needs to be reloaded by calling `reloadTagPool`.
+    # This is a cached and thus fast access to `GutenTag.fontTags(self.currentFont())`.
     tagPool = []
+    # Tag names used for token field suggestions.
     suggestionTagPool = []
-    menu = None
 
     # MARK: - Glyph Palette Plugin Methods
 
@@ -237,8 +242,8 @@ class GutenTag(PalettePlugin):
         self.uiContext = UserInterfaceContext(self.currentFont)
 
         self.name = TAGS_STRING
-        self.loadNib('View', __file__)
-        self.loadNib('Prompt', __file__)
+        self.loadNib("View", __file__)
+        self.loadNib("Prompt", __file__)
 
     @objc.python_method
     def start(self):
@@ -314,7 +319,7 @@ class GutenTag(PalettePlugin):
                     self.setFieldTags([])
         else:
             # no glyphs are selected
-            self.tokenField.setPlaceholderString_('')
+            self.tokenField.setPlaceholderString_("")
             self.tokenField.setEnabled_(False)
             self.setFieldTags([])
 
@@ -384,7 +389,7 @@ class GutenTag(PalettePlugin):
     def setFieldTags(self, tags):
         """Sets the value of the token filed to the given tags."""
         tags = sorted(set(tags))
-        self.tokenField.setStringValue_(','.join(tags))
+        self.tokenField.setStringValue_(",".join(tags))
 
     @objc.IBAction
     def updateTagsForSelectedGlyphs_(self, sender):
@@ -414,7 +419,7 @@ class GutenTag(PalettePlugin):
                 view = self.windowController().graphicView()
                 view.replaceActiveLayersWithGlyphs_([glyph])
             else:
-                font.newTab('/' + sender.representedObject().name)
+                font.newTab("/" + sender.representedObject().name)
 
     @objc.IBAction
     def showGlyphsForTag_(self, sender):
@@ -602,7 +607,7 @@ class GutenTag(PalettePlugin):
         self.updateTagsForSelectedGlyphs_(None)
 
         # add a menu with each glyph that has `tag` as a tag
-        self.menu = NSMenu.new()
+        menu = NSMenu.new()
 
         if font := self.currentFont():
             master = font.selectedFontMaster
@@ -610,8 +615,8 @@ class GutenTag(PalettePlugin):
 
             # menu item layout setup
             upm = font.upm
-            viewSize = self.userDefaults.read('GlyphPreviewSize', 56, transform=lambda x: max(1, int(x)))  # pt
-            margin = self.userDefaults.read('GlyphPreviewInset', 6, transform=int)  # pt
+            viewSize = self.userDefaults.read("GlyphPreviewSize", 56, transform=lambda x: max(1, int(x)))  # pt
+            margin = self.userDefaults.read("GlyphPreviewInset", 6, transform=int)  # pt
             fontSize = viewSize - 2 * margin
             offset = upm / (fontSize / margin)
             # view bounds
@@ -645,14 +650,14 @@ class GutenTag(PalettePlugin):
             showGlyphsItem.setRepresentedObject_(tag)
             showGlyphsItem.setTarget_(self)
             showGlyphsItem.setAction_(self.showGlyphsForTag_)
-            self.menu.addItem_(showGlyphsItem)
+            menu.addItem_(showGlyphsItem)
 
-            self.menu.addItem_(NSMenuItem.separatorItem())
+            menu.addItem_(NSMenuItem.separatorItem())
 
             matchingGlyphs = [x for x in font.glyphs if tag in x.tags]
 
             maximumPreviewGlyphCount = self.userDefaults.read(
-                'MaximumGlyphPreviewCount', 1000, transform=lambda x: max(-1, int(x)))
+                "MaximumGlyphPreviewCount", 1000, transform=lambda x: max(-1, int(x)))
 
             if maximumPreviewGlyphCount != -1:
                 previewGlyphs = matchingGlyphs[0:maximumPreviewGlyphCount]
@@ -698,9 +703,9 @@ class GutenTag(PalettePlugin):
                 attributedTitle = NSMutableAttributedString.alloc().initWithString_attributes_(glyph.name, {
                     NSFontAttributeName: menuItemFont
                 })
-                unicodesString = ', '.join(glyph.unicodes) if glyph.unicodes else '—'
+                unicodesString = ", ".join(glyph.unicodes) if glyph.unicodes else "—"
                 unicodesAttrString = NSMutableAttributedString.alloc().initWithString_attributes_(
-                    '\n' + unicodesString,
+                    "\n" + unicodesString,
                     {
                         NSFontAttributeName: menuItemFont.fontWithSize_(NSFont.smallSystemFontSize()),
                         NSForegroundColorAttributeName: NSColor.secondaryLabelColor()
@@ -729,9 +734,9 @@ class GutenTag(PalettePlugin):
             menuItems = [makeManuItem(x) for x in previewGlyphs]
 
             for item in menuItems:
-                self.menu.addItem_(item)
+                menu.addItem_(item)
 
-        return self.menu
+        return menu
 
     def tokenField_completionsForSubstring_indexOfToken_indexOfSelectedItem_(
             self, tokenField, substring, tokenIndex, selectedIndex):
@@ -778,7 +783,7 @@ class GutenTag(PalettePlugin):
 
     def control_textView_doCommandBySelector_(self, control, textView, commandSelector):
         if control == self.tokenField:
-            if commandSelector == 'cancel:':
+            if commandSelector == "cancel:":
                 self.commit()
                 return True
         return False

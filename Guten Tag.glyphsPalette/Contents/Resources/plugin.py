@@ -20,7 +20,6 @@ import objc
 from AppKit import (
     NSAffineTransform,
     NSBezierPath,
-    NSBundle,
     NSColor,
     NSControlStateValueMixed,
     NSControlStateValueOn,
@@ -47,8 +46,6 @@ from GlyphsApp.plugins import PalettePlugin
 
 
 # localization
-mainBundle = NSBundle.mainBundle()
-
 TAGS_STRING = Glyphs.localize({
     "ar": "العلامات",
     "cs": "Značky",
@@ -65,8 +62,22 @@ TAGS_STRING = Glyphs.localize({
     "zh-Hans": "标签",
     "zh-Hant": "標籤",
 })
-MULTIPLE_SELECTION_STRING = mainBundle.localizedStringForKey_value_table_(
-    "Multiple Selection", "Multiple Selection", None)
+MULTIPLE_VALUES_STRING = Glyphs.localize({
+    "ar": "قيم متعددة",
+    "cs": "Více hodnot",
+    "de": "Mehrere Werte",
+    "en": "Multiple Values",
+    "es": "Valores múltiples",
+    "fr": "Valeurs multiples",
+    "it": "Valori Multipli",
+    "ja": "複数値",
+    "ko": "여러 값",
+    "pt": "Seleção múltipla",  # TODO
+    "ru": "Множественное выделение",  # TODO
+    "tr": "Çoklu Değer",
+    "zh-Hans": "多个值",
+    "zh-Hant": "多選",  # TODO
+})
 NO_TAGS_STRING = Glyphs.localize({
     "ar": "بدون علامات",
     "cs": "žádné značky",
@@ -315,9 +326,10 @@ class GutenTag(PalettePlugin):
                     self.setFieldTags(firstTags)
                 else:
                     isMultipleSelection = True
-                    self.tokenField.setPlaceholderString_(MULTIPLE_SELECTION_STRING)
+                    self.tokenField.setPlaceholderString_(MULTIPLE_VALUES_STRING)
                     self.setFieldTags([])
         else:
+            print("N")
             # no glyphs are selected
             self.tokenField.setPlaceholderString_("")
             self.tokenField.setEnabled_(False)

@@ -29,12 +29,13 @@
             <rect key="contentRect" x="283" y="311" width="396" height="125"/>
             <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1440"/>
             <view key="contentView" id="Ot2-vy-6O3">
-                <rect key="frame" x="0.0" y="0.0" width="396" height="125"/>
+                <rect key="frame" x="0.0" y="0.0" width="396" height="129"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <tokenField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="efn-IH-VEj" customClass="MultilineTokenField">
-                        <rect key="frame" x="20" y="60" width="356" height="21"/>
+                        <rect key="frame" x="20" y="60" width="356" height="25"/>
                         <constraints>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="25" id="1s7-Zd-sUK"/>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="112" id="ZvP-wj-aaD"/>
                         </constraints>
                         <tokenFieldCell key="cell" selectable="YES" editable="YES" borderStyle="bezel" alignment="left" drawsBackground="YES" allowsEditingTextAttributes="YES" id="9zL-Fh-XCn">
@@ -64,7 +65,7 @@ Gw
                         </buttonCell>
                     </button>
                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="xby-yK-qw3">
-                        <rect key="frame" x="18" y="89" width="360" height="16"/>
+                        <rect key="frame" x="18" y="93" width="360" height="16"/>
                         <textFieldCell key="cell" title="Title" id="9ff-cS-Bug">
                             <font key="font" textStyle="headline" name=".SFNS-Bold"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>

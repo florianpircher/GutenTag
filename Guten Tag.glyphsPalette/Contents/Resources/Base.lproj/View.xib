@@ -18,15 +18,15 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView translatesAutoresizingMaskIntoConstraints="NO" id="1" customClass="GSPaletteView">
-            <rect key="frame" x="0.0" y="0.0" width="219" height="20"/>
+            <rect key="frame" x="0.0" y="0.0" width="219" height="22"/>
             <subviews>
                 <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="1" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HWZ-d3-G1h">
-                    <rect key="frame" x="-1" y="0.0" width="221" height="20"/>
+                    <rect key="frame" x="-1" y="0.0" width="221" height="22"/>
                     <subviews>
                         <tokenField verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="GB7-Mw-kD4" customClass="GutenTagTokenField">
-                            <rect key="frame" x="0.0" y="0.0" width="221" height="20"/>
+                            <rect key="frame" x="0.0" y="0.0" width="221" height="22"/>
                             <constraints>
-                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="Cep-hr-Si4"/>
+                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="22" id="Cep-hr-Si4"/>
                             </constraints>
                             <tokenFieldCell key="cell" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="left" drawsBackground="YES" allowsEditingTextAttributes="YES" id="XFd-hM-Mgk">
                                 <font key="font" metaFont="cellTitle"/>
@@ -38,7 +38,7 @@
                             </connections>
                         </tokenField>
                         <stackView hidden="YES" distribution="equalSpacing" orientation="horizontal" alignment="centerY" spacing="4" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="1000" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dqB-h7-5Xv">
-                            <rect key="frame" x="2" y="0.0" width="216" height="20"/>
+                            <rect key="frame" x="2" y="2" width="216" height="20"/>
                             <subviews>
                                 <stackView distribution="fillEqually" orientation="horizontal" alignment="centerY" spacing="4" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jrs-H0-xuQ">
                                     <rect key="frame" x="0.0" y="2" width="50" height="18"/>

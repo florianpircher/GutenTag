@@ -612,7 +612,7 @@ class GutenTag(PalettePlugin):
         return tag
 
     def tokenField_hasMenuForRepresentedObject_(self, tokenField, tag):
-        return tokenField == self.tokenField
+        return tokenField is self.tokenField
 
     def tokenField_menuForRepresentedObject_(self, tokenField, tag):
         # apply tags to selected glyphs so that they show up in the menu

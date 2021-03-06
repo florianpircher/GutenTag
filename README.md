@@ -5,6 +5,8 @@ It allows you to edit glyph tags from both the font view *and* edit view.
 
 [![](Screenshot.png)](https://xgc.io/b/glyphs/guten-tag/1.mp4)
 
+[Install **Guten Tag** in Glyphs](https://florianpircher.com/glyphs/plugins/guten-tag/install)
+
 ## Features
 
 - View and edit your tags from the font view and the edit view.

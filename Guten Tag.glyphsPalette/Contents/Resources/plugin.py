@@ -241,7 +241,7 @@ class GutenTag(PalettePlugin):
     userDefaults = UserDefaults(prefix="com.FlorianPircher.GutenTag.")
     # Tag names of the current font.
     # Needs to be reloaded by calling `reloadTagPool`.
-    # This is a cached and thus fast access to `GutenTag.fontTags(self.currentFont())`.
+    # This is a cached and thus fast access to `self.currentFont().allTags()`.
     tagPool = []
     # Tag names used for token field suggestions.
     suggestionTagPool = []
@@ -349,16 +349,6 @@ class GutenTag(PalettePlugin):
     # MARK: - Utility Functions
 
     @objc.python_method
-    def fontTags(font):
-        """Returns the tags of all glyphs in the given font."""
-        tags = set()
-
-        for glyph in font.glyphs:
-            tags.update(glyph.tags)
-
-        return tags
-
-    @objc.python_method
     def selectedTags(self):
         """Returns the tags of all selected glyphs."""
         tags = set()
@@ -393,7 +383,7 @@ class GutenTag(PalettePlugin):
     def reloadTagPool(self):
         """Loads all tags of the font into the tag pool."""
         if font := self.currentFont():
-            self.tagPool = GutenTag.fontTags(font)
+            self.tagPool = font.allTags()
         else:
             self.tagPool = []
 

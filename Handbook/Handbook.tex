@@ -1,0 +1,405 @@
+\documentclass[%
+  DIV = 9,%
+  twoside = false,%
+  fontsize = 11.5,%
+  numbers = noenddot]{scrbook}
+\usepackage{luacode}
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\setdefaultlanguage{english}
+\usepackage[%
+  babel = true,%
+  letterspace = 38]{microtype}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{csquotes}
+\usepackage{graphicx}
+\usepackage{pdfpages}
+\usepackage{wrapfig}
+\usepackage[%
+  pages = some]{background}
+\usepackage{listings}
+\usepackage[%
+  unicode,%
+  hidelinks]{hyperref}
+\usepackage{titlesec}
+\usepackage{fnpct}
+\usepackage{xparse}
+\usepackage{metalogo}
+
+\LuaCodeDebugOn
+
+\begin{luacode*}
+  function dirname(path)
+    if path:match(".-/.-") then
+      local path = path:gsub("(.*/)(.*)", "%1")
+      return path
+    end
+    
+    return ""
+  end
+  
+  function run_command(cmd)
+    local f = io.popen(cmd, "r")
+    local str = f:read("*a")
+    f:close()
+    return str
+  end
+  
+  function trim_whitespace(s)
+     return (s:gsub("^%s*(.-)%s*$", "%1"))
+  end
+  
+  function as_points(dimention)
+    return dimention / 65536
+  end
+  
+  function font_root(font_name)
+    local font_path = run_command("fontpath \""..font_name.."\"")
+    return dirname(font_path)
+  end
+  
+  function extra_font_root()
+    local path = run_command("extrafontpath")
+    root = path:gsub("%s*$", "")
+    return root.."/"
+  end
+  
+  function macos_userinterface_path(pathcode)
+    local elements = {}
+    
+    for element in string.gmatch(pathcode, "([^>]+)") do
+      element_label = trim_whitespace(element)
+      table.insert(elements, "\\PathElement{"..element_label.."}")
+    end
+    
+    tex.print(table.concat(elements, "\\PathSeparator"))
+  end
+  
+  function parse_crop_code(code)
+    crop = {}
+    
+    for offset in string.gmatch(code, "%d+") do
+      table.insert(crop, offset)
+    end
+    
+    return crop[1], crop[2], crop[3], crop[4]
+  end
+  
+  function screenshot_crop_for_frame(frame)
+    if frame == "window" then
+      return 111, 147, 111, 75
+    elseif frame == "panel" then
+      return 46, 54, 46, 38
+    elseif frame == "none" then
+      return 0, 0, 0, 0
+    else
+      return parse_crop_code(frame)
+    end
+  end
+  
+  function screenshot_graphic(file, is_crop, scale, frame, top_compensation, bottom_compensation)
+    local min_x, min_y, inverse_max_x, inverse_max_y = screenshot_crop_for_frame(frame)
+    
+    if top_compensation > 0 then
+      inverse_max_y = inverse_max_y / top_compensation
+    end
+    if bottom_compensation > 0 then
+      min_y = min_y / bottom_compensation
+    end
+    
+    local image = img.scan { filename = file }
+    local res_x = image.xres
+    local res_y = image.yres
+    local size_x = image.xsize
+    local size_y = image.ysize
+    
+    local unit = image.width / size_x
+    local frame_size = image.width - (min_x + inverse_max_x) * unit
+    
+    local image_width = frame_size / scale
+    local textwidth = tex.getdimen("textwidth")
+    local width = math.min(image_width, textwidth)
+    
+    local max_x = size_x - inverse_max_x
+    local max_y = size_y - inverse_max_y
+    
+    width = as_points(width)
+    min_x = min_x / res_x
+    min_y = min_y / res_y
+    max_x = max_x / res_x
+    max_y = max_y / res_y
+    
+    local options = ""
+    
+    if is_crop then
+      options = options..", clip = true"
+    end
+    
+    return "\\includegraphics[width = "..width.."pt, viewport = "..min_x.."in "..min_y.."in "..max_x.."in "..max_y.."in"..options.."]{"..file.."}"
+  end
+  
+  function modifier_key_symbols(code)
+    local is_shift = false
+    local is_control = false
+    local is_option = false
+    local is_command = false
+    
+    for element in string.gmatch(code, "(%S+)") do
+      if element == "shift" then
+        is_shift = true
+      elseif element == "control" then
+        is_control = true
+      elseif element == "option" then
+        is_option = true
+      elseif element == "command" then
+        is_command = true
+      end
+    end
+    
+    symbols = ""
+    
+    if is_shift then
+      symbols = symbols.."⇧"
+    elseif is_control then
+      symbols = symbols.."⌃"
+    elseif is_option then
+      symbols = symbols.."⌥"
+    elseif is_command then
+      symbols = symbols.."⌘"
+    end
+    
+    return symbols
+  end
+  
+  function key_symbol(name)
+    local key_symbols = {
+      ["escape"] = "⎋",
+      ["clear"] = "⌧",
+      ["delete left"] = "⌫",
+      ["delete right"] = "⌦",
+      ["eject"] = "⏏",
+      ["shift"] = "⇧",
+      ["control"] = "⌃",
+      ["option"] = "⌥",
+      ["command"] = "⌘",
+      ["caps lock"] = "⇪",
+      ["return"] = "⏎",
+    }
+    
+    if key_symbols[name] ~= nil then
+      return "{\\symbolfont{"..key_symbols[name].."}}"
+    else
+      return name
+    end
+  end
+\end{luacode*}
+
+\definecolor{GutesGreen}{rgb}{0.58,0.73,0.63}
+
+\defaultfontfeatures{%
+  Scale = MatchLowercase,%
+  Contextuals = Alternate}
+\defaultfontfeatures[\rmfamily]{Scale = 1}
+
+\setmainfont{Kaius Pro}
+\newfontfamily{\tabularfont}{Kaius Pro}[%
+  Numbers = Monospaced]
+\newfontfamily{\chapterfont}{Kaius Pro Light}[%
+  Numbers = Lining]
+\newfontfamily{\chaptercounterfont}{Kaius Pro}
+\newfontfamily{\sectionfont}{Kaius Pro Bold}[%
+  Numbers = {Lining, Monospaced}]
+\newfontfamily{\subsectionfont}{Kaius Pro Bold Italic}[%
+  Numbers = Monospaced]
+\newfontfamily{\paragraphfont}{Kaius Pro Regular Italic}
+\newfontfamily{\footnotereffont}{Kaius Pro Light}[%
+  VerticalPosition = Superior]
+\newfontfamily{\footnotemarkfont}{Kaius Pro}[%
+  Numbers = {Monospaced, Lining}]
+\newfontfamily{\patharrowfont}{Kaius Pro Light}[%
+  Letters = Uppercase]
+\newfontfamily{\latexlogoafont}{Kaius Pro Medium}
+\newfontfamily{\arfont}{Lyon Arabic Text Regular}[%
+  Script = Arabic]
+\newfontfamily{\cjfont}{Kaiti.ttc}[%
+  Path = \luadirect{tex.print(font_root("Kaiti TC"))},%
+  Script = CJK]
+\newfontfamily{\kofont}{AGChoiJeongHoScreen.otf}[%
+  Path = \luadirect{tex.print(extra_font_root())},%
+  Script = CJK,%
+  Language = Korean]
+\newfontfamily{\symbolfont}{GutenTagSymbols-Regular.otf}
+\newfontfamily{\applelogofont}{Avenir Next}
+\setsansfont{SkolarSansLatn-Rg.otf}[%
+  Path = \luadirect{tex.print(extra_font_root())}]
+\setmonofont{Codelia}
+\newfontfamily{\mediumitalicmonofont}{Codelia Medium Italic}
+
+\newcommand{\textRTL}[1]{\bgroup\textdir TRT{#1}\egroup}
+\newcommand*{\capskip}{\hspace{\fontcharht\font`T}}
+
+%%  Layout Formatting
+\AtBeginDocument{%
+  \setlength{\parindent}{1.8em}%
+  \setlength{\baselineskip}{15pt}}
+
+%% Fonts
+% Levels
+\setkomafont{chapter}%
+  {\normalfont\chapterfont\Huge}
+\setkomafont{section}%
+  {\normalfont\sectionfont}
+\setkomafont{subsection}%
+  {\normalfont\subsectionfont}
+\setkomafont{paragraph}%
+  {\normalfont\paragraphfont}
+% Table of Contents
+\setkomafont{chapterentry}%
+  {\normalfont\bfseries}
+\setkomafont{footnote}%
+  {\addfontfeature{LetterSpace=1.5}}
+
+\pagestyle{headings}
+
+\RedeclareSectionCommands[%
+  toclinefill = {},%
+  tocraggedpagenumber,%
+  tocentrynumberformat = \tabularfont,%
+]{chapter,section,subsection}
+\RedeclareSectionCommands[%
+  beforeskip = \baselineskip,%
+  afterindent = false,%
+  tocentryformat = \bfseries,%
+]{chapter}
+\RedeclareSectionCommands[%
+  afterskip = 0.5\baselineskip,%
+]{section}
+\RedeclareSectionCommands[%
+  tocentryformat = \itshape,%
+]{subsection}
+\RedeclareSectionCommand[%
+  beforeskip = \baselineskip,%
+]{paragraph}
+
+\titleformat{\chapter}[display]%
+  {\vspace{-7.3em}\Huge\chapterfont}
+  {\hfill\raisebox{-1.2em}[0pt][0pt]{%
+      \textcolor{black!16}{%
+        \fontsize{3em}{3em}%
+        \selectfont%
+        \chaptercounterfont%
+        \thechapter}}%
+  \hspace{-0.1em}}%
+  {0pt}%
+  {}
+  [\vspace{-0.7em}]
+
+% Footnotes
+\deffootnotemark%
+  {{\footnotereffont\thefootnotemark}}
+
+\deffootnote{1em}{1em}%
+  {\footnotemarkfont\thefootnotemark\enskip}
+
+\setfootnoterule[0pt]{0pt}
+
+% Lists
+\renewcommand{\descriptionlabel}[1]{\hspace{\labelsep}{#1}}
+
+% Inline Styles
+\urlstyle{rm}
+
+% Logos
+\setLaTeXa{\latexlogoafont\fontsize{9pt}{9pt}\selectfont A}
+\setlogokern{La}{-0.32em}
+\setlogokern{aT}{-0.1em}
+\setlogodrop{0.37ex}
+
+%% Inline Commands
+% Symbols
+\newcommand*{\AppleLogo}{{\applelogofont\symbol{"F8FF}}}
+\newcommand*{\InlineSeparator}{\hspace{0.3em}{\symbolfont•}\hspace{0.3em}}
+
+% UI Text
+\newcommand*{\Label}[1]{\emph{#1}}
+\newcommand*{\PathElement}[1]{\Label{#1}}
+\newcommand*{\PathSeparator}{~{\patharrowfont→} }
+\newcommand*{\Path}[1]{\luadirect{macos_userinterface_path(\luastring{#1})}}
+
+\newcommand*\PrefKeyDef[1]{\normalfont\texttt{#1}}
+\newcommand*\PrefKeyRef[1]{\normalfont\texttt{#1}}
+
+\makeatletter
+\newcommand*{\PrefKey}{%
+  \@ifstar%
+    \PrefKeyDef%
+    \PrefKeyRef}
+\makeatother
+
+\newcommand*{\ButtonSymbol}[1]{%
+  \raisebox{-0.15em}{\includegraphics[height=1em]{Images/#1 Button.pdf}}}
+
+\NewDocumentCommand{\KeyboardEquivalent}{o m}{%
+  \IfNoValueTF{#1}{}{{\symbolfont\luadirect{tex.print(modifier_key_symbols(\luastring{#1}))}}\kern1pt}%
+  {\addfontfeatures{Letters=Uppercase}\luadirect{tex.print(key_symbol(\luastring{#2}))}}}
+
+% Syntax Highlighting
+\newcommand*{\Keyword}[1]{\textit{#1}}
+\newcommand*{\ControlFlow}[1]{\textcolor{red!80!blue!70!black}{\mediumitalicmonofont#1}}
+\newcommand*{\Storage}[1]{\textcolor{blue!65!green!85!black}{#1}}
+\newcommand*{\String}[1]{\textcolor{red!80!black}{#1}}
+\newcommand*{\Variable}[1]{\textcolor{green!45!black}{#1}}
+\newcommand*{\Token}[1]{\textcolor{orange!55!white!45!black}{#1}}
+\newcommand*{\Comment}[1]{\textcolor{black!65}{#1}}
+
+%% Block Commands
+% Screenshots
+\newcommand*{\ScreenshotFigure}[1]{%
+  \vspace{0.7\baselineskip}%
+  \noindent#1%
+  \vspace{0.5\baselineskip}}
+
+% {file}{is_crop}{scale}{frame}{tc}{bc}
+\newcommand*{\ScreenshotGraphic}[6]{%
+  \luadirect{tex.print(screenshot_graphic(\luastring{#1}, #2, #3, \luastring{#4}, #5, #6))}}
+
+% [frame][scale]{file}
+\NewDocumentCommand{\Screenshot}{s O{0, 0, 0, 0} O{2} m}{%
+  \ScreenshotGraphic%
+    {#4}%
+    {\IfBooleanTF{#1}{true}{false}}%
+    {#3}%
+    {#2}%
+    {\IfBooleanTF{#1}{0}{1.2}}%
+    {\IfBooleanTF{#1}{0}{1.4}}}
+
+% Code Listings
+\lstset{%
+  basicstyle = \fontsize{11}{14}\selectfont\ttfamily,%
+  flexiblecolumns = true,%
+  keepspaces = true,%
+  tabsize = 2,%
+  frame = none,%
+  aboveskip = 3mm plus 2pt minus 2pt,%
+  belowskip = 3mm plus 2pt minus 2pt}
+
+\lstnewenvironment{RichListing}%
+  {\lstset{escapeinside = {<@}{@>}}}%
+  {}
+
+\newcommand*{\SetOperationWrapFigure}[1]{%
+  \begin{wrapfigure}[0]{r}[4pt]{58pt}
+    \vspace{-1.4em}{\includegraphics[width=58pt]{Images/Set Operations/#1.pdf}}
+  \end{wrapfigure}}
+
+\begin{document}
+  \begin{titlepage}
+    \includepdf[pages=1]{Cover.pdf}
+  \end{titlepage}
+  
+  \nonfrenchspacing
+  \raggedbottom
+  
+  \input{Content.tex}
+\end{document}

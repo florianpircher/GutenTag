@@ -1,0 +1,73 @@
+\chapter{Guten Tag}%
+\label{cha:guten_tag}
+
+\noindent Guten~Tag adds a \emph{Tags} palette to the top right corner of your Glyphs window.
+There, you can edit the tags for the currently selected glyphs.
+
+\bigbreak\noindent%
+\Screenshot[window]{Images/Glyphs window with empty tags field.png}
+\bigbreak
+
+\section{Adding \& Removing Tags}%
+\label{sec:adding_and_removing_tags}
+
+\Screenshot*[1656, 1086, 112, 232][1.5]{Images/Type tag name.png}\hfill
+\Screenshot*[1656, 1086, 112, 232][1.5]{Images/Tokenize tag name.png}\hfill
+\Screenshot*[1656, 1086, 112, 232][1.5]{Images/Type tag name with suggestion.png}
+
+\medbreak\noindent Click on the tags field and start typing the name of a tag.
+Tags can include letters, numbers, spaces, and other punctuation marks.
+Only the comma (\texttt{,}) is special.
+Typing a comma or pressing Return will add the tag and display its name in a blue token.
+An autocompletion menu pops up when typing a tag that is already used within the font.
+Accept a suggestion by pressing Return.
+
+\noindent%
+\Screenshot*[1656, 1086, 112, 232][1.5]{Images/Tag name selected.png}\hfill
+\Screenshot*[1656, 1086, 112, 232][1.5]{Images/Tokenize tag name.png}\hfill
+\Screenshot*[1656, 1086, 112, 232][1.5]{Images/Glyphs window with empty tags field.png}\hfill
+
+\medbreak\noindent You can edit tags like normal text: drag the mouse cursor to select tags or use keyboard commands like \KeyboardEquivalent[shift]{←} or \KeyboardEquivalent[shift]{→}.
+Selected tags appear with a white font on a dark blue background.
+Delete tags by pressing the Delete~\KeyboardEquivalent{delete left} key.
+
+\section{Batch Editing Tags}%
+\label{sec:batch_editing_tags}
+
+Editing tags from the tags field is possible when you have only one glyph selected or all selected glyphs have the same tags.
+If, however, the tags of the selected glyphs are different then Guten~Tag can no longer show a unified tags field.
+Instead, \enquote{Multiple Values} is displayed in the tags field and an additional row of controls appears at the bottom of the Guten~Tag palette.
+
+\bigbreak\noindent%
+\Screenshot[window]{Images/Multiple Selection.png}
+
+\bigbreak\noindent Typing into a multiple-values field will overwrite the tags for all selected glyphs.
+If you want to change tags individually without modifying any of the other tags, use the three buttons below the tags field.
+
+\subsection{Add Tags}%
+\label{sub:add_tags}
+
+Pressing the Plus \ButtonSymbol{Plus} button allows you to add tags to the currently selected glyphs.
+All existing tags of the selected glyphs will be maintained.
+
+\medbreak\noindent%
+\Screenshot*[286, 550, 286, 500]{Images/Batch Add Tags.png}
+
+\subsection{Remove Tags}%
+\label{sub:remove_tags}
+
+Removing tags works similarly.
+Press the Minus \ButtonSymbol{Minus} button and enter the tags that you want to remove from all selected glyphs.
+
+\medbreak\noindent%
+\Screenshot*[286, 550, 286, 500]{Images/Batch Remove Tags.png}
+
+\subsection{Rename Tags}%
+\label{sub:rename_tags}
+
+You can also batch rename tags by pressing \Label{Rename}.
+Select the tag that you want to rename and enter its new name.
+You can also rename a tag to the name of another tag\kern0.05em, merging the two.
+
+\medbreak\noindent%
+\Screenshot*[286, 550, 286, 500]{Images/Batch Rename Tags.png}

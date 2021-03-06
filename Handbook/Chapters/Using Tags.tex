@@ -1,0 +1,217 @@
+\chapter{Using Tags}%
+\label{cha:using_tags}
+
+In the previous chapter, you have learned how to add and remove tags to and from glyphs.
+This chapter introduces workflows for which tags can be helpful.
+
+\section{Navigate Between Related Glyphs}%
+\label{sec:navigate_between_related_glyphs}
+
+Each tag has a small disclosure chevron next to its name.
+Click on the chevron to open a menu containing all glyphs with the tag.
+You can also Control-click anywhere on the tag to access the menu.
+
+\medbreak\noindent\Screenshot[0, 54, 347, 0]{Images/Glyphs Preview Menu.png}
+
+% \medbreak\noindent The menu presents each glyph for the selected tag with its name, image, Unicode values, and colors.
+\medbreak\noindent The menu presents all glyphs belonging to the tag with their names, images, Unicode values, and colors.
+Select a glyph from the menu to open it in the edit view.
+If you are already in the edit view, the currently edited glyph gets replaced by the selected glyph.
+
+A checkmark next to a glyph indicates the current glyph.
+When multiple glyphs are selected, each selected glyph is marked by a horizontal line instead.
+
+Selecting \Label{Show All Glyphs} at the top of the menu opens all glyphs with the selected tag in a new edit view tab.
+
+The size of the glyph images and the number of glyphs to display in the menu can be adjusted.
+See section~\ref{sec:glyph_preview_menu} on page~\pageref{sec:glyph_preview_menu} for details.
+
+Glyph navigation using tags can be useful for a variety of cases.
+You can tag glyphs by their shape (for example \emph{round} or \emph{square}),
+by their proportions (\emph{narrow}, \emph{tabular},~…),
+by their placement (\emph{top}, \emph{bottom}, \emph{overlay},~…),
+relation to other glyphs (\emph{caseable}/\emph{case}, \emph{ligating},~…), or
+design features (\emph{tail}, \emph{leg}, \emph{crossbar},~…).
+This way, when you make changes to one glyph, you can quickly jump to the other glyphs with the same tags and apply the change there, too.
+
+\section{Tags for OpenType Feature Code}%
+\label{sec:tags_for_opentype_feature_code}
+
+You can use tags in your feature code to create glyph classes.
+The two expressions \texttt{\$["some-tag" in tags]} and \texttt{\$[tags contains "some-tag"]} are equivalent:
+They expand into a space-separated list of glyph names for all glyphs with the tag \emph{some-tag}.
+See the Glyphs tutorial on tokens\footnote{\url{https://glyphsapp.com/learn/tokens}} for a general introduction to the \texttt{\$[…]} notation.
+In case of tags, the token
+
+\begin{RichListing}
+<@\hspace{\parindent}@><@\Token{\$[}@><@\String{"narrow"}@> <@\Keyword{in}@> <@\Storage{tags}@><@\Token{]}@>
+\end{RichListing}
+
+\noindent expands to
+
+\begin{RichListing}
+<@\hspace{\parindent}@>dotaccentcomb dotaccentcomb.case dotbelowcomb
+\end{RichListing}
+
+\noindent if the glyphs \emph{dotaccentcomb}, \emph{dotaccentcomb.case}, \& \emph{dotbelowcomb} have the tag \emph{narrow}.
+
+Tokens allow you to describe what kind of glyphs you want in your glyphs classes.
+The \texttt{\$["…" in tags]} expression shown above collects all glyphs for a given tag.
+When you add or remove tags using Guten~Tag\kern0.05em, you don’t need to update your feature code.
+All glyphs classes defined using tokens are updated automatically on export by Glyphs.
+
+A glyphs class can be defined from the sidebar in of feature code editor or inline with other feature code.
+If you create glyph classes in the sidebar, place the \texttt{\$[…]} token directly into the code editor:
+
+\bigbreak\noindent\Screenshot[111, 0, 111, 75]{Images/Token Feature Code.png}
+
+\noindent Otherwise, wrap the token in square brackets and assign it to a \texttt{@Class}.
+
+\begin{RichListing}
+<@\Variable{@Narrow}@> = [<@\Token{\$[}@><@\String{"narrow"}@> <@\Keyword{in}@> <@\Storage{tags}@><@\Token{]}@>];
+\end{RichListing}
+
+\noindent You can combine tags with other predicates:
+
+\begin{RichListing}
+<@\Variable{@NarrowMarks}@> = [<@\Token{\$[}@><@\String{"narrow"}@> <@\Keyword{in}@> <@\Storage{tags}@> <@\Keyword{and}@> <@\Storage{category}@> == <@\String{"Mark"}@><@\Token{]}@>];
+<@\Variable{@NarrowCTA}@>   = [<@\Token{\$[}@><@\String{"narrow"}@> <@\Keyword{in}@> <@\Storage{tags}@> <@\Keyword{and}@>
+                  <@\Storage{name}@> <@\Keyword{in}@> <@\Storage{class}@>(<@\Variable{CombiningTopAccents}@>)<@\Token{]}@>];
+\end{RichListing}
+
+\noindent Glyphs tokens can be used to perform set arithmetic on tags.
+All basic set operations are presented in the following examples for the two tags \emph{A} and \emph{B}.
+
+\paragraph{Identity}%
+\label{par:identity}
+
+\SetOperationWrapFigure{Id}
+
+All glyphs that have the tag \emph{A}.
+
+\begin{RichListing}
+<@\Token{\$[}@><@\String{"A"}@> <@\Keyword{in}@> <@\Storage{tags}@><@\Token{]}@>
+\end{RichListing}
+
+\paragraph{Complement}%
+\label{par:complement}
+
+\SetOperationWrapFigure{Complement}
+
+All glyphs that do not have the tag \emph{A}.
+
+\begin{RichListing}
+<@\Token{\$[}@><@\Keyword{not}@> <@\String{"A"}@> <@\Keyword{in}@> <@\Storage{tags}@><@\Token{]}@>
+\end{RichListing}
+
+\paragraph{Union}%
+\label{par:union}
+
+\SetOperationWrapFigure{Union}
+
+All glyphs that have the tag \emph{A} or the tag \emph{B} (or both).
+
+\begin{RichListing}
+<@\Token{\$[}@><@\String{"A"}@> <@\Keyword{in}@> <@\Storage{tags}@> <@\Keyword{or}@> <@\String{"B"}@> <@\Keyword{in}@> <@\Storage{tags}@><@\Token{]}@>
+\end{RichListing}
+
+\paragraph{Intersection}%
+\label{par:intersection}
+
+\SetOperationWrapFigure{Intersection}
+
+All glyphs that have both the tag \emph{A} and the tag \emph{B}.
+
+\begin{RichListing}
+<@\Token{\$[}@><@\String{"A"}@> <@\Keyword{in}@> <@\Storage{tags}@> <@\Keyword{and}@> <@\String{"B"}@> <@\Keyword{in}@> <@\Storage{tags}@><@\Token{]}@>
+\end{RichListing}
+
+\paragraph{Difference}%
+\label{par:difference}
+
+\SetOperationWrapFigure{Difference}
+
+All glyphs that have the tag \emph{A} but not the tag \emph{B}.
+
+\begin{RichListing}
+<@\Token{\$[}@><@\String{"A"}@> <@\Keyword{in}@> <@\Storage{tags}@> <@\Keyword{and}@> <@\Keyword{not}@> <@\String{"B"}@> <@\Keyword{in}@> <@\Storage{tags}@><@\Token{]}@>
+\end{RichListing}
+
+\paragraph{Symmetric difference}%
+\label{par:symmetric_difference}
+
+All glyphs that either have the tag \emph{A} or the tag \emph{B}, but not both.
+The symmetric difference can be expressed in two ways.
+
+\SetOperationWrapFigure{Symmetric Difference}
+
+\begin{RichListing}
+<@\Comment{\# union of differences:}@>
+<@\Token{\$[}@>(    <@\String{"A"}@> <@\Keyword{in}@> <@\Storage{tags}@> <@\Keyword{and}@> <@\Keyword{not}@> <@\String{"B"}@> <@\Keyword{in}@> <@\Storage{tags}@>) <@\Keyword{or}@>
+  (<@\Keyword{not}@> <@\String{"A"}@> <@\Keyword{in}@> <@\Storage{tags}@> <@\Keyword{and}@>     <@\String{"B"}@> <@\Keyword{in}@> <@\Storage{tags}@>)<@\Token{]}@>
+<@\Comment{\# one and only one:}@>
+<@\Token{\$[}@>    (<@\String{"A"}@> <@\Keyword{in}@> <@\Storage{tags}@> <@\Keyword{or}@>  <@\String{"B"}@> <@\Keyword{in}@> <@\Storage{tags}@>) <@\Keyword{and}@>
+  <@\Keyword{not}@> (<@\String{"A"}@> <@\Keyword{in}@> <@\Storage{tags}@> <@\Keyword{and}@> <@\String{"B"}@> <@\Keyword{in}@> <@\Storage{tags}@>)<@\Token{]}@>
+\end{RichListing}
+
+\begin{center}
+  ❧
+\end{center}
+
+\vspace{3mm plus 2pt minus 2pt}\noindent All examples above can be combined with all other token predicates:
+Whether a glyph has components (\texttt{hasComponents == true}),
+how many tags it has (\texttt{countOfTags > 5}),
+if the name contains a suffix (\texttt{name like "*.alt"}),
+how high an anchor of the glyph is (\texttt{layer0.anchors.top.y > 580}),
+and many more.
+Again, read the Glyphs tutorial on tokens to see all possibilities.
+
+\section{Scripting With Tags}%
+\label{sec:scripting_with_tags}
+
+Tags are also useful for scripting.
+The Glyphs API exposes the \texttt{tags} property\footnote{\url{https://docu.glyphsapp.com/Core/Classes/GSGlyph.html\#//api/name/tags}} on glyphs.
+This property is wrapped by the Python Scripting API starting from Glyphs 3.0.3.
+In Python, you can iterate over the tags of a glyph like so:
+
+\begin{RichListing}
+<@\ControlFlow{for}@> <@\Variable{tag}@> <@\ControlFlow{in}@> <@\Variable{someGlyph}@>.tags:
+    <@\Storage{print}@>(<@\Variable{tag}@>)
+\end{RichListing}
+
+\medbreak\noindent\Screenshot[window]{Images/Macro Window Iterate Tags.png}
+
+\bigbreak\noindent Set tags using the \texttt{setTags:} (in Python \texttt{setTags\_}) method:
+
+\begin{RichListing}
+<@\Variable{someGlyph}@>.<@\Storage{setTags\_}@>([<@\String{"caseable"}@>, <@\String{"narrow"}@>, <@\String{"top"}@>])
+\end{RichListing}
+
+\noindent There is also a \texttt{countOfTags} property as well as a variety of accessor methods:
+
+\begin{description}
+  \item[\texttt{addTag:}]
+    Adds a tag to a glyph.
+  
+  \item[\texttt{removeObjectFromTags:}]
+    Removes a tag from a glyph.
+  
+  \item[\texttt{removeObjectFromTagsAtIndex:}]
+    Removes a tag by its index.
+  
+  \item[\texttt{indexOfObjectInTags:}]
+    Returns the index of the given tag.
+  
+  \item[\texttt{objectInTagsAtIndex:}]
+    Returns the tag for the given index.
+\end{description}
+
+\noindent Use the \texttt{allTags} method on a font to get the tags for all glyphs of that font.
+
+\begin{RichListing}
+<@\ControlFlow{for}@> <@\Variable{tag}@> <@\ControlFlow{in}@> <@\Variable{someFont}@>.allTags():
+    <@\Storage{print}@>(<@\Variable{tag}@>)
+\end{RichListing}
+
+\noindent Python method names use an underscore (\texttt{\_}) instead of a colon (\texttt{:}).
+You can find the full documentation at \url{https://docu.glyphsapp.com/Core/index.html}

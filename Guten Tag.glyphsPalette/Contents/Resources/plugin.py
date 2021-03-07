@@ -565,6 +565,9 @@ class GutenTag(PalettePlugin):
         tagName = self.renameSearchField.stringValue()
         newTagName = self.renameReplaceField.stringValue()
 
+        if not newTagName:
+            return
+
         with self.uiContext:
             for glyph in self.selectedGlyphs():
                 if tagName in glyph.tags:

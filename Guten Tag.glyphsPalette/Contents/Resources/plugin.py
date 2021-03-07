@@ -295,6 +295,7 @@ class GutenTag(PalettePlugin):
         self.renameSearchField.setDelegate_(self)
 
         self.renameReplaceField.setFont_(font)
+        self.renameReplaceField.setDelegate_(self)
 
         # listen for 'GSUpdateInterface' event
         Glyphs.addCallback(self.update, UPDATEINTERFACE)
@@ -543,6 +544,9 @@ class GutenTag(PalettePlugin):
         self.suggestionTagPool = self.selectedTags()
         tags = sorted(self.suggestionTagPool)
 
+        self.renameSearchField.removeAllItems()
+        self.renameSearchField.addItemsWithObjectValues_(tags)
+
         if len(tags) == 1:
             self.renameSearchField.setEditable_(False)
             self.renameSearchField.setStringValue_(tags[0])
@@ -552,9 +556,9 @@ class GutenTag(PalettePlugin):
 
         self.renameWindow.makeFirstResponder_(self.renameSearchField)
 
-        self.renameSearchField.removeAllItems()
-        self.renameSearchField.addItemsWithObjectValues_(tags)
         self.renameReplaceField.setStringValue_("")
+
+        self.renameConfirmButton.setEnabled_(False)
 
         self.windowController().window().beginSheet_completionHandler_(self.renameWindow, self.handleRenameTag_)
 
@@ -579,12 +583,28 @@ class GutenTag(PalettePlugin):
 
         self.update(None)
 
+    def shouldEnableRenameConfirmButton(self):
+        return self.renameReplaceField.stringValue() != ""
+
+    # MARK: - NSControlTextEditingDelegate
+
+    def control_textView_doCommandBySelector_(self, control, textView, commandSelector):
+        if control == self.tokenField:
+            if commandSelector == "cancel:":
+                self.commit()
+                return True
+        return False
+
+    def controlTextDidChange_(self, notification):
+        control = notification.object()
+
+        if control is self.renameReplaceField:
+            self.renameConfirmButton.setEnabled_(self.shouldEnableRenameConfirmButton())
+
     # MARK: - NSComboBoxDelegate
 
     def comboBoxWillPopUp_(self, notification):
-        # disable buttons while pop-up is open, otherwise (1) the Return would both accept the selected entry in the pop-up and confirm the promt and (2) the Escape key would both close the pop-up and the promp
-        # note that (2) has not been observed in practice but it is still defended against since that requires only a few lines of code
-        self.renameCancelButton.setEnabled_(False)
+        # disable buttons while pop-up is open, otherwise Return would both accept the selected entry in the pop-up and confirm the promt
         self.renameConfirmButton.setEnabled_(False)
 
     def comboBoxWillDismiss_(self, notification):
@@ -593,8 +613,7 @@ class GutenTag(PalettePlugin):
             0.1, self, self.comboBoxDidDismiss_, None, False)
 
     def comboBoxDidDismiss_(self, userInfo):
-        self.renameCancelButton.setEnabled_(True)
-        self.renameConfirmButton.setEnabled_(True)
+        self.renameConfirmButton.setEnabled_(self.shouldEnableRenameConfirmButton())
 
         # MARK: - NSTokenFieldDelegate
 
@@ -784,14 +803,6 @@ class GutenTag(PalettePlugin):
         # filter to-add tags such that no multiple-occurences tags are returned
         return [x for x in objects if table[x] <= 1]
 
-    # MARK: - NSControlTextEditingDelegate
-
-    def control_textView_doCommandBySelector_(self, control, textView, commandSelector):
-        if control == self.tokenField:
-            if commandSelector == "cancel:":
-                self.commit()
-                return True
-        return False
 
 
 class MultilineTokenField(NSTokenField):

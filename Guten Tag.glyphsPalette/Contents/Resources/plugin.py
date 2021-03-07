@@ -546,11 +546,11 @@ class GutenTag(PalettePlugin):
         if len(tags) == 1:
             self.renameSearchField.setEditable_(False)
             self.renameSearchField.setStringValue_(tags[0])
-            self.renameWindow.makeFirstResponder_(self.renameReplaceField)
         else:
             self.renameSearchField.setEditable_(True)
             self.renameSearchField.setStringValue_("")
-            self.renameWindow.makeFirstResponder_(self.renameSearchField)
+
+        self.renameWindow.makeFirstResponder_(self.renameSearchField)
 
         self.renameSearchField.removeAllItems()
         self.renameSearchField.addItemsWithObjectValues_(tags)

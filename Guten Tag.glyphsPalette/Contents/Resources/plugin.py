@@ -330,7 +330,6 @@ class GutenTag(PalettePlugin):
                     self.tokenField.setPlaceholderString_(MULTIPLE_VALUES_STRING)
                     self.setFieldTags([])
         else:
-            print("N")
             # no glyphs are selected
             self.tokenField.setPlaceholderString_("")
             self.tokenField.setEnabled_(False)

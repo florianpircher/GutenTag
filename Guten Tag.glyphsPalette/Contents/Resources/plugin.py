@@ -259,10 +259,9 @@ class GutenTag(PalettePlugin):
     @objc.python_method
     def start(self):
         # tokenizing character set
-        charSet = NSMutableCharacterSet.new()
+        charSet = NSMutableCharacterSet.characterSetWithCharactersInString_("\n")
         defaultCharSet = NSTokenField.defaultTokenizingCharacterSet()
         charSet.formUnionWithCharacterSet_(defaultCharSet)
-        charSet.addCharactersInString_("\n")
 
         # font
         fontSize = NSFont.systemFontSize()
@@ -801,7 +800,6 @@ class GutenTag(PalettePlugin):
 
         # filter to-add tags such that no multiple-occurences tags are returned
         return [x for x in objects if table[x] <= 1]
-
 
 
 class MultilineTokenField(NSTokenField):

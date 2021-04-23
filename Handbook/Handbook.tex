@@ -157,15 +157,18 @@
       end
     end
     
-    symbols = ""
+    local symbols = ""
     
     if is_shift then
       symbols = symbols.."⇧"
-    elseif is_control then
+    end
+    if is_control then
       symbols = symbols.."⌃"
-    elseif is_option then
+    end
+    if is_option then
       symbols = symbols.."⌥"
-    elseif is_command then
+    end
+    if is_command then
       symbols = symbols.."⌘"
     end
     

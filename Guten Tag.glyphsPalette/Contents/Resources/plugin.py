@@ -301,7 +301,7 @@ class GutenTag(PalettePlugin):
 
     @objc.python_method
     def update(self, sender):
-        isMultipleSelection = False
+        sameTagsForAllSelectedGlyphs = True
 
         if glyphs := self.selectedGlyphs():
             self.tokenField.setPlaceholderString_(NO_TAGS_STRING)
@@ -315,7 +315,6 @@ class GutenTag(PalettePlugin):
                 # multiple glyphs are selected
                 glyphsIter = iter(glyphs)
                 firstTags = next(glyphsIter).tags
-                sameTagsForAllSelectedGlyphs = True
 
                 for glyph in glyphsIter:
                     if glyph.tags != firstTags:
@@ -325,7 +324,6 @@ class GutenTag(PalettePlugin):
                 if sameTagsForAllSelectedGlyphs:
                     self.setFieldTags(firstTags)
                 else:
-                    isMultipleSelection = True
                     self.tokenField.setPlaceholderString_(MULTIPLE_VALUES_STRING)
                     self.setFieldTags([])
         else:
@@ -334,7 +332,7 @@ class GutenTag(PalettePlugin):
             self.tokenField.setEnabled_(False)
             self.setFieldTags([])
 
-        self.batchEditToolbar.setHidden_(not isMultipleSelection)
+        self.batchEditToolbar.setHidden_(sameTagsForAllSelectedGlyphs)
 
     @objc.python_method
     def __del__(self):

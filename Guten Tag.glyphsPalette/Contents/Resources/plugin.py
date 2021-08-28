@@ -31,18 +31,23 @@ from AppKit import (
     NSMakePoint,
     NSMakeRect,
     NSMakeSize,
+    NSMapTable,
     NSMenu,
     NSMenuItem,
     NSModalResponseOK,
     NSModalResponseCancel,
     NSMutableAttributedString,
     NSMutableCharacterSet,
+    NSNull,
+    NSObject,
     NSTimer,
     NSTokenField,
     NSTokenStyleSquared,
 )
-from GlyphsApp import (Glyphs, UPDATEINTERFACE)
+from GlyphsApp import (Glyphs, GSCallbackHandler, UPDATEINTERFACE)
 from GlyphsApp.plugins import PalettePlugin
+
+GSShortcutCommandProtocol = objc.protocolNamed("GSShortcutCommandProtocol")
 
 
 # localization
@@ -216,6 +221,69 @@ class UserInterfaceContext:
             font.enableUpdateInterface()
 
 
+class GutenTagCooridinator(NSObject, protocols=[GSShortcutCommandProtocol]):
+    def init(self):
+        self = objc.super(GutenTagCooridinator, self).init()
+
+        if self is None:
+            return None
+
+        self.links = NSMapTable.weakToStrongObjectsMapTable()
+
+        GSCallbackHandler.registerShortcutCommand_group_identifier_action_target_character_modifierFlags_(
+            "Edit Tags", "Guten Tag", "com.FlorianPircher.GutenTag.EditTags", self.editTags_, self, "", 0)
+
+        return self
+
+    def link_(self, link):
+        self.links.setObject_forKey_(NSNull.null(), link)
+
+    def unlink_(self, link):
+        self.links.removeObjectForKey_(link)
+
+    @objc.python_method
+    def active(self, editViewController):
+        font = editViewController.parent
+        document = font.parent
+        windowController = document.windowController()
+        window = windowController.window()
+
+        enumerator = self.links.keyEnumerator()
+
+        while link := enumerator.nextObject():
+            linkView = link.theView()
+            linkWindow = linkView.window()
+
+            if linkWindow == window:
+                return (link, window)
+
+        return None
+
+    def validateShortcutCommand_editViewController_(self, action, editViewController):
+        active = self.active(editViewController)
+
+        if not active:
+            return False
+
+        (link, window) = active
+
+        if action == 'editTags:':
+            return link.tokenField.isEnabled()
+
+        return False
+
+    def editTags_(self, editViewController):
+        (link, window) = self.active(editViewController)
+
+        if not link:
+            return
+
+        window.makeFirstResponder_(link.tokenField)
+
+
+coordinator = None
+
+
 class GutenTag(PalettePlugin):
     dialogName = "com.FlorianPircher.GutenTag"
     # Interface Builder Outlets
@@ -299,6 +367,13 @@ class GutenTag(PalettePlugin):
         # listen for 'GSUpdateInterface' event
         Glyphs.addCallback(self.update, UPDATEINTERFACE)
 
+        global coordinator
+
+        if not coordinator:
+            coordinator = GutenTagCooridinator.new()
+
+        coordinator.link_(self)
+
     @objc.python_method
     def update(self, sender):
         sameTagsForAllSelectedGlyphs = True
@@ -337,6 +412,11 @@ class GutenTag(PalettePlugin):
     @objc.python_method
     def __del__(self):
         Glyphs.removeCallback(self.update)
+
+        global coordinator
+
+        if coordinator:
+            coordinator.unlink_(self)
 
     @objc.python_method
     def __file__(self):

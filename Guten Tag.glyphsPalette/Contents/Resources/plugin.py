@@ -322,7 +322,6 @@ class GutenTag(PalettePlugin):
 
         self.name = TAGS_STRING
         self.loadNib("View", __file__)
-        self.loadNib("Prompt", __file__)
 
     @objc.python_method
     def start(self):

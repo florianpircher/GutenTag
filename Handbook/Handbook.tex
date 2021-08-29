@@ -232,7 +232,7 @@
   Path = \luadirect{tex.print(extra_font_root())},%
   Script = CJK,%
   Language = Korean]
-\newfontfamily{\symbolfont}{GutenTagSymbols-Regular.otf}
+\newfontfamily{\symbolfont}{GutenTagSymbols-Regular.ttf}
 \newfontfamily{\applelogofont}{Avenir Next}
 \setsansfont{SkolarSansLatn-Rg.otf}[%
   Path = \luadirect{tex.print(extra_font_root())}]
@@ -245,7 +245,7 @@
 %%  Layout Formatting
 \AtBeginDocument{%
   \setlength{\parindent}{1.8em}%
-  \setlength{\baselineskip}{15pt}}
+  \setlength{\baselineskip}{16pt}}
 
 %% Fonts
 % Levels
@@ -368,7 +368,7 @@
   \luadirect{tex.print(screenshot_graphic(\luastring{#1}, #2, #3, \luastring{#4}, #5, #6))}}
 
 % [frame][scale]{file}
-\NewDocumentCommand{\Screenshot}{s O{0, 0, 0, 0} O{2} m}{%
+\NewDocumentCommand{\Screenshot}{s O{0, 0, 0, 0} O{1.5} m}{%
   \ScreenshotGraphic%
     {#4}%
     {\IfBooleanTF{#1}{true}{false}}%

@@ -163,6 +163,38 @@ REMOVE_TAGS_BUTTON_STRING = Glyphs.localize({
     "zh-Hans": "移除标签",
     "zh-Hant": "移除標籤",
 })
+RENAME_TAGS_BUTTON_STRING = Glyphs.localize({
+    "ar": "إعادة تسمية العلامات",
+    "cs": "Přejmenovat značky",
+    "de": "Tags umbenennen",
+    "en": "Rename Tags",
+    "es": "Renombrar etiquetas",
+    "it": "Rinomina Tag",
+    "fr": "Renommer les tags",
+    "ja": "タグの名前を変更",
+    "ko": "태그 이름 바꾸기",
+    "pt": "Renomear etiquetas",
+    "ru": "Переименовать метки",
+    "tr": "Etiketleri Yeniden Adlandır",
+    "zh-Hans": "重命名标签",
+    "zh-Hant": "重新命名標籤",
+})
+EDIT_TAGS_BUTTON_STRING = Glyphs.localize({
+    "ar": "تعديل العلامات",
+    "cs": "Upravit značky",
+    "de": "Tags bearbeiten",
+    "en": "Edit Tags",
+    "es": "Editar etiquetas",
+    "it": "Modifica Tag",
+    "fr": "Modifier les tags",
+    "ja": "タグを編集",
+    "ko": "태그 편집",
+    "pt": "Editar etiquetas",
+    "ru": "Изменить метки",
+    "tr": "Etiketleri Düzenle",
+    "zh-Hans": "编辑标签",
+    "zh-Hant": "編輯標籤",
+})
 SHOW_ALL_GLYPHS_BUTTON_STRING = Glyphs.localize({
     "ar": "عرض كل المحارف",
     "cs": "Zobrazit všechny glyfy",
@@ -231,7 +263,16 @@ class GutenTagCooridinator(NSObject, protocols=[GSShortcutCommandProtocol]):
         self.links = NSMapTable.weakToStrongObjectsMapTable()
 
         GSCallbackHandler.registerShortcutCommand_group_identifier_action_target_character_modifierFlags_(
-            "Edit Tags", "Guten Tag", "com.FlorianPircher.GutenTag.EditTags", self.editTags_, self, "", 0)
+            EDIT_TAGS_BUTTON_STRING, "Guten Tag", "com.FlorianPircher.GutenTag.EditTags", self.editTags_, self, "", 0)
+
+        GSCallbackHandler.registerShortcutCommand_group_identifier_action_target_character_modifierFlags_(
+            ADD_TAGS_BUTTON_STRING, "Guten Tag", "com.FlorianPircher.GutenTag.AddTags", self.addTags_, self, "", 0)
+
+        GSCallbackHandler.registerShortcutCommand_group_identifier_action_target_character_modifierFlags_(
+            REMOVE_TAGS_BUTTON_STRING, "Guten Tag", "com.FlorianPircher.GutenTag.RemoveTags", self.removeTags_, self, "", 0)
+
+        GSCallbackHandler.registerShortcutCommand_group_identifier_action_target_character_modifierFlags_(
+            RENAME_TAGS_BUTTON_STRING, "Guten Tag", "com.FlorianPircher.GutenTag.RenameTags", self.renameTags_, self, "", 0)
 
         return self
 
@@ -265,23 +306,37 @@ class GutenTagCooridinator(NSObject, protocols=[GSShortcutCommandProtocol]):
         if not active:
             return False
 
-        (link, window) = active
+        (link, _) = active
 
-        if action == 'editTags:':
+        if action == "editTags:":
             return link.tokenField.isEnabled()
+        elif action == "addTags:" or action == "removeTags:" or action == "renameTags:":
+            return len(link.selectedGlyphs()) > 0
 
         return False
 
     def editTags_(self, editViewController):
-        (link, window) = self.active(editViewController)
+        if active := self.active(editViewController):
+            (link, window) = active
+            window.makeFirstResponder_(link.tokenField)
 
-        if not link:
-            return
+    def addTags_(self, editViewController):
+        if active := self.active(editViewController):
+            (link, _) = active
+            link.promptAddTags_(None)
 
-        window.makeFirstResponder_(link.tokenField)
+    def removeTags_(self, editViewController):
+        if active := self.active(editViewController):
+            (link, _) = active
+            link.promptRemoveTags_(None)
+
+    def renameTags_(self, editViewController):
+        if active := self.active(editViewController):
+            (link, _) = active
+            link.promptRenameTags_(None)
 
 
-coordinator = None
+coordinator = GutenTagCooridinator.new()
 
 
 class GutenTag(PalettePlugin):
@@ -368,9 +423,6 @@ class GutenTag(PalettePlugin):
 
         global coordinator
 
-        if not coordinator:
-            coordinator = GutenTagCooridinator.new()
-
         coordinator.link_(self)
 
     @objc.python_method
@@ -414,8 +466,7 @@ class GutenTag(PalettePlugin):
 
         global coordinator
 
-        if coordinator:
-            coordinator.unlink_(self)
+        coordinator.unlink_(self)
 
     @objc.python_method
     def __file__(self):

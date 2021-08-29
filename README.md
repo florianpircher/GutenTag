@@ -5,7 +5,8 @@ It allows you to edit glyph tags from both the font view *and* edit view.
 
 [![](Screenshot.png)](https://xgc.io/b/glyphs/guten-tag/1.mp4)
 
-[Install **Guten Tag** in Glyphs](https://florianpircher.com/glyphs/plugins/guten-tag/install)
+- [Install **Guten Tag** in Glyphs](https://florianpircher.com/glyphs/plugins/guten-tag/install)
+- [Read the Guten Tag **Handbook**](https://florianpircher.com/glyphs/plugins/guten-tag/Handbook.pdf)
 
 ## Features
 
@@ -20,6 +21,15 @@ It allows you to edit glyph tags from both the font view *and* edit view.
 - Glyph names no longer need a cryptic naming scheme to represent all relevant attributes of a glyph.
 
 ## Installation
+
+### Plugin Manager
+
+Click the following link to install Guten Tag in Glyphs: [Install **Guten Tag** in Glyphs](https://florianpircher.com/glyphs/plugins/guten-tag/install)
+
+Alternatively, open the Plugin Manager in Glyphs by selecting *Window* → *Plugin Manager* → *Plugins*.
+Search for “Guten Tag” and click *Install* next to the plugin preview.
+
+Relaunch Glyphs for the plugin to be loaded.
 
 ### Manual Installation
 
@@ -56,7 +66,7 @@ defaults write com.GeorgSeifert.Glyphs3 com.FlorianPircher.GutenTag.GlyphPreview
 </details>
 
 <details>
-<summary>Set Preferences from Glyphs’s Macro Panel</summary>
+<summary>Set Preferences from Glyphs’ Macro Panel</summary>
 
 Run the following line with `$KEY` and `$VALUE` substituted.
 

@@ -213,7 +213,7 @@ SHOW_ALL_GLYPHS_BUTTON_STRING = Glyphs.localize({
 })
 
 
-class UserDefaults:
+class GutenTagUserDefaults:
     prefix = ""
 
     def __init__(self, prefix):
@@ -227,7 +227,7 @@ class UserDefaults:
 
     def read(self, key, default, transform=None):
         if not transform:
-            transform = UserDefaults
+            transform = GutenTagUserDefaults
 
         if value := Glyphs.defaults[self.key(key)]:
             return transform(value)
@@ -235,7 +235,7 @@ class UserDefaults:
             return default
 
 
-class UserInterfaceContext:
+class GutenTagUserInterfaceContext:
     accessFont = None
 
     def __init__(self, accessFont):
@@ -361,7 +361,7 @@ class GutenTag(PalettePlugin):
     # Used to wrap code in `disableUpdateInterface` ... `enableUpdateInterface` calls.
     uiContext = None
     # Offers access to the systems user defaults API for values related to the plugin.
-    userDefaults = UserDefaults(prefix="com.FlorianPircher.GutenTag.")
+    userDefaults = GutenTagUserDefaults(prefix="com.FlorianPircher.GutenTag.")
     # Tag names of the current font.
     # Needs to be reloaded by calling `reloadTagPool`.
     # This is a cached and thus fast access to `self.currentFont().allTags()`.
@@ -373,7 +373,7 @@ class GutenTag(PalettePlugin):
 
     @objc.python_method
     def settings(self):
-        self.uiContext = UserInterfaceContext(self.currentFont)
+        self.uiContext = GutenTagUserInterfaceContext(self.currentFont)
 
         self.name = TAGS_STRING
         self.loadNib("View", __file__)
@@ -930,7 +930,7 @@ class GutenTag(PalettePlugin):
         return [x for x in objects if table[x] <= 1]
 
 
-class MultilineTokenField(NSTokenField):
+class GutenTagMultilineTokenField(NSTokenField):
     def intrinsicContentSize(self):
         intrinsicContentSize = super().intrinsicContentSize()
         width = intrinsicContentSize.width
@@ -944,7 +944,7 @@ class MultilineTokenField(NSTokenField):
         self.invalidateIntrinsicContentSize()
 
 
-class GutenTagTokenField(MultilineTokenField):
+class GutenTagTokenField(GutenTagMultilineTokenField):
     controller = None
 
     def textDidBeginEditing_(self, notification):

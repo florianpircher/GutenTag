@@ -145,7 +145,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="396" height="125"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <tokenField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="efn-IH-VEj" customClass="MultilineTokenField">
+                    <tokenField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="efn-IH-VEj" customClass="GutenTagMultilineTokenField">
                         <rect key="frame" x="20" y="60" width="356" height="25"/>
                         <constraints>
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="25" id="1s7-Zd-sUK"/>

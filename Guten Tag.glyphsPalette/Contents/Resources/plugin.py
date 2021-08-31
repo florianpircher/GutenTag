@@ -78,7 +78,7 @@ MULTIPLE_VALUES_STRING = Glyphs.localize({
     "ja": "複数値",
     "ko": "여러 값",
     "pt": "Múltiplos Valores",
-    "ru": "Несĸольĸо значений",
+    "ru": "Несколько значений",
     "tr": "Çoklu Değer",
     "zh-Hans": "多个值",
     "zh-Hant": "多個數值",

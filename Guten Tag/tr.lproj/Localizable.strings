@@ -1,0 +1,30 @@
+
+/* The heading of the palette section */
+"Tags" = "Etiketler";
+
+/* The placeholder for the tags field that is shown when the field represents multiple incompatible values */
+"Multiple Values" = "Çoklu Değer";
+
+/* The placeholder for the tags field that is shown when the field is empty */
+"no tags" = "etiket yok";
+
+/* The heading of the add-tags dialog window */
+"Add tags to selected glyphs" = "Seçili glif’lere etiketler ekle";
+
+/* The confirmation button label of the add-tags dialog window */
+"Add Tags" = "Etiket Ekle";
+
+/* The heading of the remove-tags dialog window */
+"Remove tags from selected glyphs" = "Seçili glif’lerin etiketlerini kaldır";
+
+/* The confirmation button label of the remove-tags dialog window */
+"Remove Tags" = "Etiketleri Kaldır";
+
+/* The label for the menu item with the action of showing all glyphs that have the tag of the menu */
+"Show All Glyphs" = "Tüm Glifleri Göster";
+
+/* Shortcut command name for selecting the tags field */
+"Edit Tags" = "Etiketleri Düzenle";
+
+/* Shortcut command name for renaming tags for the selected glyphs */
+"Rename Tags" = "Etiketleri Yeniden Adlandır";

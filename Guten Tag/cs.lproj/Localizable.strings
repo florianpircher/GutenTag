@@ -1,0 +1,30 @@
+
+/* The heading of the palette section */
+"Tags" = "Značky";
+
+/* The placeholder for the tags field that is shown when the field represents multiple incompatible values */
+"Multiple Values" = "Více hodnot";
+
+/* The placeholder for the tags field that is shown when the field is empty */
+"no tags" = "žádné značky";
+
+/* The heading of the add-tags dialog window */
+"Add tags to selected glyphs" = "Přidat značky k vybraným glyfům";
+
+/* The confirmation button label of the add-tags dialog window */
+"Add Tags" = "Přidat značky";
+
+/* The heading of the remove-tags dialog window */
+"Remove tags from selected glyphs" = "Odstranit značky z vybraných glyfů";
+
+/* The confirmation button label of the remove-tags dialog window */
+"Remove Tags" = "Odstranit značky";
+
+/* The label for the menu item with the action of showing all glyphs that have the tag of the menu */
+"Show All Glyphs" = "Zobrazit všechny glyfy";
+
+/* Shortcut command name for selecting the tags field */
+"Edit Tags" = "Upravit značky";
+
+/* Shortcut command name for renaming tags for the selected glyphs */
+"Rename Tags" = "Přejmenovat značky";

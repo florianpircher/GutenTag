@@ -1,0 +1,42 @@
+
+/* Class = "NSButtonCell"; title = "Rename"; ObjectID = "8v5-mh-Y5w"; */
+"8v5-mh-Y5w.title" = "Rename";
+
+/* Class = "NSTextFieldCell"; title = "Title"; ObjectID = "9ff-cS-Bug"; */
+"9ff-cS-Bug.title" = "Title";
+
+/* Class = "NSButtonCell"; title = "Cancel"; ObjectID = "Aeb-6a-j6R"; */
+"Aeb-6a-j6R.title" = "Cancel";
+
+/* Class = "NSButtonCell"; title = "Cancel"; ObjectID = "C2S-43-tMl"; */
+"C2S-43-tMl.title" = "Cancel";
+
+/* Class = "NSButton"; ibShadowedToolTip = "Add tags to selected glyphs"; ObjectID = "CiW-jX-dyc"; */
+"CiW-jX-dyc.ibShadowedToolTip" = "Add tags to selected glyphs";
+
+/* Class = "NSTextFieldCell"; title = "Rename a tag for the selected glyphs"; ObjectID = "EN8-gw-0iL"; */
+"EN8-gw-0iL.title" = "Rename a tag for the selected glyphs";
+
+/* Class = "NSTextFieldCell"; title = "Tag Name:"; ObjectID = "aYx-oh-HE5"; */
+"aYx-oh-HE5.title" = "Tag Name:";
+
+/* Class = "NSButton"; ibShadowedToolTip = "Rename tag of selected glyphs"; ObjectID = "iIg-EL-R2e"; */
+"iIg-EL-R2e.ibShadowedToolTip" = "Rename tag of selected glyphs";
+
+/* Class = "NSButtonCell"; title = "Add tags to selected glyphs"; ObjectID = "lC2-4f-nGa"; */
+"lC2-4f-nGa.title" = "Add tags to selected glyphs";
+
+/* Class = "NSButtonCell"; title = "Rename"; ObjectID = "mIr-EN-Apc"; */
+"mIr-EN-Apc.title" = "Rename";
+
+/* Class = "NSButtonCell"; title = "Remove tags from selected glyphs"; ObjectID = "oKI-2O-pk5"; */
+"oKI-2O-pk5.title" = "Remove tags from selected glyphs";
+
+/* Class = "NSButton"; ibShadowedToolTip = "Remove tags from selected glyphs"; ObjectID = "sOj-NE-4vq"; */
+"sOj-NE-4vq.ibShadowedToolTip" = "Remove tags from selected glyphs";
+
+/* Class = "NSTextFieldCell"; title = "New Tag Name:"; ObjectID = "wBR-Ta-D3u"; */
+"wBR-Ta-D3u.title" = "New Tag Name:";
+
+/* Class = "NSButtonCell"; title = "Confirm"; ObjectID = "yv3-dr-Lqd"; */
+"yv3-dr-Lqd.title" = "Confirm";

@@ -1,0 +1,425 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		170DF60226E7B8660039CD8B /* GTAGCoordinator.m in Sources */ = {isa = PBXBuildFile; fileRef = 170DF60126E7B8660039CD8B /* GTAGCoordinator.m */; };
+		1767E7E926E6A1A80090F748 /* GTAGPaletteTokenField.m in Sources */ = {isa = PBXBuildFile; fileRef = 1767E7E826E6A1A80090F748 /* GTAGPaletteTokenField.m */; };
+		1767E7EC26E6A2700090F748 /* GTAGMultilineTokenField.m in Sources */ = {isa = PBXBuildFile; fileRef = 1767E7EB26E6A2700090F748 /* GTAGMultilineTokenField.m */; };
+		1767E7ED26E6ABE60090F748 /* View.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1767E7EF26E6ABE60090F748 /* View.xib */; };
+		17DA024E26E8001100423A7C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 17DA025026E8001100423A7C /* Localizable.strings */; };
+		17EF928B25DD36520044A9E4 /* GTAGPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 17EF928A25DD36520044A9E4 /* GTAGPlugin.m */; };
+		17EF928F25DD36A40044A9E4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17EF928E25DD36A40044A9E4 /* Cocoa.framework */; };
+		17EF929125DD36A80044A9E4 /* GlyphsCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17EF929025DD36A80044A9E4 /* GlyphsCore.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		170DF60026E7B8660039CD8B /* GTAGCoordinator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GTAGCoordinator.h; sourceTree = "<group>"; };
+		170DF60126E7B8660039CD8B /* GTAGCoordinator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GTAGCoordinator.m; sourceTree = "<group>"; };
+		1767E7E726E6A1A80090F748 /* GTAGPaletteTokenField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GTAGPaletteTokenField.h; sourceTree = "<group>"; };
+		1767E7E826E6A1A80090F748 /* GTAGPaletteTokenField.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GTAGPaletteTokenField.m; sourceTree = "<group>"; };
+		1767E7EA26E6A2700090F748 /* GTAGMultilineTokenField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GTAGMultilineTokenField.h; sourceTree = "<group>"; };
+		1767E7EB26E6A2700090F748 /* GTAGMultilineTokenField.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GTAGMultilineTokenField.m; sourceTree = "<group>"; };
+		1767E7EE26E6ABE60090F748 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/View.xib; sourceTree = "<group>"; };
+		1767E7F326E6ABF20090F748 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/View.strings; sourceTree = "<group>"; };
+		1767E7F526E6ABF40090F748 /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/View.strings; sourceTree = "<group>"; };
+		1767E7F726E6ABF50090F748 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/View.strings; sourceTree = "<group>"; };
+		1767E7F926E6ABFE0090F748 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/View.strings; sourceTree = "<group>"; };
+		1767E7FB26E6ABFF0090F748 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/View.strings; sourceTree = "<group>"; };
+		1767E7FD26E6AC010090F748 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/View.strings; sourceTree = "<group>"; };
+		1767E7FF26E6AC020090F748 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/View.strings; sourceTree = "<group>"; };
+		1767E80126E6AC030090F748 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/View.strings; sourceTree = "<group>"; };
+		1767E80326E6AC040090F748 /* pt-PT */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-PT"; path = "pt-PT.lproj/View.strings"; sourceTree = "<group>"; };
+		1767E80526E6AC060090F748 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/View.strings; sourceTree = "<group>"; };
+		1767E80726E6AC070090F748 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/View.strings; sourceTree = "<group>"; };
+		1767E80926E6AC0A0090F748 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/View.strings"; sourceTree = "<group>"; };
+		1767E80B26E6AC0B0090F748 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/View.strings"; sourceTree = "<group>"; };
+		17DA024F26E8001100423A7C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		17DA025126E8001500423A7C /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
+		17DA025226E8001800423A7C /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/Localizable.strings; sourceTree = "<group>"; };
+		17DA025326E8001B00423A7C /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		17DA025426E8001D00423A7C /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
+		17DA025526E8002100423A7C /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		17DA025626E8002200423A7C /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
+		17DA025726E8002900423A7C /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		17DA025826E8002A00423A7C /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
+		17DA025926E8002B00423A7C /* pt-PT */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-PT"; path = "pt-PT.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		17DA025A26E8002C00423A7C /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		17DA025B26E8002D00423A7C /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		17DA025C26E8002E00423A7C /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		17DA025D26E8003000423A7C /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		17EF927C25DD35F40044A9E4 /* Guten Tag.glyphsPalette */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Guten Tag.glyphsPalette"; sourceTree = BUILT_PRODUCTS_DIR; };
+		17EF927F25DD35F40044A9E4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		17EF928925DD36520044A9E4 /* GTAGPlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GTAGPlugin.h; sourceTree = "<group>"; };
+		17EF928A25DD36520044A9E4 /* GTAGPlugin.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GTAGPlugin.m; sourceTree = "<group>"; };
+		17EF928E25DD36A40044A9E4 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		17EF929025DD36A80044A9E4 /* GlyphsCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GlyphsCore.framework; path = "/Applications/Glyphs 3.app/Contents/Frameworks/GlyphsCore.framework"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		17EF927925DD35F40044A9E4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				17EF929125DD36A80044A9E4 /* GlyphsCore.framework in Frameworks */,
+				17EF928F25DD36A40044A9E4 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		17EF927325DD35F40044A9E4 = {
+			isa = PBXGroup;
+			children = (
+				17EF927E25DD35F40044A9E4 /* Guten Tag */,
+				17EF927D25DD35F40044A9E4 /* Products */,
+				17EF928D25DD36A40044A9E4 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		17EF927D25DD35F40044A9E4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				17EF927C25DD35F40044A9E4 /* Guten Tag.glyphsPalette */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		17EF927E25DD35F40044A9E4 /* Guten Tag */ = {
+			isa = PBXGroup;
+			children = (
+				17EF927F25DD35F40044A9E4 /* Info.plist */,
+				1767E7EF26E6ABE60090F748 /* View.xib */,
+				17DA025026E8001100423A7C /* Localizable.strings */,
+				17EF928925DD36520044A9E4 /* GTAGPlugin.h */,
+				17EF928A25DD36520044A9E4 /* GTAGPlugin.m */,
+				170DF60026E7B8660039CD8B /* GTAGCoordinator.h */,
+				170DF60126E7B8660039CD8B /* GTAGCoordinator.m */,
+				1767E7EA26E6A2700090F748 /* GTAGMultilineTokenField.h */,
+				1767E7EB26E6A2700090F748 /* GTAGMultilineTokenField.m */,
+				1767E7E726E6A1A80090F748 /* GTAGPaletteTokenField.h */,
+				1767E7E826E6A1A80090F748 /* GTAGPaletteTokenField.m */,
+			);
+			path = "Guten Tag";
+			sourceTree = "<group>";
+		};
+		17EF928D25DD36A40044A9E4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				17EF929025DD36A80044A9E4 /* GlyphsCore.framework */,
+				17EF928E25DD36A40044A9E4 /* Cocoa.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		17EF927B25DD35F40044A9E4 /* Guten Tag */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 17EF928225DD35F40044A9E4 /* Build configuration list for PBXNativeTarget "Guten Tag" */;
+			buildPhases = (
+				17EF927825DD35F40044A9E4 /* Sources */,
+				17EF927925DD35F40044A9E4 /* Frameworks */,
+				17EF927A25DD35F40044A9E4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Guten Tag";
+			productName = GutenTag;
+			productReference = 17EF927C25DD35F40044A9E4 /* Guten Tag.glyphsPalette */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		17EF927425DD35F40044A9E4 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1240;
+				TargetAttributes = {
+					17EF927B25DD35F40044A9E4 = {
+						CreatedOnToolsVersion = 12.4;
+					};
+				};
+			};
+			buildConfigurationList = 17EF927725DD35F40044A9E4 /* Build configuration list for PBXProject "Guten Tag" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+				ar,
+				cs,
+				de,
+				es,
+				fr,
+				it,
+				ja,
+				ko,
+				"pt-PT",
+				ru,
+				tr,
+				"zh-Hans",
+				"zh-Hant",
+			);
+			mainGroup = 17EF927325DD35F40044A9E4;
+			productRefGroup = 17EF927D25DD35F40044A9E4 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				17EF927B25DD35F40044A9E4 /* Guten Tag */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		17EF927A25DD35F40044A9E4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1767E7ED26E6ABE60090F748 /* View.xib in Resources */,
+				17DA024E26E8001100423A7C /* Localizable.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		17EF927825DD35F40044A9E4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				17EF928B25DD36520044A9E4 /* GTAGPlugin.m in Sources */,
+				1767E7E926E6A1A80090F748 /* GTAGPaletteTokenField.m in Sources */,
+				1767E7EC26E6A2700090F748 /* GTAGMultilineTokenField.m in Sources */,
+				170DF60226E7B8660039CD8B /* GTAGCoordinator.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		1767E7EF26E6ABE60090F748 /* View.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1767E7EE26E6ABE60090F748 /* Base */,
+				1767E7F326E6ABF20090F748 /* ar */,
+				1767E7F526E6ABF40090F748 /* cs */,
+				1767E7F726E6ABF50090F748 /* de */,
+				1767E7F926E6ABFE0090F748 /* es */,
+				1767E7FB26E6ABFF0090F748 /* fr */,
+				1767E7FD26E6AC010090F748 /* it */,
+				1767E7FF26E6AC020090F748 /* ja */,
+				1767E80126E6AC030090F748 /* ko */,
+				1767E80326E6AC040090F748 /* pt-PT */,
+				1767E80526E6AC060090F748 /* ru */,
+				1767E80726E6AC070090F748 /* tr */,
+				1767E80926E6AC0A0090F748 /* zh-Hans */,
+				1767E80B26E6AC0B0090F748 /* zh-Hant */,
+			);
+			name = View.xib;
+			sourceTree = "<group>";
+		};
+		17DA025026E8001100423A7C /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				17DA024F26E8001100423A7C /* en */,
+				17DA025126E8001500423A7C /* ar */,
+				17DA025226E8001800423A7C /* cs */,
+				17DA025326E8001B00423A7C /* de */,
+				17DA025426E8001D00423A7C /* es */,
+				17DA025526E8002100423A7C /* fr */,
+				17DA025626E8002200423A7C /* it */,
+				17DA025726E8002900423A7C /* ja */,
+				17DA025826E8002A00423A7C /* ko */,
+				17DA025926E8002B00423A7C /* pt-PT */,
+				17DA025A26E8002C00423A7C /* ru */,
+				17DA025B26E8002D00423A7C /* tr */,
+				17DA025C26E8002E00423A7C /* zh-Hans */,
+				17DA025D26E8003000423A7C /* zh-Hant */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		17EF928025DD35F40044A9E4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(SYSTEM_APPS_DIR)/Glyphs\\ 3.app/Contents/Frameworks";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		17EF928125DD35F40044A9E4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(SYSTEM_APPS_DIR)/Glyphs\\ 3.app/Contents/Frameworks";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		17EF928325DD35F40044A9E4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEPLOYMENT_LOCATION = YES;
+				DEVELOPMENT_TEAM = FQ2KWJJUPU;
+				DSTROOT = "$(USER_LIBRARY_DIR)/Application Support/Glyphs 3/Plugins";
+				INFOPLIST_FILE = "Guten Tag/Info.plist";
+				INSTALL_PATH = /;
+				PRODUCT_BUNDLE_IDENTIFIER = com.FlorianPircher.GutenTag;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = glyphsPalette;
+			};
+			name = Debug;
+		};
+		17EF928425DD35F40044A9E4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = FQ2KWJJUPU;
+				DSTROOT = .;
+				INFOPLIST_FILE = "Guten Tag/Info.plist";
+				INSTALL_PATH = /;
+				PRODUCT_BUNDLE_IDENTIFIER = com.FlorianPircher.GutenTag;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = NO;
+				WRAPPER_EXTENSION = glyphsPalette;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		17EF927725DD35F40044A9E4 /* Build configuration list for PBXProject "Guten Tag" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				17EF928025DD35F40044A9E4 /* Debug */,
+				17EF928125DD35F40044A9E4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		17EF928225DD35F40044A9E4 /* Build configuration list for PBXNativeTarget "Guten Tag" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				17EF928325DD35F40044A9E4 /* Debug */,
+				17EF928425DD35F40044A9E4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 17EF927425DD35F40044A9E4 /* Project object */;
+}

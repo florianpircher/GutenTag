@@ -1,0 +1,30 @@
+
+/* The heading of the palette section */
+"Tags" = "العلامات";
+
+/* The placeholder for the tags field that is shown when the field represents multiple incompatible values */
+"Multiple Values" = "قيم متعددة";
+
+/* The placeholder for the tags field that is shown when the field is empty */
+"no tags" = "بدون علامات";
+
+/* The heading of the add-tags dialog window */
+"Add tags to selected glyphs" = "إضافة علامات إلى الصور الرمزية المحددة";
+
+/* The confirmation button label of the add-tags dialog window */
+"Add Tags" = "إضافة علامات";
+
+/* The heading of the remove-tags dialog window */
+"Remove tags from selected glyphs" = "إزالة العلامات من الصور الرمزية المحددة";
+
+/* The confirmation button label of the remove-tags dialog window */
+"Remove Tags" = "إزالة العلامات";
+
+/* The label for the menu item with the action of showing all glyphs that have the tag of the menu */
+"Show All Glyphs" = "عرض كل المحارف";
+
+/* Shortcut command name for selecting the tags field */
+"Edit Tags" = "تعديل العلامات";
+
+/* Shortcut command name for renaming tags for the selected glyphs */
+"Rename Tags" = "إعادة تسمية العلامات";

@@ -1,0 +1,30 @@
+
+/* The heading of the palette section */
+"Tags" = "タグ";
+
+/* The placeholder for the tags field that is shown when the field represents multiple incompatible values */
+"Multiple Values" = "複数値";
+
+/* The placeholder for the tags field that is shown when the field is empty */
+"no tags" = "タグなし";
+
+/* The heading of the add-tags dialog window */
+"Add tags to selected glyphs" = "選択したグリフにタグを追加します";
+
+/* The confirmation button label of the add-tags dialog window */
+"Add Tags" = "タグを追加";
+
+/* The heading of the remove-tags dialog window */
+"Remove tags from selected glyphs" = "選択したグリフからタグを削除します";
+
+/* The confirmation button label of the remove-tags dialog window */
+"Remove Tags" = "タグを削除";
+
+/* The label for the menu item with the action of showing all glyphs that have the tag of the menu */
+"Show All Glyphs" = "すべてのグリフを表示";
+
+/* Shortcut command name for selecting the tags field */
+"Edit Tags" = "タグを編集";
+
+/* Shortcut command name for renaming tags for the selected glyphs */
+"Rename Tags" = "タグの名前を変更";

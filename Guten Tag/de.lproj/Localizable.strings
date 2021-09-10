@@ -1,0 +1,30 @@
+
+/* The heading of the palette section */
+"Tags" = "Tags";
+
+/* The placeholder for the tags field that is shown when the field represents multiple incompatible values */
+"Multiple Values" = "Mehrere Werte";
+
+/* The placeholder for the tags field that is shown when the field is empty */
+"no tags" = "keine Tags";
+
+/* The heading of the add-tags dialog window */
+"Add tags to selected glyphs" = "Tags zu den ausgewählten Glyphen hinzufügen";
+
+/* The confirmation button label of the add-tags dialog window */
+"Add Tags" = "Tags hinzufügen";
+
+/* The heading of the remove-tags dialog window */
+"Remove tags from selected glyphs" = "Tags von den ausgewählten Glyphen entfernen";
+
+/* The confirmation button label of the remove-tags dialog window */
+"Remove Tags" = "Tags entfernen";
+
+/* The label for the menu item with the action of showing all glyphs that have the tag of the menu */
+"Show All Glyphs" = "Alle Glyphen anzeigen";
+
+/* Shortcut command name for selecting the tags field */
+"Edit Tags" = "Tags bearbeiten";
+
+/* Shortcut command name for renaming tags for the selected glyphs */
+"Rename Tags" = "Tags umbenennen";

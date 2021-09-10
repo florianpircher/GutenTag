@@ -2,12 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>BuildMachineOSBuild</key>
+	<string>20G95</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
-	<key>CFBundleDisplayName</key>
-	<string>Guten Tag</string>
-	<key>CFBundleIconFile</key>
-	<string>Guten Tag</string>
 	<key>CFBundleExecutable</key>
 	<string>Guten Tag</string>
 	<key>CFBundleIdentifier</key>
@@ -19,22 +17,32 @@
 	<key>CFBundlePackageType</key>
 	<string>BNDL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.0</string>
-	<key>CFBundleVersion</key>
-	<string>6</string>
-	<key>NSHumanReadableCopyright</key>
-	<string>Copyright 2021 Florian Pircher</string>
-	<key>MinGlyphsVersion</key>
-	<string>3.0.3</string>
-	<key>NSPrincipalClass</key>
-	<string>GutenTag</string>
-	<key>PyMainFileNames</key>
+	<string>1.2</string>
+	<key>CFBundleSupportedPlatforms</key>
 	<array>
-		<string>plugin.py</string>
+		<string>MacOSX</string>
 	</array>
-	<key>productPageURL</key>
-	<string>https://florianpircher.com/glyphs/plugins/guten-tag</string>
-	<key>productReleaseNotes</key>
-	<string>Initial release.</string>
+	<key>CFBundleVersion</key>
+	<string>7</string>
+	<key>DTCompiler</key>
+	<string>com.apple.compilers.llvm.clang.1_0</string>
+	<key>DTPlatformBuild</key>
+	<string>13A5212g</string>
+	<key>DTPlatformName</key>
+	<string>macosx</string>
+	<key>DTPlatformVersion</key>
+	<string>12.0</string>
+	<key>DTSDKBuild</key>
+	<string>21A5304f</string>
+	<key>DTSDKName</key>
+	<string>macosx12.0</string>
+	<key>DTXcode</key>
+	<string>1300</string>
+	<key>DTXcodeBuild</key>
+	<string>13A5212g</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>10.11</string>
+	<key>NSPrincipalClass</key>
+	<string>GTAGPlugin</string>
 </dict>
 </plist>

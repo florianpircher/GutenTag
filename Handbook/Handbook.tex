@@ -11,6 +11,7 @@
   babel = true,%
   letterspace = 38]{microtype}
 \usepackage{xcolor}
+\usepackage{transparent}
 \usepackage{amsmath}
 \usepackage{csquotes}
 \usepackage{graphicx}
@@ -28,6 +29,14 @@
 \usepackage{metalogo}
 
 \LuaCodeDebugOn
+
+\backgroundsetup{
+  contents = {\includegraphics[width=\paperwidth]{Resources/Guten Tag.jpeg}},%
+  scale = 1,%
+  color = black,%
+  placement = top,%
+  opacity = 1,%
+  angle = 0}
 
 \begin{luacode*}
   function dirname(path)
@@ -223,7 +232,9 @@
 \newfontfamily{\patharrowfont}{Kaius Pro Light}[%
   Letters = Uppercase]
 \newfontfamily{\latexlogoafont}{Kaius Pro Medium}
-\newfontfamily{\arfont}{Lyon Arabic Text Regular}[%
+\newfontfamily{\symbolfont}{GutenTagSymbols.ttf}
+\newfontfamily{\arfont}{LyonArabicText-Regular.otf}[%
+  Path = {Resources/},%
   Script = Arabic]
 \newfontfamily{\cjfont}{Kaiti.ttc}[%
   Path = \luadirect{tex.print(font_root("Kaiti TC"))},%
@@ -232,7 +243,6 @@
   Path = \luadirect{tex.print(extra_font_root())},%
   Script = CJK,%
   Language = Korean]
-\newfontfamily{\symbolfont}{GutenTagSymbols-Regular.ttf}
 \newfontfamily{\applelogofont}{Avenir Next}
 \setsansfont{SkolarSansLatn-Rg.otf}[%
   Path = \luadirect{tex.print(extra_font_root())}]
@@ -288,11 +298,11 @@
 \titleformat{\chapter}[display]%
   {\vspace{-7.3em}\Huge\chapterfont}
   {\hfill\raisebox{-1.2em}[0pt][0pt]{%
-      \textcolor{black!16}{%
-        \fontsize{3em}{3em}%
-        \selectfont%
-        \chaptercounterfont%
-        \thechapter}}%
+      \fontsize{3em}{3em}%
+      \selectfont%
+      \chaptercounterfont%
+      \transparent{0.18}%
+      \thechapter}%
   \hspace{-0.1em}}%
   {0pt}%
   {}
@@ -398,11 +408,17 @@
 
 \begin{document}
   \begin{titlepage}
-    \includepdf[pages=1]{Cover.pdf}
+    \includepdf[pages=1]{Resources/Cover.pdf}
   \end{titlepage}
   
   \nonfrenchspacing
   \raggedbottom
   
-  \input{Content.tex}
+  \input{Chapters/Intro.tex}
+  \input{Chapters/Table of Contents.tex}
+  \input{Chapters/Installation.tex}
+  \input{Chapters/Guten Tag.tex}
+  \input{Chapters/Using Tags.tex}
+  \input{Chapters/Preferences.tex}
+  \input{Chapters/Remarks.tex}
 \end{document}

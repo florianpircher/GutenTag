@@ -92,5 +92,3 @@ Select *Script* → *mekkablue* → *App* → *Set Hidden App Preferences*. Ente
 Plugin source code licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
 
 Plugin icons licensed under [Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/).
-
-Plugin runner (`MacOS/Guten Tag`) copyright Georg Seifert (@schriftgestalt), Jan Gerner (@yanone), and Rainer Erich Scheichelbauer (@mekkablue); licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).

@@ -1,0 +1,30 @@
+
+/* The heading of the palette section */
+"Tags" = "标签";
+
+/* The placeholder for the tags field that is shown when the field represents multiple incompatible values */
+"Multiple Values" = "多个值";
+
+/* The placeholder for the tags field that is shown when the field is empty */
+"no tags" = "没有标签";
+
+/* The heading of the add-tags dialog window */
+"Add tags to selected glyphs" = "为所选字形添加标签";
+
+/* The confirmation button label of the add-tags dialog window */
+"Add Tags" = "添加标签";
+
+/* The heading of the remove-tags dialog window */
+"Remove tags from selected glyphs" = "从所选字形删除标签";
+
+/* The confirmation button label of the remove-tags dialog window */
+"Remove Tags" = "移除标签";
+
+/* The label for the menu item with the action of showing all glyphs that have the tag of the menu */
+"Show All Glyphs" = "显示全部字符形";
+
+/* Shortcut command name for selecting the tags field */
+"Edit Tags" = "编辑标签";
+
+/* Shortcut command name for renaming tags for the selected glyphs */
+"Rename Tags" = "重命名标签";

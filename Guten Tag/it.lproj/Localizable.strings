@@ -1,0 +1,30 @@
+
+/* The heading of the palette section */
+"Tags" = "Tag";
+
+/* The placeholder for the tags field that is shown when the field represents multiple incompatible values */
+"Multiple Values" = "Valori Multipli";
+
+/* The placeholder for the tags field that is shown when the field is empty */
+"no tags" = "nessun tag";
+
+/* The heading of the add-tags dialog window */
+"Add tags to selected glyphs" = "Aggiungi tag ai glifi selezionati";
+
+/* The confirmation button label of the add-tags dialog window */
+"Add Tags" = "Aggiungi Tag";
+
+/* The heading of the remove-tags dialog window */
+"Remove tags from selected glyphs" = "Rimuovi i tag dai glifi selezionati";
+
+/* The confirmation button label of the remove-tags dialog window */
+"Remove Tags" = "Rimuovi Tag";
+
+/* The label for the menu item with the action of showing all glyphs that have the tag of the menu */
+"Show All Glyphs" = "Mostra tutti i glifi";
+
+/* Shortcut command name for selecting the tags field */
+"Edit Tags" = "Modifica Tag";
+
+/* Shortcut command name for renaming tags for the selected glyphs */
+"Rename Tags" = "Rinomina Tag";

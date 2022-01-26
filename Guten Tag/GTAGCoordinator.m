@@ -98,7 +98,7 @@ static NSString * const kShortcutCommandsGroup = @"Guten Tag";
 
 - (nullable GTAGPlugin *)activeLink:(NSViewController<GSGlyphEditViewControllerProtocol> *)editViewController {
     GSFont *font = editViewController.representedObject;
-    NSDocument *document = (NSDocument *)font.parent;
+    GSDocument *document = font.parent;
     
     if (document == nil) return nil;
     

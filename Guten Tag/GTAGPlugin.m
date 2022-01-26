@@ -679,8 +679,6 @@ static NSBundle *bundle;
     NSArray<NSString *> *setTags = tokenField.objectValue;
     NSMutableArray<NSString *> *matches = [NSMutableArray new];
     
-    NSLog(@"Guten Tag with: %@", setTags);
-    
     for (NSString *tagName in self.suggestionTagPool) {
         // hide tags that are already set (part of `tokenField.objectValue`) except if the tag equals the query (`substring`)
         if (([tagName isEqualToString:substring] || ![setTags containsObject:tagName]) && [tagName hasPrefix:substring]) {

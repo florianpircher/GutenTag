@@ -143,7 +143,7 @@ static NSBundle *bundle;
 - (nullable GSFontMaster *)selectedFontMaster {
     if (windowController == nil) return nil;
     
-    NSDocument *document = windowController.document;
+    GSDocument *document = windowController.document;
     
     if (document == nil) return nil;
     

@@ -35,7 +35,7 @@ static NSString * const kShortcutCommandsGroup = @"Guten Tag";
     static dispatch_once_t onceToken;
     
     dispatch_once(&onceToken, ^{
-        sharedCoordinatorInstance = self.new;
+        sharedCoordinatorInstance = [self new];
     });
     
     return sharedCoordinatorInstance;

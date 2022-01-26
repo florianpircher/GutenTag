@@ -493,6 +493,41 @@ static NSBundle *bundle;
     return tokenField == _tagsField;
 }
 
+/// Constructs and returns an NSString object that is the result of interposing a separator matching the current locale between the elements of the array.
+- (NSString *)localizedComponentsJoinedByString:(NSArray<NSString *> *)strings {
+    static NSString *separator = nil;
+    static NSString *itemPrefix = nil;
+    static NSString *itemSuffix = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSString *languageCode = NSLocale.currentLocale.languageCode;
+        
+        if ([languageCode isEqualToString:@"ar"]) {
+            separator = @" \u0648"; // SPACE -- ARABIC LETTER WAW
+            itemPrefix = @"\u2068"; // FIRST STRONG ISOLATE
+            itemSuffix = @"\u2069"; // POP DIRECTIONAL ISOLATE
+        }
+        else if ([languageCode isEqualToString:@"ja"] || [languageCode isEqualToString:@"zh"]) {
+            separator = @"\u3001"; // IDEOGRAPHIC COMMA
+            itemPrefix = @"";
+            itemSuffix = @"";
+        }
+        else {
+            separator = @", ";
+            itemPrefix = @"";
+            itemSuffix = @"";
+        }
+    });
+    NSMutableArray<NSString *> *mappedStrings = [NSMutableArray new];
+    
+    for (NSString *string in strings) {
+        NSString *mappedString = [NSString stringWithFormat:@"%@%@%@", itemPrefix, string, itemSuffix];
+        [mappedStrings addObject:mappedString];
+    }
+    
+    return [mappedStrings componentsJoinedByString:separator];
+}
+
 - (NSMenu *)tokenField:(NSTokenField *)tokenField menuForRepresentedObject:(id)tag {
     // update selected glyph with current tags field value such that they are already reflected in the glyphs preview menu
     [self updateTagsForSelectedGlyphs:nil];
@@ -612,11 +647,10 @@ static NSBundle *bundle;
         NSString *unicodesString;
         
         if (glyph.unicodes != nil && glyph.unicodes.count > 0) {
-            // TODO: use locale specific list format
-            unicodesString = [glyph.unicodes.array componentsJoinedByString:@", "];
+            unicodesString = [self localizedComponentsJoinedByString:glyph.unicodes.array];
         }
         else {
-            unicodesString = @"–";
+            unicodesString = @"\u2013"; // EN DASH
         }
         
         unicodesString = [@"\n" stringByAppendingString:unicodesString];

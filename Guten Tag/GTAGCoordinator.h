@@ -37,10 +37,4 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@interface NSDocument (private) // GSDocument
-
-@property (readonly, nonatomic) NSWindowController *windowController;
-
-@end
-
 NS_ASSUME_NONNULL_END

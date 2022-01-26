@@ -78,15 +78,12 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @interface NSView (private) <GSGlyphEditViewProtocol>
-
 - (void)replaceActiveLayersWithGlyphs:(NSArray<GSGlyph *> *)glyphs;
-
 @end
 
-@interface NSDocument (private) // GSDocument
-
+@interface GSDocument : NSDocument
 @property (unsafe_unretained, readonly, nonatomic) GSFontMaster *selectedFontMaster;
-
+@property (readonly, nonatomic) NSWindowController *windowController;
 @end
 
 NS_ASSUME_NONNULL_END

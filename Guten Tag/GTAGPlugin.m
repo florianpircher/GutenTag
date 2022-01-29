@@ -23,10 +23,23 @@
 
 @synthesize windowController;
 
+// Key-Value Coding
+static void * const GTAGPluginKVOContext = (void*)&GTAGPluginKVOContext;
+static NSString * const kUserDefaultsControllerKeyPrefix = @"values.";
+// Notifications
 static NSString * const kUpdateInterface = @"GSUpdateInterface";
-static NSString * const kPreferenceGlyphPreviewSize = @"com.FlorianPircher.GutenTag.GlyphPreviewSize";
-static NSString * const kPreferenceGlyphPreviewInset = @"com.FlorianPircher.GutenTag.GlyphPreviewInset";
-static NSString * const kPreferenceMaximumGlyphPreviewCount = @"com.FlorianPircher.GutenTag.MaximumGlyphPreviewCount";
+// User Defaults
+static NSString * const kUserDefaultsKeyGlyphPreviewSize = @"GutenTagGlyphPreviewSize";
+static NSString * const kUserDefaultsKeyGlyphPreviewInset = @"GutenTagGlyphPreviewInset";
+static NSString * const kUserDefaultsKeyMaximumGlyphPreviewCount = @"GutenTagMaximumGlyphPreviewCount";
+// User Defaults (Legacy)
+static NSString * const kLegacyUserDefaultsKeyGlyphPreviewSize = @"com.FlorianPircher.GutenTag.GlyphPreviewSize";
+static NSString * const kLegacyUserDefaultsKeyGlyphPreviewInset = @"com.FlorianPircher.GutenTag.GlyphPreviewInset";
+static NSString * const kLegacyUserDefaultsKeyMaximumGlyphPreviewCount = @"com.FlorianPircher.GutenTag.MaximumGlyphPreviewCount";
+// Default Values
+const CGFloat DEFAULT_GLYPH_PREVIEW_SIZE = 36.0;
+const CGFloat DEFAULT_GLYPH_PREVIEW_INSET = 4.0;
+const NSInteger DEFAULT_MAXIMUM_GLYPH_PREVIEW_COUNT = 1000;
 
 static NSBundle *bundle;
 
@@ -36,6 +49,23 @@ static NSBundle *bundle;
     // Register shortcut
     [GTAGCoordinator sharedCoordinator];
 }
+
+// MARK: - Utility
+
++ (NSFont *)legibileFontOfSize:(CGFloat)size {
+    NSFontDescriptor *descriptor = [NSFont systemFontOfSize:size].fontDescriptor;
+    NSFontDescriptor *legibileDescriptor = [descriptor fontDescriptorByAddingAttributes:@{
+        NSFontFeatureSettingsAttribute: @[
+                @{
+                    NSFontFeatureTypeIdentifierKey: @(kStylisticAlternativesType),
+                    NSFontFeatureSelectorIdentifierKey: @(kStylisticAltSixOnSelector),
+                },
+        ]
+    }];
+    return [NSFont fontWithDescriptor:legibileDescriptor size:size];
+}
+
+// MARK: - Glyphs API
 
 - (NSUInteger)interfaceVersion {
     return 1;
@@ -67,27 +97,149 @@ static NSBundle *bundle;
     return self.view;
 }
 
+// MARK: - Properties
+
+- (void)setGlyphPreviewSize:(CGFloat)glyphPreviewSize {
+    _glyphPreviewSize = fmax(8.0, glyphPreviewSize);
+}
+
+- (void)setMaximumGlyphPreviewCount:(NSInteger)maximumGlyphPreviewCount {
+    _maximumGlyphPreviewCount = maximumGlyphPreviewCount > 0
+        ? maximumGlyphPreviewCount
+        : LONG_MAX; // lift limit for non-positive values
+}
+
+// MARK: - Init
+
 - (instancetype)init {
-    self = [super initWithNibName:@"View" bundle:[NSBundle bundleForClass:self.class]];
+    self = [super initWithNibName:@"View" bundle:bundle];
+    
+    if (self) {
+        // MARK: Setup Preferences
+        NSUserDefaults *defaults = NSUserDefaults.standardUserDefaults;
+        
+        // MARK: Glyph Preview Size
+        
+        if ([defaults objectForKey:kUserDefaultsKeyGlyphPreviewSize] != nil) {
+            self.glyphPreviewSize = [defaults doubleForKey:kUserDefaultsKeyGlyphPreviewSize];
+        }
+        else {
+            if ([defaults objectForKey:kLegacyUserDefaultsKeyGlyphPreviewSize] != nil) {
+                self.glyphPreviewSize = [defaults doubleForKey:kLegacyUserDefaultsKeyGlyphPreviewSize];
+                [defaults removeObjectForKey:kLegacyUserDefaultsKeyGlyphPreviewSize];
+                [defaults setDouble:self.glyphPreviewSize forKey:kUserDefaultsKeyGlyphPreviewSize];
+            }
+            else {
+                self.glyphPreviewSize = DEFAULT_GLYPH_PREVIEW_SIZE;
+            }
+        }
+        
+        // MARK: Glyph Preview Inset
+        
+        if ([defaults objectForKey:kUserDefaultsKeyGlyphPreviewInset] != nil) {
+            self.glyphPreviewInset = [defaults doubleForKey:kUserDefaultsKeyGlyphPreviewInset];
+        }
+        else {
+            if ([defaults objectForKey:kLegacyUserDefaultsKeyGlyphPreviewInset] != nil) {
+                self.glyphPreviewInset = [defaults doubleForKey:kLegacyUserDefaultsKeyGlyphPreviewInset];
+                [defaults removeObjectForKey:kLegacyUserDefaultsKeyGlyphPreviewInset];
+                [defaults setDouble:self.glyphPreviewInset forKey:kUserDefaultsKeyGlyphPreviewInset];
+            }
+            else {
+                self.glyphPreviewInset = DEFAULT_GLYPH_PREVIEW_INSET;
+            }
+        }
+        
+        // MARK: Maximum Glyph Preview Count
+        
+        if ([defaults objectForKey:kUserDefaultsKeyMaximumGlyphPreviewCount] != nil) {
+            self.maximumGlyphPreviewCount = [defaults integerForKey:kUserDefaultsKeyMaximumGlyphPreviewCount];
+        }
+        else {
+            if ([defaults objectForKey:kLegacyUserDefaultsKeyMaximumGlyphPreviewCount] != nil) {
+                self.maximumGlyphPreviewCount = [defaults integerForKey:kLegacyUserDefaultsKeyMaximumGlyphPreviewCount];
+                [defaults removeObjectForKey:kLegacyUserDefaultsKeyMaximumGlyphPreviewCount];
+                [defaults setInteger:self.maximumGlyphPreviewCount forKey:kUserDefaultsKeyMaximumGlyphPreviewCount];
+            }
+            else {
+                self.maximumGlyphPreviewCount = DEFAULT_MAXIMUM_GLYPH_PREVIEW_COUNT;
+            }
+        }
+        
+        // MARK: Observe User Defaults
+        
+        NSUserDefaultsController *defaultsController = NSUserDefaultsController.sharedUserDefaultsController;
+        [defaultsController addObserver:self
+                             forKeyPath:[kUserDefaultsControllerKeyPrefix stringByAppendingString:kUserDefaultsKeyGlyphPreviewSize]
+                                options:0
+                                context:GTAGPluginKVOContext];
+        [defaultsController addObserver:self
+                             forKeyPath:[kUserDefaultsControllerKeyPrefix stringByAppendingString:kUserDefaultsKeyGlyphPreviewInset]
+                                options:0
+                                context:GTAGPluginKVOContext];
+        [defaultsController addObserver:self
+                             forKeyPath:[kUserDefaultsControllerKeyPrefix stringByAppendingString:kUserDefaultsKeyMaximumGlyphPreviewCount]
+                                options:0
+                                context:GTAGPluginKVOContext];
+    }
+    
     return self;
 }
 
 - (void)dealloc {
+    NSUserDefaultsController *defaultsController = NSUserDefaultsController.sharedUserDefaultsController;
+    [defaultsController removeObserver:self
+                            forKeyPath:[kUserDefaultsControllerKeyPrefix stringByAppendingString:kUserDefaultsKeyGlyphPreviewSize]
+                               context:GTAGPluginKVOContext];
+    [defaultsController removeObserver:self
+                            forKeyPath:[kUserDefaultsControllerKeyPrefix stringByAppendingString:kUserDefaultsKeyGlyphPreviewInset]
+                               context:GTAGPluginKVOContext];
+    [defaultsController removeObserver:self
+                            forKeyPath:[kUserDefaultsControllerKeyPrefix stringByAppendingString:kUserDefaultsKeyMaximumGlyphPreviewCount]
+                               context:GTAGPluginKVOContext];
+    
     [NSNotificationCenter.defaultCenter removeObserver:self];
     [GTAGCoordinator.sharedCoordinator unlink:self];
 }
 
-- (NSFont *)legibileFontOfSize:(CGFloat)size {
-    NSFontDescriptor *descriptor = [NSFont systemFontOfSize:size].fontDescriptor;
-    NSFontDescriptor *legibileDescriptor = [descriptor fontDescriptorByAddingAttributes:@{
-        NSFontFeatureSettingsAttribute: @[
-                @{
-                    NSFontFeatureTypeIdentifierKey: @(kStylisticAlternativesType),
-                    NSFontFeatureSelectorIdentifierKey: @(kStylisticAltSixOnSelector),
-                },
-        ]
-    }];
-    return [NSFont fontWithDescriptor:legibileDescriptor size:size];
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if (context == GTAGPluginKVOContext) {
+        if (![keyPath hasPrefix:kUserDefaultsControllerKeyPrefix]) {
+            return;
+        }
+        
+        // MARK: Dynamically Update Preferences
+        
+        NSString *defaultsKey = [keyPath substringFromIndex:kUserDefaultsControllerKeyPrefix.length];
+        NSUserDefaults *defaults = NSUserDefaults.standardUserDefaults;
+        
+        if ([defaultsKey isEqualToString:kUserDefaultsKeyGlyphPreviewSize]) {
+            if ([defaults objectForKey:kUserDefaultsKeyGlyphPreviewSize] != nil) {
+                self.glyphPreviewSize = [defaults doubleForKey:kUserDefaultsKeyGlyphPreviewSize];
+            }
+            else {
+                self.glyphPreviewSize = DEFAULT_GLYPH_PREVIEW_SIZE;
+            }
+        }
+        else if ([defaultsKey isEqualToString:kUserDefaultsKeyGlyphPreviewInset]) {
+            if ([defaults objectForKey:kUserDefaultsKeyGlyphPreviewInset] != nil) {
+                self.glyphPreviewInset = [defaults doubleForKey:kUserDefaultsKeyGlyphPreviewInset];
+            }
+            else {
+                self.glyphPreviewInset = DEFAULT_GLYPH_PREVIEW_INSET;
+            }
+        }
+        else if ([defaultsKey isEqualToString:kUserDefaultsKeyMaximumGlyphPreviewCount]) {
+            if ([defaults objectForKey:kUserDefaultsKeyMaximumGlyphPreviewCount] != nil) {
+                self.maximumGlyphPreviewCount = [defaults integerForKey:kUserDefaultsKeyMaximumGlyphPreviewCount];
+            }
+            else {
+                self.maximumGlyphPreviewCount = DEFAULT_MAXIMUM_GLYPH_PREVIEW_COUNT;
+            }
+        }
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
 }
 
 - (void)viewDidLoad {
@@ -96,10 +248,10 @@ static NSBundle *bundle;
     [tokenizingCharacterSet formUnionWithCharacterSet:defaultCharSet];
     
     CGFloat fontSize = NSFont.systemFontSize;
-    NSFont *font = [self legibileFontOfSize:fontSize];
+    NSFont *font = [GTAGPlugin legibileFontOfSize:fontSize];
     
     CGFloat smallFontSize = NSFont.smallSystemFontSize;
-    NSFont *smallFont = [self legibileFontOfSize:smallFontSize];
+    NSFont *smallFont = [GTAGPlugin legibileFontOfSize:smallFontSize];
     
     _tagsField.enabled = NO;
     _tagsField.font = smallFont;
@@ -540,22 +692,15 @@ static NSBundle *bundle;
     
     if (master == nil) return nil;
     
-    NSUserDefaults *defaults = NSUserDefaults.standardUserDefaults;
-    
     // create glyphs preview menu
     NSMenu *menu = [NSMenu new];
     
     NSSet<GSGlyph *> *selectedGlyphs = [NSSet setWithArray:self.selectedGlyphs];
     CGFloat upm = (CGFloat)font.unitsPerEm;
     /// The width and height of the preview image.
-    CGFloat defaultViewSize = [defaults objectForKey:kPreferenceGlyphPreviewSize] == nil
-        ? 56.0
-        : [defaults doubleForKey:kPreferenceGlyphPreviewSize];
-    CGFloat viewSize = fmax(8.0, defaultViewSize);
+    CGFloat viewSize = self.glyphPreviewSize;
     /// The visual inset in the image from the top and bottom to prevent clipping ascenders and descenders.
-    CGFloat inset = [defaults objectForKey:kPreferenceGlyphPreviewInset] == nil
-        ? 6.0
-        : [defaults doubleForKey:kPreferenceGlyphPreviewInset];
+    CGFloat inset = self.glyphPreviewInset;
     /// The point size at which the glyph is drawn.
     CGFloat fontSize = viewSize - 2.0 * inset;
     CGFloat offset = upm / (fontSize / inset);
@@ -588,8 +733,8 @@ static NSBundle *bundle;
     /// The shape of the glyph background color if a layer color is also set.
     NSBezierPath *glyphClipPath = [NSBezierPath bezierPathWithRect:glyphClipRect];
     
-    NSFont *menuItemFont = [self legibileFontOfSize:NSFont.systemFontSize];
-    NSFont *smallMenuItemFont = [self legibileFontOfSize:NSFont.smallSystemFontSize];
+    NSFont *menuItemFont = [GTAGPlugin legibileFontOfSize:NSFont.systemFontSize];
+    NSFont *smallMenuItemFont = [GTAGPlugin legibileFontOfSize:NSFont.smallSystemFontSize];
     
     NSMenuItem *(^makeMenuItem)(GSGlyph *) = ^NSMenuItem *(GSGlyph *glyph) {
         NSString *glyphName = glyph.name ?: @"—";
@@ -689,14 +834,10 @@ static NSBundle *bundle;
     
     /// All glyphs containg the tag.
     NSUInteger glyphCount = font.countOfGlyphs;
-    int defaultMaxCount = [defaults objectForKey:kPreferenceMaximumGlyphPreviewCount] == nil
-        ? 1000
-        : (int)[defaults integerForKey:kPreferenceMaximumGlyphPreviewCount];
-    int maxCount = MAX(-1, defaultMaxCount);
-    if (maxCount == -1) maxCount = INT_MAX;
+    NSInteger maxCount = self.maximumGlyphPreviewCount;
     int count = 0;
     
-    for (int i = 0; i < glyphCount && count < maxCount; i++) {
+    for (NSInteger i = 0; i < glyphCount && count < maxCount; i++) {
         GSGlyph *glyph = [font glyphAtIndex:i];
         
         if ([glyph.tags containsObject:tag]) {

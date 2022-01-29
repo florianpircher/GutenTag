@@ -61,6 +61,10 @@ NS_ASSUME_NONNULL_BEGIN
 // Store
 @property (strong) NSArray<NSString *> *tagPool;
 @property (strong) NSArray<NSString *> *suggestionTagPool;
+// Preferences
+@property (nonatomic) CGFloat glyphPreviewSize;
+@property (nonatomic) CGFloat glyphPreviewInset;
+@property (nonatomic) NSInteger maximumGlyphPreviewCount;
 
 - (IBAction)updateTagsForSelectedGlyphs:(nullable id)sender;
 - (IBAction)promptAddTags:(nullable id)sender;

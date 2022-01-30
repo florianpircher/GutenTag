@@ -178,7 +178,7 @@ BOOL isEmptyShortcut(GTAGShortcut *shortcut) {
         NSDictionary<NSString *, GTAGShortcut *> *shortcuts = [defaults dictionaryForKey:kUserDefaultsShortcutKeyEquivalentsKey];
         [self reloadShortcuts:shortcuts];
         
-        [GSCallbackHandler registerShortcutCommand:NSLocalizedStringFromTableInBundle(@"Edit Tags", nil, bundle, @"Shortcut command name for selecting the tags field")
+        [GSCallbackHandler registerShortcutCommand:NSLocalizedStringFromTableInBundle(@"Edit Tags", nil, bundle, @"Name of an action to start editing a text field containing tags")
                                              group:kShortcutGroupTitle
                                         identifier:kEditTagsShortcutIdentifier
                                             action:@selector(editTags:)
@@ -202,7 +202,7 @@ BOOL isEmptyShortcut(GTAGShortcut *shortcut) {
                                          character:@""
                                      modifierFlags:0];
         
-        [GSCallbackHandler registerShortcutCommand:NSLocalizedStringFromTableInBundle(@"Rename Tags", nil, bundle, @"Shortcut command name for renaming tags for the selected glyphs")
+        [GSCallbackHandler registerShortcutCommand:NSLocalizedStringFromTableInBundle(@"Rename Tags", nil, bundle, @"Name of an action to rename a tag for a set of glyphs")
                                              group:kShortcutGroupTitle
                                         identifier:kRenameTagsShortcutIdentifier
                                             action:@selector(renameTags:)

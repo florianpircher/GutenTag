@@ -1,30 +1,36 @@
 
-/* The heading of the palette section */
+/* Heading of the palette managing the set of tags */
 "Tags" = "標籤";
 
-/* The placeholder for the tags field that is shown when the field represents multiple incompatible values */
+/* Placeholder text that is shown when a text field represents multiple incompatible values  */
 "Multiple Values" = "多個數值";
 
-/* The placeholder for the tags field that is shown when the field is empty */
+/* Placeholder text that is shown when a text field is empty */
 "no tags" = "没有標籤";
 
-/* The heading of the add-tags dialog window */
+/* Title of a dialog window for adding tags to a set of glyphs */
 "Add tags to selected glyphs" = "將標籤新增至所選字形";
 
-/* The confirmation button label of the add-tags dialog window */
+/* Name of an action to add tags to a set of glyphs */
 "Add Tags" = "新增標籤";
 
-/* The heading of the remove-tags dialog window */
+/* Button for adding tags to a set of glyphs */
+"Add" = "新增";
+
+/* Title of a dialog window for removing tags to a set of glyphs */
 "Remove tags from selected glyphs" = "移除所選字形的標籤";
 
-/* The confirmation button label of the remove-tags dialog window */
+/* Name of an action to remove tags to a set of glyphs */
 "Remove Tags" = "移除標籤";
+
+/* Button for removing tags to a set of glyphs */
+"Remove" = "移除";
+
+/* Name of an action to start editing a text field containing tags */
+"Edit Tags" = "編輯標籤";
+
+/* Name of an action to rename a tag for a set of glyphs */
+"Rename Tags" = "重新命名標籤";
 
 /* The label for the menu item with the action of showing all glyphs that have the tag of the menu */
 "Show All Glyphs" = "顯示所有字符";
-
-/* Shortcut command name for selecting the tags field */
-"Edit Tags" = "編輯標籤";
-
-/* Shortcut command name for renaming tags for the selected glyphs */
-"Rename Tags" = "重新命名標籤";

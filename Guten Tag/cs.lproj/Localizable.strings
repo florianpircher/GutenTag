@@ -1,30 +1,36 @@
 
-/* The heading of the palette section */
+/* Heading of the palette managing the set of tags */
 "Tags" = "Značky";
 
-/* The placeholder for the tags field that is shown when the field represents multiple incompatible values */
+/* Placeholder text that is shown when a text field represents multiple incompatible values  */
 "Multiple Values" = "Více hodnot";
 
-/* The placeholder for the tags field that is shown when the field is empty */
+/* Placeholder text that is shown when a text field is empty */
 "no tags" = "žádné značky";
 
-/* The heading of the add-tags dialog window */
+/* Title of a dialog window for adding tags to a set of glyphs */
 "Add tags to selected glyphs" = "Přidat značky k vybraným glyfům";
 
-/* The confirmation button label of the add-tags dialog window */
+/* Name of an action to add tags to a set of glyphs */
 "Add Tags" = "Přidat značky";
 
-/* The heading of the remove-tags dialog window */
+/* Button for adding tags to a set of glyphs */
+"Add" = "Přidat";
+
+/* Title of a dialog window for removing tags to a set of glyphs */
 "Remove tags from selected glyphs" = "Odstranit značky z vybraných glyfů";
 
-/* The confirmation button label of the remove-tags dialog window */
+/* Name of an action to remove tags to a set of glyphs */
 "Remove Tags" = "Odstranit značky";
+
+/* Button for removing tags to a set of glyphs */
+"Remove" = "Odstranit";
+
+/* Name of an action to start editing a text field containing tags */
+"Edit Tags" = "Upravit značky";
+
+/* Name of an action to rename a tag for a set of glyphs */
+"Rename Tags" = "Přejmenovat značky";
 
 /* The label for the menu item with the action of showing all glyphs that have the tag of the menu */
 "Show All Glyphs" = "Zobrazit všechny glyfy";
-
-/* Shortcut command name for selecting the tags field */
-"Edit Tags" = "Upravit značky";
-
-/* Shortcut command name for renaming tags for the selected glyphs */
-"Rename Tags" = "Přejmenovat značky";

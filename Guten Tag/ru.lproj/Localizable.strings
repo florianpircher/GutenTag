@@ -1,30 +1,36 @@
 
-/* The heading of the palette section */
+/* Heading of the palette managing the set of tags */
 "Tags" = "Теги";
 
-/* The placeholder for the tags field that is shown when the field represents multiple incompatible values */
+/* Placeholder text that is shown when a text field represents multiple incompatible values  */
 "Multiple Values" = "Несколько значений";
 
-/* The placeholder for the tags field that is shown when the field is empty */
+/* Placeholder text that is shown when a text field is empty */
 "no tags" = "без тегов";
 
-/* The heading of the add-tags dialog window */
+/* Title of a dialog window for adding tags to a set of glyphs */
 "Add tags to selected glyphs" = "Добавление тегов для выбранных глифов";
 
-/* The confirmation button label of the add-tags dialog window */
+/* Name of an action to add tags to a set of glyphs */
 "Add Tags" = "Добавить теги";
 
-/* The heading of the remove-tags dialog window */
+/* Button for adding tags to a set of glyphs */
+"Add" = "Добавить";
+
+/* Title of a dialog window for removing tags to a set of glyphs */
 "Remove tags from selected glyphs" = "Удаление тегов для выбранных глифов";
 
-/* The confirmation button label of the remove-tags dialog window */
+/* Name of an action to remove tags to a set of glyphs */
 "Remove Tags" = "Удалить теги";
+
+/* Button for removing tags to a set of glyphs */
+"Remove" = "Удалить";
+
+/* Name of an action to start editing a text field containing tags */
+"Edit Tags" = "Изменить теги";
+
+/* Name of an action to rename a tag for a set of glyphs */
+"Rename Tags" = "Переименовать теги";
 
 /* The label for the menu item with the action of showing all glyphs that have the tag of the menu */
 "Show All Glyphs" = "Показать все глифы";
-
-/* Shortcut command name for selecting the tags field */
-"Edit Tags" = "Изменить теги";
-
-/* Shortcut command name for renaming tags for the selected glyphs */
-"Rename Tags" = "Переименовать теги";

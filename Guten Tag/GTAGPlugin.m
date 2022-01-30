@@ -72,7 +72,7 @@ static NSBundle *bundle;
 }
 
 - (NSString *)title {
-    return NSLocalizedStringFromTableInBundle(@"Tags", nil, bundle, @"The heading of the palette section");
+    return NSLocalizedStringFromTableInBundle(@"Tags", nil, bundle, @"Heading of the palette managing the set of tags");
 }
 
 - (NSInteger)maxHeight {
@@ -348,7 +348,7 @@ static NSBundle *bundle;
     NSArray<GSGlyph *> *glyphs = self.selectedGlyphs;
     
     if (glyphs.count > 0) {
-        _tagsField.placeholderString = NSLocalizedStringFromTableInBundle(@"no tags", nil, bundle, @"The placeholder for the tags field that is shown when the field is empty");
+        _tagsField.placeholderString = NSLocalizedStringFromTableInBundle(@"no tags", nil, bundle, @"Placeholder text that is shown when a text field is empty");
         _tagsField.enabled = YES;
         
         if (glyphs.count == 1) {
@@ -374,7 +374,7 @@ static NSBundle *bundle;
                 [self displayTags:firstGlyphTags];
             }
             else {
-                _tagsField.placeholderString = NSLocalizedStringFromTableInBundle(@"Multiple Values", nil, bundle, @"The placeholder for the tags field that is shown when the field represents multiple incompatible values");
+                _tagsField.placeholderString = NSLocalizedStringFromTableInBundle(@"Multiple Values", nil, bundle, @"Placeholder text that is shown when a text field represents multiple incompatible values ");
                 [self displayTags:[NSOrderedSet new]];
             }
         }
@@ -483,9 +483,9 @@ static NSBundle *bundle;
     [self reloadTagPool];
     self.suggestionTagPool = self.tagPool;
     
-    _promptTitleLabel.stringValue = NSLocalizedStringFromTableInBundle(@"Add tags to selected glyphs", nil, bundle, @"The heading of the add-tags dialog window");
+    _promptTitleLabel.stringValue = NSLocalizedStringFromTableInBundle(@"Add tags to selected glyphs", nil, bundle, @"Title of a dialog window for adding tags to a set of glyphs");
     
-    _promptConfirmButton.title = NSLocalizedStringFromTableInBundle(@"Add Tags", nil, bundle, @"The confirmation button label of the add-tags dialog window");
+    _promptConfirmButton.title = NSLocalizedStringFromTableInBundle(@"Add", nil, bundle, @"Button for confirming the add-tags dialog window");
     
     _promptTagsField.stringValue = @"";
     [_promptWindow makeFirstResponder:_promptTagsField];
@@ -513,9 +513,9 @@ static NSBundle *bundle;
 - (IBAction)promptRemoveTags:(nullable id)sender {
     self.suggestionTagPool = self.selectedTags.array;
     
-    _promptTitleLabel.stringValue = NSLocalizedStringFromTableInBundle(@"Remove tags from selected glyphs", nil, bundle, @"The heading of the remove-tags dialog window");
+    _promptTitleLabel.stringValue = NSLocalizedStringFromTableInBundle(@"Remove tags from selected glyphs", nil, bundle, @"Title of a dialog window for removing tags to a set of glyphs");
     
-    _promptConfirmButton.title = NSLocalizedStringFromTableInBundle(@"Remove Tags", nil, bundle, @"The confirmation button label of the remove-tags dialog window");
+    _promptConfirmButton.title = NSLocalizedStringFromTableInBundle(@"Remove", nil, bundle, @"Button for confirming the remove-tags dialog window");
     
     _promptTagsField.stringValue = @"";
     [_promptWindow makeFirstResponder:_promptTagsField];

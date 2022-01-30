@@ -1,30 +1,36 @@
 
-/* The heading of the palette section */
+/* Heading of the palette managing the set of tags */
 "Tags" = "Tag";
 
-/* The placeholder for the tags field that is shown when the field represents multiple incompatible values */
+/* Placeholder text that is shown when a text field represents multiple incompatible values  */
 "Multiple Values" = "Valori Multipli";
 
-/* The placeholder for the tags field that is shown when the field is empty */
+/* Placeholder text that is shown when a text field is empty */
 "no tags" = "nessun tag";
 
-/* The heading of the add-tags dialog window */
+/* Title of a dialog window for adding tags to a set of glyphs */
 "Add tags to selected glyphs" = "Aggiungi tag ai glifi selezionati";
 
-/* The confirmation button label of the add-tags dialog window */
+/* Name of an action to add tags to a set of glyphs */
 "Add Tags" = "Aggiungi Tag";
 
-/* The heading of the remove-tags dialog window */
+/* Button for adding tags to a set of glyphs */
+"Add" = "Aggiungi";
+
+/* Title of a dialog window for removing tags to a set of glyphs */
 "Remove tags from selected glyphs" = "Rimuovi i tag dai glifi selezionati";
 
-/* The confirmation button label of the remove-tags dialog window */
+/* Name of an action to remove tags to a set of glyphs */
 "Remove Tags" = "Rimuovi Tag";
+
+/* Button for removing tags to a set of glyphs */
+"Remove" = "Rimuovi";
+
+/* Name of an action to start editing a text field containing tags */
+"Edit Tags" = "Modifica Tag";
+
+/* Name of an action to rename a tag for a set of glyphs */
+"Rename Tags" = "Rinomina Tag";
 
 /* The label for the menu item with the action of showing all glyphs that have the tag of the menu */
 "Show All Glyphs" = "Mostra tutti i glifi";
-
-/* Shortcut command name for selecting the tags field */
-"Edit Tags" = "Modifica Tag";
-
-/* Shortcut command name for renaming tags for the selected glyphs */
-"Rename Tags" = "Rinomina Tag";

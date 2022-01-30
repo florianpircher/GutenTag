@@ -28,9 +28,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class GTAGPlugin;
 
+typedef NSDictionary<NSString *, NSNumber *> GTAGShortcut;
+
 @interface GTAGCoordinator : NSObject<GSShortcutCommandProtocol>
 
 + (instancetype)sharedCoordinator;
+
+@property (strong, nonatomic, nullable) GTAGShortcut *editTagsShortcut;
+@property (strong, nonatomic, nullable) GTAGShortcut *addTagsShortcut;
+@property (strong, nonatomic, nullable) GTAGShortcut *removeTagsShortcut;
+@property (strong, nonatomic, nullable) GTAGShortcut *renameTagsShortcut;
 
 - (void)link:(GTAGPlugin *)link;
 - (void)unlink:(GTAGPlugin *)link;

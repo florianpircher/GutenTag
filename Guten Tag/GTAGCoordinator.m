@@ -19,11 +19,33 @@
 
 #import "GTAGCoordinator.h"
 
+// Key-Value Coding
+static void * const GTAGCoordinatorKVOContext = (void*)&GTAGCoordinatorKVOContext;
+static NSString * const kUserDefaultsControllerKeyPrefix = @"values.";
+static NSString * const kUserDefaultsShortcutKeyEquivalentsKey = @"GSCommandKeyEquivalents";
+// Shortcuts
+static NSString * const kShortcutGroupTitle = @"Guten Tag";
+static NSString * const kShortcutKeyCodeKey = @"keycode";
+static NSString * const kShortcutModifierFlagsKey = @"modifierFlags";
+// Shortcut Commands
+static NSString * const kEditTagsShortcutIdentifier = @"com.FlorianPircher.GutenTag.EditTags";
+static NSString * const kAddTagsShortcutIdentifier = @"com.FlorianPircher.GutenTag.AddTags";
+static NSString * const kRemoveTagsShortcutIdentifier = @"com.FlorianPircher.GutenTag.RemoveTags";
+static NSString * const kRenameTagsShortcutIdentifier = @"com.FlorianPircher.GutenTag.RenameTags";
+// Events
+const NSUInteger kEventModifierKeyFlagsMask = NSEventModifierFlagShift|NSEventModifierFlagControl|NSEventModifierFlagOption|NSEventModifierFlagCommand;
+// Shared
 static NSBundle *bundle;
-static NSString * const kShortcutCommandsGroup = @"Guten Tag";
+
+BOOL isEmptyShortcut(GTAGShortcut *shortcut) {
+    return shortcut[kShortcutKeyCodeKey].unsignedShortValue == 0xFFFF
+        && shortcut[kShortcutModifierFlagsKey].unsignedLongValue == 0xFFFF;
+}
 
 @implementation GTAGCoordinator {
     NSMapTable *links;
+    NSMutableSet<NSString *> *monitoredShortcutIdentifers;
+    id eventMonitorHandle;
 }
 
 + (void)initialize {
@@ -41,47 +63,181 @@ static NSString * const kShortcutCommandsGroup = @"Guten Tag";
     return sharedCoordinatorInstance;
 }
 
+- (GTAGShortcut *)updateShortcut:(GTAGShortcut *)shortcut oldValue:(GTAGShortcut *)oldShortcut forShortcutIdentifier:(NSString *)identifer {
+    if (shortcut == oldShortcut || [shortcut isEqual:oldShortcut]) {
+        return oldShortcut;
+    }
+    
+    if (shortcut != nil && !isEmptyShortcut(shortcut)) {
+        [monitoredShortcutIdentifers addObject:identifer];
+        
+        if (eventMonitorHandle == nil && monitoredShortcutIdentifers.count > 0) {
+            eventMonitorHandle = [NSEvent addLocalMonitorForEventsMatchingMask:NSEventMaskKeyDown handler:^NSEvent * _Nullable(NSEvent * _Nonnull event) {
+                unsigned short keyCode = event.keyCode;
+                NSEventModifierFlags modifierFlags = event.modifierFlags & kEventModifierKeyFlagsMask;
+                
+                GTAGShortcut *editTagsShortcut = self.editTagsShortcut;
+                GTAGShortcut *addTagsShortcut = self.addTagsShortcut;
+                GTAGShortcut *removeTagsShortcut = self.removeTagsShortcut;
+                GTAGShortcut *renameTagsShortcut = self.renameTagsShortcut;
+                
+                if ([self->monitoredShortcutIdentifers containsObject:kEditTagsShortcutIdentifier]
+                    && editTagsShortcut != nil
+                    && editTagsShortcut[kShortcutKeyCodeKey].unsignedShortValue == keyCode
+                    && editTagsShortcut[kShortcutModifierFlagsKey].unsignedLongValue == modifierFlags
+                    && [self editTagsForWindow:NSApp.keyWindow]) {
+                    return nil;
+                }
+                else if ([self->monitoredShortcutIdentifers containsObject:kAddTagsShortcutIdentifier]
+                         && addTagsShortcut != nil
+                         && addTagsShortcut[kShortcutKeyCodeKey].unsignedShortValue == keyCode
+                         && addTagsShortcut[kShortcutModifierFlagsKey].unsignedLongValue == modifierFlags
+                         && [self addTagsForWindow:NSApp.keyWindow]) {
+                    return nil;
+                }
+                else if ([self->monitoredShortcutIdentifers containsObject:kRemoveTagsShortcutIdentifier]
+                         && removeTagsShortcut != nil
+                         && removeTagsShortcut[kShortcutKeyCodeKey].unsignedShortValue == keyCode
+                         && removeTagsShortcut[kShortcutModifierFlagsKey].unsignedLongValue == modifierFlags
+                         && [self removeTagsForWindow:NSApp.keyWindow]) {
+                    return nil;
+                }
+                else if ([self->monitoredShortcutIdentifers containsObject:kRenameTagsShortcutIdentifier]
+                         && renameTagsShortcut != nil
+                         && renameTagsShortcut[kShortcutKeyCodeKey].unsignedShortValue == keyCode
+                         && renameTagsShortcut[kShortcutModifierFlagsKey].unsignedLongValue == modifierFlags
+                         && [self renameTagsForWindow:NSApp.keyWindow]) {
+                    return nil;
+                }
+                
+                return event;
+            }];
+        }
+    }
+    else {
+        [monitoredShortcutIdentifers removeObject:identifer];
+        
+        if (monitoredShortcutIdentifers.count == 0 && eventMonitorHandle != nil) {
+            [NSEvent removeMonitor:eventMonitorHandle];
+            eventMonitorHandle = nil;
+        }
+    }
+    
+    return shortcut;
+}
+
+- (void)setEditTagsShortcut:(GTAGShortcut *)editTagsShortcut {
+    _editTagsShortcut = [self updateShortcut:editTagsShortcut
+                                    oldValue:_editTagsShortcut
+                       forShortcutIdentifier:kEditTagsShortcutIdentifier];
+}
+
+- (void)setAddTagsShortcut:(GTAGShortcut *)addTagsShortcut {
+    _addTagsShortcut = [self updateShortcut:addTagsShortcut
+                                   oldValue:_addTagsShortcut
+                      forShortcutIdentifier:kAddTagsShortcutIdentifier];
+}
+
+- (void)setRemoveTagsShortcut:(GTAGShortcut *)removeTagsShortcut {
+    _removeTagsShortcut = [self updateShortcut:removeTagsShortcut
+                                      oldValue:_removeTagsShortcut
+                         forShortcutIdentifier:kRemoveTagsShortcutIdentifier];
+}
+
+- (void)setRenameTagsShortcut:(GTAGShortcut *)renameTagsShortcut {
+    _renameTagsShortcut = [self updateShortcut:renameTagsShortcut
+                                      oldValue:_renameTagsShortcut
+                         forShortcutIdentifier:kRenameTagsShortcutIdentifier];
+}
+
+- (void)reloadShortcuts:(NSDictionary<NSString *, GTAGShortcut *> *)shortcuts {
+    if (shortcuts != nil) {
+        self.editTagsShortcut = shortcuts[kEditTagsShortcutIdentifier];
+        self.addTagsShortcut = shortcuts[kAddTagsShortcutIdentifier];
+        self.removeTagsShortcut = shortcuts[kRemoveTagsShortcutIdentifier];
+        self.renameTagsShortcut = shortcuts[kRenameTagsShortcutIdentifier];
+    }
+    else {
+        self.editTagsShortcut = nil;
+        self.addTagsShortcut = nil;
+        self.removeTagsShortcut = nil;
+        self.renameTagsShortcut = nil;
+    }
+}
+
 - (instancetype)init
 {
     self = [super init];
     
     if (self) {
         links = [NSMapTable weakToStrongObjectsMapTable];
+        monitoredShortcutIdentifers = [NSMutableSet new];
+        eventMonitorHandle = nil;
+        
+        NSUserDefaults *defaults = NSUserDefaults.standardUserDefaults;
+        NSDictionary<NSString *, GTAGShortcut *> *shortcuts = [defaults dictionaryForKey:kUserDefaultsShortcutKeyEquivalentsKey];
+        [self reloadShortcuts:shortcuts];
+        
+        [GSCallbackHandler registerShortcutCommand:NSLocalizedStringFromTableInBundle(@"Edit Tags", nil, bundle, @"Shortcut command name for selecting the tags field")
+                                             group:kShortcutGroupTitle
+                                        identifier:kEditTagsShortcutIdentifier
+                                            action:@selector(editTags:)
+                                            target:self
+                                         character:@""
+                                     modifierFlags:0];
+        
+        [GSCallbackHandler registerShortcutCommand:NSLocalizedStringFromTableInBundle(@"Add Tags", nil, bundle, @"Shortcut command name for adding tags to the selected glyphs")
+                                             group:kShortcutGroupTitle
+                                        identifier:kAddTagsShortcutIdentifier
+                                            action:@selector(addTags:)
+                                            target:self
+                                         character:@""
+                                     modifierFlags:0];
+        
+        [GSCallbackHandler registerShortcutCommand:NSLocalizedStringFromTableInBundle(@"Remove Tags", nil, bundle, @"Shortcut command name for removing tags from the selected glyphs")
+                                             group:kShortcutGroupTitle
+                                        identifier:kRemoveTagsShortcutIdentifier
+                                            action:@selector(removeTags:)
+                                            target:self
+                                         character:@""
+                                     modifierFlags:0];
+        
+        [GSCallbackHandler registerShortcutCommand:NSLocalizedStringFromTableInBundle(@"Rename Tags", nil, bundle, @"Shortcut command name for renaming tags for the selected glyphs")
+                                             group:kShortcutGroupTitle
+                                        identifier:kRenameTagsShortcutIdentifier
+                                            action:@selector(renameTags:)
+                                            target:self
+                                         character:@""
+                                     modifierFlags:0];
+        
+        NSUserDefaultsController *defaultsController = NSUserDefaultsController.sharedUserDefaultsController;
+        NSString *keyEquivalentsKeyPath = [kUserDefaultsControllerKeyPrefix stringByAppendingString:kUserDefaultsShortcutKeyEquivalentsKey];
+        [defaultsController addObserver:self
+                             forKeyPath:keyEquivalentsKeyPath
+                                options:0
+                                context:GTAGCoordinatorKVOContext];
     }
     
-    [GSCallbackHandler registerShortcutCommand:NSLocalizedStringFromTableInBundle(@"Edit Tags", nil, bundle, @"Shortcut command name for selecting the tags field")
-                                         group:kShortcutCommandsGroup
-                                    identifier:@"com.FlorianPircher.GutenTag.EditTags"
-                                        action:@selector(editTags:)
-                                        target:self
-                                     character:@""
-                                 modifierFlags:0];
-    
-    [GSCallbackHandler registerShortcutCommand:NSLocalizedStringFromTableInBundle(@"Add Tags", nil, bundle, @"Shortcut command name for adding tags to the selected glyphs")
-                                         group:kShortcutCommandsGroup
-                                    identifier:@"com.FlorianPircher.GutenTag.AddTags"
-                                        action:@selector(addTags:)
-                                        target:self
-                                     character:@""
-                                 modifierFlags:0];
-    
-    [GSCallbackHandler registerShortcutCommand:NSLocalizedStringFromTableInBundle(@"Remove Tags", nil, bundle, @"Shortcut command name for removing tags from the selected glyphs")
-                                         group:kShortcutCommandsGroup
-                                    identifier:@"com.FlorianPircher.GutenTag.RemoveTags"
-                                        action:@selector(removeTags:)
-                                        target:self
-                                     character:@""
-                                 modifierFlags:0];
-    
-    [GSCallbackHandler registerShortcutCommand:NSLocalizedStringFromTableInBundle(@"Rename Tags", nil, bundle, @"Shortcut command name for renaming tags for the selected glyphs")
-                                         group:kShortcutCommandsGroup
-                                    identifier:@"com.FlorianPircher.GutenTag.RenameTags"
-                                        action:@selector(renameTags:)
-                                        target:self
-                                     character:@""
-                                 modifierFlags:0];
-    
     return self;
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if (context == GTAGCoordinatorKVOContext) {
+        if (![keyPath hasPrefix:kUserDefaultsControllerKeyPrefix]) {
+            return;
+        }
+        
+        NSString *defaultsKey = [keyPath substringFromIndex:kUserDefaultsControllerKeyPrefix.length];
+        NSUserDefaults *defaults = NSUserDefaults.standardUserDefaults;
+        
+        if ([defaultsKey isEqualToString:kUserDefaultsShortcutKeyEquivalentsKey]) {
+            NSDictionary<NSString *, GTAGShortcut *> *shortcuts = [defaults dictionaryForKey:kUserDefaultsShortcutKeyEquivalentsKey];
+            [self reloadShortcuts:shortcuts];
+        }
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
 }
 
 // MARK: - Linking
@@ -96,17 +252,14 @@ static NSString * const kShortcutCommandsGroup = @"Guten Tag";
 
 // MARK: - Dispatch
 
-- (nullable GTAGPlugin *)activeLink:(NSViewController<GSGlyphEditViewControllerProtocol> *)editViewController {
+- (nullable NSWindow *)windowForEditViewController:(NSViewController<GSGlyphEditViewControllerProtocol> *)editViewController {
     GSFont *font = editViewController.representedObject;
     GSDocument *document = font.parent;
-    
-    if (document == nil) return nil;
-    
-    NSWindowController *windowController = document.windowController;
-    
-    if (windowController == nil) return nil;
-    
-    NSWindow *activeWindow = windowController.window;
+    return document.windowController.window;
+}
+
+- (nullable GTAGPlugin *)linkForActiveWindow:(NSWindow *)activeWindow {
+    if (activeWindow == nil) return nil;
     
     for (GTAGPlugin *link in links) {
         NSView *view = link.theView;
@@ -121,7 +274,12 @@ static NSString * const kShortcutCommandsGroup = @"Guten Tag";
 }
 
 - (BOOL)validateShortcutCommand:(SEL)action editViewController:(NSViewController<GSGlyphEditViewControllerProtocol> *)editViewController {
-    GTAGPlugin *link = [self activeLink:editViewController];
+    NSWindow *window = [self windowForEditViewController:editViewController];
+    return [self validateShortcutCommand:action window:window];
+}
+
+- (BOOL)validateShortcutCommand:(SEL)action window:(NSWindow *)window {
+    GTAGPlugin *link = [self linkForActiveWindow:window];
     
     if (link == nil) return NO;
     
@@ -141,29 +299,64 @@ static NSString * const kShortcutCommandsGroup = @"Guten Tag";
     return NO;
 }
 
-// MARK: - Actions
+// MARK: - Shortcuts
 
 - (void)editTags:(NSViewController<GSGlyphEditViewControllerProtocol> *)editViewController {
-    GTAGPlugin *link = [self activeLink:editViewController];
-    NSView *view = link.theView;
-    NSWindow *window = view.window;
-    
-    [window makeFirstResponder:link.tagsField];
+    NSWindow *window = [self windowForEditViewController:editViewController];
+    [self editTagsForWindow:window];
 }
 
 - (void)addTags:(NSViewController<GSGlyphEditViewControllerProtocol> *)editViewController {
-    GTAGPlugin *link = [self activeLink:editViewController];
-    [link promptAddTags:nil];
+    NSWindow *window = [self windowForEditViewController:editViewController];
+    [self addTagsForWindow:window];
 }
 
 - (void)removeTags:(NSViewController<GSGlyphEditViewControllerProtocol> *)editViewController {
-    GTAGPlugin *link = [self activeLink:editViewController];
-    [link promptRemoveTags:nil];
+    NSWindow *window = [self windowForEditViewController:editViewController];
+    [self removeTagsForWindow:window];
 }
 
 - (void)renameTags:(NSViewController<GSGlyphEditViewControllerProtocol> *)editViewController {
-    GTAGPlugin *link = [self activeLink:editViewController];
+    NSWindow *window = [self windowForEditViewController:editViewController];
+    [self renameTagsForWindow:window];
+}
+
+// MARK: - Actions
+
+- (BOOL)editTagsForWindow:(NSWindow *)window {
+    if (![self validateShortcutCommand:@selector(editTags:) window:window]) {
+        return NO;
+    }
+    GTAGPlugin *link = [self linkForActiveWindow:window];
+    [window makeFirstResponder:link.tagsField];
+    return YES;
+}
+
+- (BOOL)addTagsForWindow:(NSWindow *)window {
+    if (![self validateShortcutCommand:@selector(addTags:) window:window]) {
+        return NO;
+    }
+    GTAGPlugin *link = [self linkForActiveWindow:window];
+    [link promptAddTags:nil];
+    return YES;
+}
+
+- (BOOL)removeTagsForWindow:(NSWindow *)window {
+    if (![self validateShortcutCommand:@selector(removeTags:) window:window]) {
+        return NO;
+    }
+    GTAGPlugin *link = [self linkForActiveWindow:window];
+    [link promptRemoveTags:nil];
+    return YES;
+}
+
+- (BOOL)renameTagsForWindow:(NSWindow *)window {
+    if (![self validateShortcutCommand:@selector(renameTags:) window:window]) {
+        return NO;
+    }
+    GTAGPlugin *link = [self linkForActiveWindow:window];
     [link promptRenameTags:nil];
+    return YES;
 }
 
 @end

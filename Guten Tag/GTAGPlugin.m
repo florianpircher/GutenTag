@@ -40,7 +40,7 @@ static NSString * const kLegacyUserDefaultsKeyMaximumGlyphPreviewCount = @"com.F
 const CGFloat DEFAULT_GLYPH_PREVIEW_SIZE = 36.0;
 const CGFloat DEFAULT_GLYPH_PREVIEW_INSET = 4.0;
 const NSInteger DEFAULT_MAXIMUM_GLYPH_PREVIEW_COUNT = 1000;
-
+// Shared
 static NSBundle *bundle;
 
 + (void)initialize {

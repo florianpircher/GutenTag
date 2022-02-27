@@ -1,94 +1,84 @@
-# 🔖 Guten Tag
+# <img src="https://formkunft.com/glyphs/plugins/guten-tag/icons/plugin/128.png" width="42" height="42" alt align="top"> Guten Tag
 
-This is a plugin for the [Glyphs font editor](https://glyphsapp.com).
-It allows you to edit glyph tags from both the font view *and* edit view.
+*Guten Tag* is a plugin for [Glyphs](https://glyphsapp.com).
+It allows you to edit glyph tags from both Font View and Edit View.
 
 [![](Screenshot.png)](https://xgc.io/b/glyphs/guten-tag/1.mp4)
 
-- [Install **Guten Tag** in Glyphs](https://florianpircher.com/glyphs/plugins/guten-tag/install)
-- [Read the Guten Tag **Handbook**](https://florianpircher.com/glyphs/plugins/guten-tag/Handbook.pdf)
+- View and edit your tags from Font View and Edit View.
+- Use autocompletion to prevent typos in tag names.
+- Preview all glyphs for a tag by clicking the disclosure button next to the tag name.
+- Assign, remove, and rename tags using keyboard shortcuts.
 
-## Features
+## Usage
 
-- View and edit your tags from the font view and the edit view.
-- Use autocompletion to prevent typos in your tag names.
-- Preview all glyphs for a tag by clicking on the little disclosure button to the right of a tag.
+- Navigate between related glyphs using the tag menu.
+- Tokens allow using tags in OpenType feature code: `$[tags contains "narrow"]`.
+- Predicate rules can filter for glyphs by tags, including *Smart Filters*, master metric scopes, stem scopes, hinting scopes, and guide scopes.
 
-## Why Use Tags?
-
-- Tags allow you to easily navigate between related glyphs ([movie demonstration](https://xgc.io/b/glyphs/guten-tag/1.mp4)).
-- Tags can be used in OpenType feature code as [tokens](https://glyphsapp.com/learn/tokens#g-glyph-class-predicates): `$[tags contains "narrow"]`.
-- Glyph names no longer need a cryptic naming scheme to represent all relevant attributes of a glyph.
-
+[Read the Guten Tag **Handbook** <img src="https://formkunft.com/glyphs/plugins/guten-tag/icons/handbook/48.png" width="16" height="23" alt align="top">](https://florianpircher.com/glyphs/plugins/guten-tag/Handbook.pdf) for more details on Guten Tag and tags in Glyphs.
 ## Installation
 
 ### Plugin Manager
 
-Click the following link to install Guten Tag in Glyphs: [Install **Guten Tag** in Glyphs](https://florianpircher.com/glyphs/plugins/guten-tag/install)
+Click the following link to install Guten Tag in Glyphs: [Install **Guten Tag** in Glyphs](https://florianpircher.com/glyphs/plugins/guten-tag/install)
 
-Alternatively, open the Plugin Manager in Glyphs by selecting *Window* → *Plugin Manager* → *Plugins*.
-Search for “Guten Tag” and click *Install* next to the plugin preview.
+Alternatively, open the Plugin Manager in Glyphs by selecting *Window* → *Plugin Manager* → *Plugins*.
+Search for “Guten Tag” and click *Install* next to the plugin preview.
 
 Relaunch Glyphs for the plugin to be loaded.
 
 ### Manual Installation
 
 1. Download the [lastest release](https://github.com/florianpircher/GutenTag/releases/latest) from GitHub.
-2. Double-click the <img src="Icons/Icon-16x16%402x.png" width="16" height="16" alt> **Guten Tag.glyphsPalette** file. Glyphs will launch and prompt you to confirm the installation.
-3. Quit and relaunch Glyphs. Now you can access Guten Tag in the top right corner of your Glyphs window.
+2. Double-click the **Guten Tag.glyphsPalette** file. Glyphs will launch and prompt you to confirm the installation.
+3. Quit and relaunch Glyphs. Now you can access Guten Tag in the top right corner of your Glyphs window.
 
 ## Preferences
 
-Guten Tag offers the following configurable preferences:
+Guten Tag offers a range of configurable preferences.
 
-| Key | Type | Default | Description |
-| --- | ---- | ------- | ----------- |
-| `GlyphPreviewSize` | `int` | `56` | The width and height of a glyph preview image in display points. Must be a positive value. |
-| `GlyphPreviewInset` | `int` | `6` | The inset on all four edges of the glyph preview image in display points. The font size of the glyph preview is `GlyphPreviewSize - (2 * GlyphPreviewInset)`, i.e. the image height without the top and bottom insets. Negatives values crop into the image. |
-| `MaximumGlyphPreviewCount` | `int` | `1000` | Limits the number of glyph previews shown in the tag menu. This is useful since creating glyph previews can be impossibly slow if there are many glyphs for a tag. The limit can be lifted by setting the value to `-1`. |
+### Glyph Preview Size
 
-Each key is prefixed by `com.FlorianPircher.GutenTag.` (for example `GlyphPreviewSize` is addressed as `com.FlorianPircher.GutenTag.GlyphPreviewSize`).
+The `GutenTagGlyphPreviewSize` (type: double, default: `36`) preference defines the width and height of a glyph preview image in display points.
+The value must be a positive number.
 
-<details>
-<summary>Set Preferences from the Command Line</summary>
+Run the following line in the Macro panel to set the size (or set the value to `None` to use the default size):
 
-Run the following line with `$KEY`, `$TYPE`, and `$VALUE` substituted.
-
-```
-defaults write com.GeorgSeifert.Glyphs3 com.FlorianPircher.GutenTag.$KEY -$TYPE $VALUE
+```python
+Glyphs.defaults['GutenTagGlyphPreviewSize'] = 56
 ```
 
-For example, to set the `GlyphPreviewSize` to `100`:
+### Glyph Preview Inset
+
+The `GutenTagGlyphPreviewInset` (type: double, default: `4`) preference controls the inset on all four edges from a glyph preview image in display points.
+The font size of the glyph preview is as follows:
 
 ```
-defaults write com.GeorgSeifert.Glyphs3 com.FlorianPircher.GutenTag.GlyphPreviewSize -int 100
-```
-</details>
-
-<details>
-<summary>Set Preferences from Glyphs’ Macro Panel</summary>
-
-Run the following line with `$KEY` and `$VALUE` substituted.
-
-```
-Glyphs.defaults['com.FlorianPircher.GutenTag.$KEY'] = $VALUE
+GutenTagGlyphPreviewSize - (2 * GutenTagGlyphPreviewInset)
 ```
 
-For example, to set the `GlyphPreviewSize` to `100`:
+Negatives values crop into the image.
 
+Run the following line in the Macro panel to set the inset (or set the value to `None` to use the default inset):
+
+```python
+Glyphs.defaults['GutenTagGlyphPreviewInset'] = 6
 ```
-Glyphs.defaults['com.FlorianPircher.GutenTag.GlyphPreviewSize'] = 100
+
+### Maximum Glyph Preview Count
+
+The `GutenTagMaximumGlyphPreviewCount` (type: long, default: `1000`) preference limits the number of glyph previews shown in the tag menu.
+This preference is useful since creating glyph previews can be impossibly slow if there are many glyphs for a tag.
+The default limit of 1000 should be fast enough in most cases.
+Remove the limit by setting the value to a non-positive number (for example, `-1`).
+
+Run the following line in the Macro panel to set the count (or set the value to `None` to use the default count):
+
+```python
+Glyphs.defaults['GutenTagMaximumGlyphPreviewCount'] = 200
 ```
-</details>
-
-<details>
-<summary>Set Preferences using mekkablue’s scripts</summary>
-
-Select *Script* → *mekkablue* → *App* → *Set Hidden App Preferences*. Enter the preference key (prefixed by `com.FlorianPircher.GutenTag.`) and the value and confirm with *Apply*.
-</details>
 
 ## Licenses
 
-Plugin source code licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
-
-Plugin icons licensed under [Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/).
+Licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).

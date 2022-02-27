@@ -1,82 +1,44 @@
 \chapter{Preferences}%
 \label{cha:preferences}
 
-Preferences allow you to customize the behavior and appearance of Guten~Tag.
-All preference names are prefixed by \enquote{\texttt{com.FlorianPircher.GutenTag.}}.
-See section~\ref{sec:setting_preferences} for instructions on how to set preference values.
+Guten Tag offers a range of configurable preferences.
+Set preferences with the Macro panel (\Path{Window > Macro Panel}).
 
-\section{Glyph Preview Menu}%
-\label{sec:glyph_preview_menu}
+\medbreak\noindent\Screenshot[window]{Images/Macro Window Preferences.png}
 
-\noindent\Screenshot{Images/Glyphs Preview Menu Options.png}
-\medskip
+\section{Glyph Preview Size}%
+\label{preference:glyph-preview-size}
 
-\noindent The glyph preview menu shows small images for each glyph belonging to the selected tag.
-The attributes of the menu can be customized as follows.
+The \texttt{GutenTagGlyphPreviewSize} (\emph{type:} double, \emph{default:} \texttt{36}) preference defines the width and height of a glyph preview image in display points. The value must be a positive number.
 
-\begin{description}
-  \item[\PrefKey*{GlyphPreviewSize}]
-    Defines the width and height of the preview images.
-    The default value is 56 points, but you could make it much larger like 144 points, or much smaller like 18 points.
-  
-  \item[\PrefKey*{GlyphPreviewInset}]
-    Controls the size of the glyph within the image.
-    The value is applied at the top and bottom such that the font-size of the glyph is \PrefKey{GlyphPreviewSize}~− {\addfontfeature{Numbers=Lining}2}\,×\,\PrefKey{GlyphPreviewInset}.
-    Increase the value if your glyphs have particularly extensive ascenders and descenders;
-    decrease the value if you want to see your glyphs in more detail.
-    The default value is 6 points.
-  
-  \item[\PrefKey*{MaximumGlyphPreviewCount}]
-    Limits the number of glyphs in the glyph preview menu.
-    This is useful because creating glyph previews can be impossibly slow if there are many glyphs for a tag.
-    The limit can be lifted by setting it to \texttt{-1}.
-    By default, a limit of 1000 glyphs is used.
-\end{description}
-
-\section{Setting Preferences}%
-\label{sec:setting_preferences}
-
-There are three ways of setting preferences.
-If you have the mekkablue scripts installed, use the approach shown in section~\ref{sub:using_mekkablue_s_scripts}.
-If you are accustomed to the command line, use the approach shown in section~\ref{sub:from_the_command_line}.
-Otherwise, use Glyphs’ Macro panel (\Path{Window > Macro Panel}) as shown in section~\ref{sub:from_glyphs_s_macro_panel}.
-
-\subsection{Using mekkablue’s Scripts}%
-\label{sub:using_mekkablue_s_scripts}
-
-Select \Path{Script > mekkablue > App > Set Hidden App Preferences}.
-Enter the preference key (prefixed by \texttt{com.FlorianPircher.GutenTag.}) and the value you want to set.
-Confirm by pressing \Label{Apply}.
-
-\ScreenshotFigure{\Screenshot[panel]{Images/mekkablue > App > Set Hidden App Preferences.png}}
-
-\noindent Press \Label{Reset} instead to reset the preference to its default value.
-
-\subsection{From the Command Line}%
-\label{sub:from_the_command_line}
-
-Run the following command with \texttt{\$KEY} and \texttt{\$VALUE} substituted.
+Run the following line in the Macro panel to set the size (or set the value to \texttt{None} to use the default size):
 
 \begin{RichListing}
-defaults write com.GeorgSeifert.Glyphs3 \
-  com.FlorianPircher.GutenTag.<@\textit{\$KEY}@> <@\textit{\$VALUE}@>
+<@\Variable{Glyphs}@>.defaults[<@\String{"GutenTagGlyphPreviewSize"}@>] = <@\Number{56}@>
 \end{RichListing}
-%
-For example, to set \PrefKey{GlyphPreviewSize} to 100:
 
-\ScreenshotFigure{\Screenshot[window]{Images/Terminal Preferences.png}}
+\section{Glyph Preview Inset}%
+\label{preference:glyph-preview-inset}
 
-\noindent Run \texttt{defaults delete ...} without \texttt{\$VALUE} to reset the preference to its original value.
+The \texttt{GutenTagGlyphPreviewInset} (\emph{type:} double, \emph{default:} \texttt{4}) preference controls the inset on all four edges from a glyph preview image in display points. The font size of the glyph preview is as follows:
+\begin{align*}
+  \text{GutenTagGlyphPreviewSize − {\addfontfeature{Numbers = Lining}2} × GutenTagGlyphPreviewInset}
+\end{align*}
+Negatives values crop into the image.
 
-\subsection{From Glyphs’ Macro Panel}%
-\label{sub:from_glyphs_s_macro_panel}
-
-Run the following line with \texttt{\$KEY} and \texttt{\$VALUE} substituted.
+Run the following line in the Macro panel to set the inset (or set the value to \texttt{None} to use the default inset):
 
 \begin{RichListing}
-<@\Variable{Glyphs}@>.defaults[<@\String{"com.FlorianPircher.GutenTag.\textit{\$KEY}"}@>] = <@\Storage{\textit{\$VALUE}}@>
+<@\Variable{Glyphs}@>.defaults[<@\String{"GutenTagGlyphPreviewInset"}@>] = <@\Number{6}@>
 \end{RichListing}
-%
-For example, to set \PrefKey{GlyphPreviewSize} to 100:
 
-\ScreenshotFigure{\Screenshot[window]{Images/Macro Window Preferences.png}}
+\section{Maximum Glyph Preview Count}%
+\label{preference:maximum-glyph-preview-count}
+
+The \texttt{GutenTagMaximumGlyphPreviewCount} (\emph{type:} long, \emph{default:} \texttt{1000}) preference limits the number of glyph previews shown in the tag menu. This preference is useful since creating glyph previews can be impossibly slow if there are many glyphs for a tag. The default limit of 1000 should be fast enough in most cases. Remove the limit by setting the value to a non-positive number (for example, \texttt{-1}).
+
+Run the following line in the Macro panel to set the count (or set the value to \texttt{None} to use the default count):
+
+\begin{RichListing}
+<@\Variable{Glyphs}@>.defaults[<@\String{"GutenTagMaximumGlyphPreviewCount"}@>] = <@\Number{200}@>
+\end{RichListing}

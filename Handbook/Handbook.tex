@@ -10,6 +10,7 @@
 \usepackage[%
   babel = true,%
   letterspace = 38]{microtype}
+\usepackage{enumitem}
 \usepackage{xcolor}
 \usepackage{transparent}
 \usepackage{amsmath}
@@ -244,9 +245,8 @@
   Script = CJK,%
   Language = Korean]
 \newfontfamily{\applelogofont}{Avenir Next}
-\setsansfont{SkolarSansLatn-Rg.otf}[%
-  Path = \luadirect{tex.print(extra_font_root())}]
 \setmonofont{Codelia}
+\newfontfamily{\mediummonofont}{Codelia Medium}
 \newfontfamily{\mediumitalicmonofont}{Codelia Medium Italic}
 
 \newcommand{\textRTL}[1]{\bgroup\textdir TRT{#1}\egroup}
@@ -318,6 +318,14 @@
 \setfootnoterule[0pt]{0pt}
 
 % Lists
+\setlist[itemize]{%
+  topsep = 0.5em,%
+  partopsep = 0pt,%
+  parsep = 0pt,%
+  itemsep = 0pt,%
+  leftmargin = *,%
+  label = {\symbolfont•}}
+
 \renewcommand{\descriptionlabel}[1]{\hspace{\labelsep}{#1}}
 
 % Inline Styles
@@ -358,11 +366,14 @@
   {\addfontfeatures{Letters=Uppercase}\luadirect{tex.print(key_symbol(\luastring{#2}))}}}
 
 % Syntax Highlighting
-\newcommand*{\Keyword}[1]{\textit{#1}}
-\newcommand*{\ControlFlow}[1]{\textcolor{red!80!blue!70!black}{\mediumitalicmonofont#1}}
+\newcommand*{\Keyword}[1]{\textcolor{black!70}{\mediummonofont#1}}
+\newcommand*{\Operator}[1]{\emph{#1}}
+\newcommand*{\ControlFlow}[1]{\textcolor{blue!65!green!85!black}{\mediumitalicmonofont#1}}
 \newcommand*{\Storage}[1]{\textcolor{blue!65!green!85!black}{#1}}
+\newcommand*{\Number}[1]{\textcolor{blue!65!green!85!black}{#1}}
 \newcommand*{\String}[1]{\textcolor{red!80!black}{#1}}
-\newcommand*{\Variable}[1]{\textcolor{green!45!black}{#1}}
+\newcommand*{\Class}[1]{\textcolor{green!45!black}{#1}}
+\newcommand*{\Variable}[1]{\textcolor{blue!50!green!50!black!75}{#1}}
 \newcommand*{\Token}[1]{\textcolor{orange!55!white!45!black}{#1}}
 \newcommand*{\Comment}[1]{\textcolor{black!65}{#1}}
 

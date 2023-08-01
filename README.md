@@ -21,7 +21,10 @@ It allows you to edit glyph tags from both Font View and Edit View.
 
 ### Plugin Manager
 
-<a href="https://florianpircher.com/glyphs/plugins/anchor-annotations/install"><img src="Assets/DownloadBadge.svg" alt="Download on the Plugin Manager" height="50"></a>
+<a href="https://florianpircher.com/glyphs/plugins/guten-tag/install"><img src="Assets/DownloadBadge.svg" alt="Download on the Plugin Manager" height="50"></a>
+
+Install the plugin using the button above or search for “Guten Tag” in the Plugin Manager.
+Relaunch Glyphs for the plugin to be loaded.
 
 ### Manual Installation
 
